@@ -3,11 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UsersRepository")
+ * @UniqueEntity("Username")
  */
-class Users
+class Users implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -28,6 +32,7 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Email(message = "L\'email '{{ value }}' n'est pas un email valide")
      */
     private $Email;
 
@@ -38,6 +43,7 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min = 8, minMessage = "Le mot de passe doit contenir au moins {{ limit }} caractères")
      */
     private $Password;
 
@@ -51,16 +57,27 @@ class Users
      */
     private $Account;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+
+    /**
+     * @return string|null
+     */
     public function getLastName(): ?string
     {
         return $this->LastName;
     }
 
+    /**
+     * @param string $LastName
+     * @return Users
+     */
     public function setLastName(string $LastName): self
     {
         $this->LastName = $LastName;
@@ -68,11 +85,18 @@ class Users
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFirstName(): ?string
     {
         return $this->FirstName;
     }
 
+    /**
+     * @param string $FirstName
+     * @return Users
+     */
     public function setFirstName(string $FirstName): self
     {
         $this->FirstName = $FirstName;
@@ -80,11 +104,18 @@ class Users
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->Email;
     }
 
+    /**
+     * @param string|null $Email
+     * @return Users
+     */
     public function setEmail(?string $Email): self
     {
         $this->Email = $Email;
@@ -92,11 +123,18 @@ class Users
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getUsername(): ?string
     {
         return $this->Username;
     }
 
+    /**
+     * @param string $Username
+     * @return Users
+     */
     public function setUsername(string $Username): self
     {
         $this->Username = $Username;
@@ -104,11 +142,18 @@ class Users
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPassword(): ?string
     {
         return $this->Password;
     }
 
+    /**
+     * @param string $Password
+     * @return Users
+     */
     public function setPassword(string $Password): self
     {
         $this->Password = $Password;
@@ -116,11 +161,20 @@ class Users
         return $this;
     }
 
+    /**
+     * @return array|null
+     */
     public function getRoles(): ?array
     {
-        return $this->Roles;
+        $roles = $this->Roles;
+
+        return array_unique($roles);
     }
 
+    /**
+     * @param array $Roles
+     * @return Users
+     */
     public function setRoles(array $Roles): self
     {
         $this->Roles = $Roles;
@@ -128,15 +182,63 @@ class Users
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getAccount(): ?bool
     {
         return $this->Account;
     }
 
-    public function setAccount(bool $Account): self
+    /**
+     * @param bool $Account
+     * @return Users
+     */
+    public function setAccount(bool $Account = true): self
     {
         $this->Account = $Account;
 
         return $this;
+    }
+
+    /**
+     *
+     */
+    public function getSalt(): void
+    {
+    }
+
+    /**
+     *
+     */
+    public function eraseCredentials(): void
+    {
+
+    }
+
+    /**
+     * @return String
+     */
+    public function serialize(): String
+    {
+        return serialize([
+            $this->id,
+            $this->Username,
+            $this->Password,
+            $this->Roles
+        ]);
+    }
+
+    /**
+     * @param $serialize
+     */
+    public function unserialize($serialize): void
+    {
+        [
+            $this->id,
+            $this->Username,
+            $this->Password,
+            $this->Roles
+        ] = unserialize($serialize, ['allowed_classes' => false]);
     }
 }

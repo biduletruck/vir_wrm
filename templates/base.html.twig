@@ -7,6 +7,14 @@
     </head>
     <body>
         {% block body %}{% endblock %}
+
+
+        {% if is_granted("ROLE_USER") %}
+            <H1>Compte USER OK</H1>
+        {% endif %}
+        {% if is_granted("ROLE_ADMIN") %}
+            <H1>Compte ADMIN OK</H1>
+        {% endif %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
