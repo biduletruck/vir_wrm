@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     </head>
     <body>
         {% block body %}{% endblock %}
@@ -15,6 +16,7 @@
         {% if is_granted("ROLE_ADMIN") %}
             <H1>Compte ADMIN OK</H1>
         {% endif %}
+        <script src="{{ asset('build/app.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>
