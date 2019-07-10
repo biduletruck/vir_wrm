@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Locations{% endblock %}
+
+{% block body %}
+    <h1>Locations</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ location.id }}</td>
+            </tr>
+            <tr>
+                <th>Location</th>
+                <td>{{ location.Location }}</td>
+            </tr>
+            <tr>
+                <th>FreePlace</th>
+                <td>{{ location.FreePlace ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('locations_index') }}">back to list</a>
+
+    <a href="{{ path('locations_edit', {'id': location.id}) }}">edit</a>
+
+    {{ include('locations/_delete_form.html.twig') }}
+{% endblock %}

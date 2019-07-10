@@ -1,0 +1,14 @@
+easy_admin:
+    entities:
+        # List the entity class name you want to manage
+
+        Users:
+            class: App\Entity\Users
+            form:
+                fields:
+                    - { property: 'LastName', type: 'text' }
+                    - { property: 'FirstName', type: 'text' }
+                    - { property: 'Email', type: 'email' }
+                    - { property: 'Username', type: 'text' }
+                    - { property: 'password', type: 'password' }
+                    - { property: 'Account', type: 'checkbox' }

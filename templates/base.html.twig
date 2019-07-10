@@ -2,7 +2,11 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>
+            {% block title %}
+                {% if title is defined %}{{title}}{% else %}Title{% endif %} | VIRWrm
+            {% endblock %}
+        </title>
         {% block stylesheets %}{% endblock %}
         <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     </head>
