@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Orders{% endblock %}
+
+{% block body %}
+    <h1>Create new Orders</h1>
+
+    {{ include('orders/_form.html.twig') }}
+    <div class="form-group">
+        <a href="#" id="add_ticket" class="btn btn-info">Ajouter un ticket</a>
+    </div>
+
+    <a href="{{ path('orders_index') }}">back to list</a>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var $container = $('div#orders_new_productListings');
+            var index = $container.find(':input').length;
+            $('#add_ticket').click(function(e) {
+                addTicket($container);
+                e.preventDefault();
+                return false;
+            });
+            if (index == 0) {
+                addTicket($container);
+            } else {
+                $container.children('div').each(function() {
+                    addDeleteLink($(this));
+                });
+            }
+            function addTicket($container) {
+                var template = $container.attr('data-prototype')
+                    .replace(/__name__label__/g, 'Ticket n°' + (index+1))
+                    .replace(/__name__/g,        index)
+                ;
+                var $prototype = $(template);
+                addDeleteLink($prototype);
+                $container.append($prototype);
+                index++;
+            }
+            function addDeleteLink($prototype) {
+                var $deleteLink = $('<div class="form-group pull-right"><a href="#" class="btn btn-xs btn-danger">Supprimer</a></div> ');
+                $prototype.append($deleteLink);
+                $deleteLink.click(function(e) {
+                    $prototype.remove();
+                    e.preventDefault();
+                    return false;
+                });
+            }
+        });
+    </script>
+{% endblock %}

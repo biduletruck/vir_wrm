@@ -44,28 +44,22 @@ class Orders
     private $DelivryDate;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ReturnType", cascade={"persist", "remove"})
-     */
-    private $ReturnType;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\StatusOrder", cascade={"persist", "remove"})
-     */
-    private $Status;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Users", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="orders")
      */
     private $User;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\DetailOrder", mappedBy="orders")
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductListing", mappedBy="OrderNumber")
      */
-    private $DetailOrder;
+    private $productListings;
+
+
 
     public function __construct()
     {
-        $this->DetailOrder = new ArrayCollection();
+        $this->DateEntry = new \DateTime();
+        $this->productListings = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -118,6 +112,7 @@ class Orders
     {
         $this->DateEntry = $DateEntry;
 
+
         return $this;
     }
 
@@ -130,31 +125,14 @@ class Orders
     {
         $this->DelivryDate = $DelivryDate;
 
-        return $this;
-    }
-
-    public function getReturnType(): ?ReturnType
-    {
-        return $this->ReturnType;
-    }
-
-    public function setReturnType(?ReturnType $ReturnType): self
-    {
-        $this->ReturnType = $ReturnType;
 
         return $this;
     }
 
-    public function getStatus(): ?StatusOrder
-    {
-        return $this->Status;
-    }
 
-    public function setStatus(?StatusOrder $Status): self
+    public function __toString()
     {
-        $this->Status = $Status;
-
-        return $this;
+        return $this->VirLocalNumber;
     }
 
     public function getUser(): ?Users
@@ -170,33 +148,35 @@ class Orders
     }
 
     /**
-     * @return Collection|DetailOrder[]
+     * @return Collection|ProductListing[]
      */
-    public function getDetailOrder(): Collection
+    public function getProductListings(): Collection
     {
-        return $this->DetailOrder;
+        return $this->productListings;
     }
 
-    public function addDetailOrder(DetailOrder $detailOrder): self
+    public function addProductListing(ProductListing $productListing): self
     {
-        if (!$this->DetailOrder->contains($detailOrder)) {
-            $this->DetailOrder[] = $detailOrder;
-            $detailOrder->setOrders($this);
+        if (!$this->productListings->contains($productListing)) {
+            $this->productListings[] = $productListing;
+            $productListing->setOrderNumber($this);
         }
 
         return $this;
     }
 
-    public function removeDetailOrder(DetailOrder $detailOrder): self
+    public function removeProductListing(ProductListing $productListing): self
     {
-        if ($this->DetailOrder->contains($detailOrder)) {
-            $this->DetailOrder->removeElement($detailOrder);
+        if ($this->productListings->contains($productListing)) {
+            $this->productListings->removeElement($productListing);
             // set the owning side to null (unless already changed)
-            if ($detailOrder->getOrders() === $this) {
-                $detailOrder->setOrders(null);
+            if ($productListing->getOrderNumber() === $this) {
+                $productListing->setOrderNumber(null);
             }
         }
 
         return $this;
     }
+
+
 }

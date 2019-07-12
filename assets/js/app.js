@@ -10,7 +10,13 @@ require('../css/app.css');
 require('../css/global.scss');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
+// require jQuery normally
 const $ = require('jquery');
+
+// create global $ and jQuery variables
+global.$ = global.jQuery = $;
+
+
 // this "modifies" the jquery module: adding behavior to it
 // the bootstrap module doesn't export/return anything
 require('bootstrap');
