@@ -29,4 +29,7 @@ $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
 });
 
+require('bootstrap-datepicker');
+require('bootstrap-datepicker/js/locales/bootstrap-datepicker.fr')
+
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');

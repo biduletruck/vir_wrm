@@ -39,9 +39,10 @@ class Orders
     private $DateEntry;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $DelivryDate;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="orders")
@@ -52,6 +53,11 @@ class Orders
      * @ORM\OneToMany(targetEntity="App\Entity\ProductListing", mappedBy="OrderNumber")
      */
     private $productListings;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\OrderStatus", inversedBy="OrderStatus")
+     */
+    private $OrderStatus;
 
 
 
@@ -116,19 +122,23 @@ class Orders
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getDelivryDate(): ?\DateTimeInterface
     {
         return $this->DelivryDate;
     }
 
-    public function setDelivryDate(\DateTimeInterface $DelivryDate): self
+    /**
+     * @param mixed $DelivryDate
+     * @return Orders
+     */
+    public function setDelivryDate($DelivryDate)
     {
         $this->DelivryDate = $DelivryDate;
-
-
         return $this;
     }
-
 
     public function __toString()
     {
@@ -174,6 +184,18 @@ class Orders
                 $productListing->setOrderNumber(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOrderStatus(): ?OrderStatus
+    {
+        return $this->OrderStatus;
+    }
+
+    public function setOrderStatus(?OrderStatus $OrderStatus): self
+    {
+        $this->OrderStatus = $OrderStatus;
 
         return $this;
     }

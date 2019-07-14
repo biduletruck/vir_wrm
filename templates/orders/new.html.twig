@@ -3,26 +3,44 @@
 {% block title %}New Orders{% endblock %}
 
 {% block body %}
-    <h1>Create new Orders</h1>
 
-    {{ include('orders/_form.html.twig') }}
-    <div class="form-group">
-        <a href="#" id="add_ticket" class="btn btn-info">Ajouter un ticket</a>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 ">
+                <h1>Ajouter une nouvelle commande</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                {{ include('orders/_form.html.twig') }}
+            </div>
+
+        </div>
     </div>
+
+
+
+
 
     <a href="{{ path('orders_index') }}">back to list</a>
 {% endblock %}
 
 {% block javascripts %}
     <script type="text/javascript">
+
+
         $(document).ready(function() {
+
+
             var $container = $('div#orders_new_productListings');
             var index = $container.find(':input').length;
             $('#add_ticket').click(function(e) {
                 addTicket($container);
+                console.log($container.attr('data-prototype'))
                 e.preventDefault();
                 return false;
             });
+
             if (index == 0) {
                 addTicket($container);
             } else {
@@ -32,8 +50,9 @@
             }
             function addTicket($container) {
                 var template = $container.attr('data-prototype')
-                    .replace(/__name__label__/g, 'Ticket n°' + (index+1))
+                    .replace(/__name__label__/g, 'Entrée n°' + (index+1))
                     .replace(/__name__/g,        index)
+                    .replace(/<div >/g, "<div class='custom'>")
                 ;
                 var $prototype = $(template);
                 addDeleteLink($prototype);
@@ -41,7 +60,7 @@
                 index++;
             }
             function addDeleteLink($prototype) {
-                var $deleteLink = $('<div class="form-group pull-right"><a href="#" class="btn btn-xs btn-danger">Supprimer</a></div> ');
+                var $deleteLink = $('<div class="text-center btn_delete"><a href="#" class="btn btn-sm btn-danger">Supprimer</a></div>');
                 $prototype.append($deleteLink);
                 $deleteLink.click(function(e) {
                     $prototype.remove();
@@ -49,6 +68,17 @@
                     return false;
                 });
             }
+        });
+
+        $('.datepicker').datepicker({
+            todayBtn: "linked",
+            clearBtn: true,
+            language: "fr",
+            calendarWeeks: true,
+            autoclose: true,
+            todayHighlight: true,
+            format: 'yyyy-mm-dd',
+            startDate: new Date()
         });
     </script>
 {% endblock %}

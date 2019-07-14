@@ -4,14 +4,17 @@ namespace App\Controller;
 
 
 use App\Entity\Orders;
+use App\Entity\OrderStatus;
 use App\Entity\ProductListing;
 use App\Form\OrdersType;
 use App\Repository\OrdersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\CssSelector\Tests\Node\NegationNodeTest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Validator\Tests\Fixtures\ToString;
 
 /**
  * @Route("/orders")
@@ -34,6 +37,7 @@ class OrdersController extends AbstractController
     public function new(Request $request): Response
     {
 
+        $delivryDate = $request->request->get('orders_new');
         $order = new Orders();
         $date = new \DateTime("NOW");
 
@@ -43,34 +47,28 @@ class OrdersController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $entityManager = $this->getDoctrine()->getManager();
-            $f = new Orders();
-            $f->setOrderingNumber($order->getOrderingNumber());
-            $f->setVirLocalNumber("GEN-" . $date->getTimestamp());
-            $f->setCustomerName($order->getCustomerName());
-            $f->setDateEntry($date);
-            $f->setDelivryDate($order->getDelivryDate());
-            $f->setUser($this->getUser());
-            /*
-             $f->setReturnType($order->getReturnType());
-             $f->setStatus($order->getStatus());
-            */
-            $entityManager->persist($f);
-            dump($f);
-            $entityManager->flush();
+            $command = new Orders();
+            $command->setOrderingNumber($order->getOrderingNumber());
+            $command->setVirLocalNumber("GEN-" . $date->getTimestamp());
+            $command->setCustomerName($order->getCustomerName());
+            $command->setDateEntry($date);
+            $command->setDelivryDate(new \DateTime($delivryDate['DelivryDate']));
+            $command->setUser($this->getUser());
+            //$command->setOrderStatus();
 
-            dump($f);
+            $entityManager->persist($command);
+            $entityManager->flush();
 
             foreach ($order->getProductListings() as $productListing)
             {
-
                 $product = new ProductListing();
                 $product->setProductNumber($productListing->getProductNumber());
                 $product->setFamilyProduct($productListing->getFamilyProduct());
-                $product->setOrderNumber($f);
+                $product->setOrderNumber($command);
                 $entityManager->persist($product);
             }
-            $entityManager->flush();
 
+            $entityManager->flush();
 
             return $this->redirectToRoute('orders_index');
         }
@@ -96,10 +94,10 @@ class OrdersController extends AbstractController
      */
     public function edit(Request $request, Orders $order): Response
     {
-        $form = $this->createForm(OrdersType::class, $order);
-        $form->handleRequest($request);
+        $commandorm = $this->createForm(OrdersType::class, $order);
+        $commandorm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($commandorm->isSubmitted() && $commandorm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('orders_index', [
@@ -109,7 +107,7 @@ class OrdersController extends AbstractController
 
         return $this->render('orders/edit.html.twig', [
             'order' => $order,
-            'form' => $form->createView(),
+            'form' => $commandorm->createView(),
         ]);
     }
 

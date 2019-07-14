@@ -4,3 +4,64 @@ body {
     margin-top: 75px;
     background-color: lightgray;
 }
+
+.card-body{
+    display: flex;
+    justify-content:space-evenly;
+    align-items:baseline;
+}
+
+.custom{
+
+    display: flex;
+    justify-content:space-evenly;
+    align-items:baseline;
+}
+.custom label{
+    margin-right: 20px;
+}
+.custom div{
+    display: flex;
+    align-items:baseline;
+    justify-content:space-evenly;
+}
+
+.btn_delete{
+    margin-left: 30px;
+}
+
+
+
+input[type=radio]{
+    display: none;
+}
+/* Affichage par défaut du bouton radio personnalisé */
+input[type=radio] + label:before {
+    background: #fff;
+    border: 5px solid #ccc;
+    border-radius: 50%;
+    margin-top: -3px;
+    margin-right: 10px;
+    margin-left: 30px;
+    display: inline-block;
+    vertical-align: middle;
+    content: '';
+    width: 50px;
+    height: 50px;
+}
+/* Affichage du bouton radio personnalisé quand il est sélectionné */
+input[type=radio]:checked + label:before {
+    background: #1806fb;
+    border-color: #1806FB;
+    box-shadow: inset 0px 0px 0px 2px #fff;
+}
+.element{
+    margin-bottom:14px;
+
+}
+label{
+    cursor:pointer;
+}
+
+
+
