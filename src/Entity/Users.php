@@ -64,9 +64,21 @@ class Users implements UserInterface, \Serializable
      */
     private $orders;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Storages", mappedBy="Login")
+     */
+    private $storages;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Labels", mappedBy="Login")
+     */
+    private $labels;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->storages = new ArrayCollection();
+        $this->labels = new ArrayCollection();
     }
 
     /**
@@ -284,6 +296,68 @@ class Users implements UserInterface, \Serializable
             // set the owning side to null (unless already changed)
             if ($order->getUser() === $this) {
                 $order->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Storages[]
+     */
+    public function getStorages(): Collection
+    {
+        return $this->storages;
+    }
+
+    public function addStorage(Storages $storage): self
+    {
+        if (!$this->storages->contains($storage)) {
+            $this->storages[] = $storage;
+            $storage->setLogin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStorage(Storages $storage): self
+    {
+        if ($this->storages->contains($storage)) {
+            $this->storages->removeElement($storage);
+            // set the owning side to null (unless already changed)
+            if ($storage->getLogin() === $this) {
+                $storage->setLogin(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Labels[]
+     */
+    public function getLabels(): Collection
+    {
+        return $this->labels;
+    }
+
+    public function addLabel(Labels $label): self
+    {
+        if (!$this->labels->contains($label)) {
+            $this->labels[] = $label;
+            $label->setLogin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLabel(Labels $label): self
+    {
+        if ($this->labels->contains($label)) {
+            $this->labels->removeElement($label);
+            // set the owning side to null (unless already changed)
+            if ($label->getLogin() === $this) {
+                $label->setLogin(null);
             }
         }
 

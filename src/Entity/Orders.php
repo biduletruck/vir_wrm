@@ -59,12 +59,23 @@ class Orders
      */
     private $OrderStatus;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $Labels;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Labels", mappedBy="virLocalNumber")
+     */
+    private $labels;
+
 
 
     public function __construct()
     {
         $this->DateEntry = new \DateTime();
         $this->productListings = new ArrayCollection();
+        $this->labels = new ArrayCollection();
 
     }
 
@@ -140,10 +151,7 @@ class Orders
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->VirLocalNumber;
-    }
+
 
     public function getUser(): ?Users
     {
@@ -198,6 +206,46 @@ class Orders
         $this->OrderStatus = $OrderStatus;
 
         return $this;
+    }
+
+    public function getLabels(): ?int
+    {
+        return $this->Labels;
+    }
+
+    public function setLabels(int $Labels): self
+    {
+        $this->Labels = $Labels;
+
+        return $this;
+    }
+
+    public function addLabel(Labels $label): self
+    {
+        if (!$this->labels->contains($label)) {
+            $this->labels[] = $label;
+            $label->setVirLocalNumber($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLabel(Labels $label): self
+    {
+        if ($this->labels->contains($label)) {
+            $this->labels->removeElement($label);
+            // set the owning side to null (unless already changed)
+            if ($label->getVirLocalNumber() === $this) {
+                $label->setVirLocalNumber(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->VirLocalNumber;
     }
 
 

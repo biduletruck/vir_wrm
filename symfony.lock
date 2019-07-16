@@ -127,6 +127,12 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "markbaker/complex": {
+        "version": "1.4.7"
+    },
+    "markbaker/matrix": {
+        "version": "1.1.4"
+    },
     "monolog/monolog": {
         "version": "1.24.0"
     },
@@ -151,6 +157,9 @@
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
     },
+    "phpoffice/phpspreadsheet": {
+        "version": "1.8.2"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -162,6 +171,9 @@
     },
     "psr/log": {
         "version": "1.1.0"
+    },
+    "psr/simple-cache": {
+        "version": "1.0.1"
     },
     "ramsey/uuid": {
         "version": "3.8.0"
@@ -553,6 +565,9 @@
     },
     "symfony/yaml": {
         "version": "v4.3.2"
+    },
+    "tecnickcom/tcpdf": {
+        "version": "6.2.26"
     },
     "twig/extensions": {
         "version": "1.0",

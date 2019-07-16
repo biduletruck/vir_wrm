@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,6 +34,16 @@ class ProductListing
      * @ORM\JoinColumn(nullable=false)
      */
     private $FamilyProduct;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Storages", mappedBy="Product")
+     */
+    private $storages;
+
+    public function __construct()
+    {
+        $this->storages = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -71,6 +83,37 @@ class ProductListing
     public function setFamilyProduct(?FamilyProduct $FamilyProduct): self
     {
         $this->FamilyProduct = $FamilyProduct;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Storages[]
+     */
+    public function getStorages(): Collection
+    {
+        return $this->storages;
+    }
+
+    public function addStorage(Storages $storage): self
+    {
+        if (!$this->storages->contains($storage)) {
+            $this->storages[] = $storage;
+            $storage->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStorage(Storages $storage): self
+    {
+        if ($this->storages->contains($storage)) {
+            $this->storages->removeElement($storage);
+            // set the owning side to null (unless already changed)
+            if ($storage->getProduct() === $this) {
+                $storage->setProduct(null);
+            }
+        }
 
         return $this;
     }

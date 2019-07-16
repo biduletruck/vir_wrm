@@ -4,6 +4,10 @@ Encore
 // directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
+    .copyFiles({
+        from: './assets/images'
+    })
+
     .setPublicPath('/build')
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
@@ -18,7 +22,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
-    .addEntry('datepicker', './assets/js/datepicker.js')
+
 
     //.addEntry('page2', './assets/js/page2.js')
 
@@ -30,7 +34,7 @@ Encore
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
-    .enableVersioning(Encore.isProduction())
+   // .enableVersioning(Encore.isProduction())
 
 // uncomment if you use TypeScript
 //.enableTypeScriptLoader()

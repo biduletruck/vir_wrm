@@ -6,6 +6,7 @@ use App\Entity\Orders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +20,7 @@ class OrdersType extends AbstractType
             ->add('OrderingNumber', TextType::class, [
                 'required'  => true,
                 'label'     => 'Numéro de commande',
-                'attr'      => array('class' => 'form-control')
+                'attr'      => array('class' => 'form-control scanner_input')
 
             ])
             ->remove('VirLocalNumber')
@@ -36,6 +37,12 @@ class OrdersType extends AbstractType
                 'widget'    =>'single_text',
                 'attr'      => array('class' => 'form-control datepicker', 'readonly' => 'readonly'))
                     )
+            ->add('Labels', IntegerType::class, array(
+                'required' => true,
+                'label' => 'Nombre de supports',
+                'attr'      => array('class' => 'form-control')
+
+            ))
             ->remove('User')
             ->remove('OrderStatus')
             ->add('productListings', CollectionType::class, array(

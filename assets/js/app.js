@@ -30,6 +30,9 @@ $(document).ready(function() {
 });
 
 require('bootstrap-datepicker');
-require('bootstrap-datepicker/js/locales/bootstrap-datepicker.fr')
+require('bootstrap-datepicker/js/locales/bootstrap-datepicker.fr');
+const Quagga = require('quagga');
+global.Quagga = global.Quagga = Quagga;
 
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
+require('@fortawesome/fontawesome-free/css/all.min.css');
+require('@fortawesome/fontawesome-free/js/all.js');

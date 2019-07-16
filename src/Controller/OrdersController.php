@@ -3,18 +3,17 @@
 namespace App\Controller;
 
 
+use App\Entity\Labels;
 use App\Entity\Orders;
-use App\Entity\OrderStatus;
 use App\Entity\ProductListing;
+use App\Entity\Storages;
 use App\Form\OrdersType;
 use App\Repository\OrdersRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\CssSelector\Tests\Node\NegationNodeTest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Ramsey\Uuid\Uuid;
-use Symfony\Component\Validator\Tests\Fixtures\ToString;
 
 /**
  * @Route("/orders")
@@ -23,6 +22,8 @@ class OrdersController extends AbstractController
 {
     /**
      * @Route("/", name="orders_index", methods={"GET"})
+     * @param OrdersRepository $ordersRepository
+     * @return Response
      */
     public function index(OrdersRepository $ordersRepository): Response
     {
@@ -31,15 +32,22 @@ class OrdersController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/new", name="orders_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
+     * @throws \Exception
      */
     public function new(Request $request): Response
     {
 
         $delivryDate = $request->request->get('orders_new');
+
         $order = new Orders();
         $date = new \DateTime("NOW");
+        $virLocalNumber = "GEN-" . $date->getTimestamp();
+
 
         $form = $this->createForm(OrdersType::class, $order);
         $form->handleRequest($request);
@@ -49,26 +57,19 @@ class OrdersController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $command = new Orders();
             $command->setOrderingNumber($order->getOrderingNumber());
-            $command->setVirLocalNumber("GEN-" . $date->getTimestamp());
+            $command->setVirLocalNumber($virLocalNumber);
             $command->setCustomerName($order->getCustomerName());
             $command->setDateEntry($date);
             $command->setDelivryDate(new \DateTime($delivryDate['DelivryDate']));
             $command->setUser($this->getUser());
-            //$command->setOrderStatus();
+            $command->setLabels($order->getLabels());
 
             $entityManager->persist($command);
             $entityManager->flush();
 
-            foreach ($order->getProductListings() as $productListing)
-            {
-                $product = new ProductListing();
-                $product->setProductNumber($productListing->getProductNumber());
-                $product->setFamilyProduct($productListing->getFamilyProduct());
-                $product->setOrderNumber($command);
-                $entityManager->persist($product);
-            }
+            $this->addProductToListing($order, $command, $entityManager);
 
-            $entityManager->flush();
+            $this->addLabelBeforeLocation($command);
 
             return $this->redirectToRoute('orders_index');
         }
@@ -78,6 +79,61 @@ class OrdersController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @param Orders $order
+     * @param Orders $command
+     * @param ObjectManager $entityManager
+     */
+    private function addProductToListing(Orders $order, Orders $command, ObjectManager $entityManager): void
+    {
+        foreach ($order->getProductListings() as $productListing)
+        {
+            $product = new ProductListing();
+            $product->setProductNumber($productListing->getProductNumber());
+            $product->setFamilyProduct($productListing->getFamilyProduct());
+            $product->setOrderNumber($command);
+
+            $entityManager->persist($product);
+            //   $entityManager->persist($this->addLabelInLocation($product));
+        }
+        $entityManager->flush();
+    }
+
+    /**
+     * @param ProductListing $ProductListing
+     * @return Storages
+     */
+    private function addLabelInLocation(ProductListing $ProductListing)
+    {
+        $product = new Storages();
+        $product->setProduct($ProductListing);
+        return $product;
+    }
+
+    /**
+     * @param Orders $order
+     */
+    private function addLabelBeforeLocation(Orders $order)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        for ($i = 1; $i <= $order->getLabels(); $i ++)
+        {
+            $label = new Labels();
+            $label->setVirLocalNumber($order);
+            $label->setLocalLabel($order->getVirLocalNumber() . "-" . $i . "/" . $order->getLabels());
+            $entityManager->persist($label);
+        }
+        $entityManager->flush();
+    }
+
+
+
+
+
+
+
 
     /**
      * @Route("/{id}", name="orders_show", methods={"GET"})
@@ -124,4 +180,6 @@ class OrdersController extends AbstractController
 
         return $this->redirectToRoute('orders_index');
     }
+
+
 }
