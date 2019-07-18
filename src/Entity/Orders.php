@@ -69,6 +69,11 @@ class Orders
      */
     private $labels;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $Statuts = 1;
+
 
 
     public function __construct()
@@ -246,6 +251,18 @@ class Orders
     public function __toString()
     {
         return $this->VirLocalNumber;
+    }
+
+    public function getStatuts(): ?bool
+    {
+        return $this->Statuts;
+    }
+
+    public function setStatuts(bool $Statuts): self
+    {
+        $this->Statuts = $Statuts;
+
+        return $this;
     }
 
 

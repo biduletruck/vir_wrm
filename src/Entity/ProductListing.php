@@ -36,7 +36,7 @@ class ProductListing
     private $FamilyProduct;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Storages", mappedBy="Product")
+     * @ORM\OneToMany(targetEntity="App\Entity\Storages", mappedBy="Product", orphanRemoval=true)
      */
     private $storages;
 

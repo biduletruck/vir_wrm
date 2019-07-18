@@ -13,11 +13,14 @@ class Secutitycontroller extends AbstractController
 
     /**
      * @Route("/login", name="login")
+     * @param AuthenticationUtils $authenticationUtils
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function login(AuthenticationUtils $authenticationUtils)
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastusername = $authenticationUtils->getLastUsername();
+
 
         return $this->render('secutity/login.html.twig',[
             'last_username' => $lastusername,

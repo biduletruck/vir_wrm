@@ -20,6 +20,8 @@ class LocationsController extends AbstractController
 {
     /**
      * @Route("/", name="locations_index", methods={"GET"})
+     * @param LocationsRepository $locationsRepository
+     * @return Response
      */
     public function index(LocationsRepository $locationsRepository): Response
     {
@@ -31,8 +33,9 @@ class LocationsController extends AbstractController
     /**
      * @Route("/new", name="locations_new", methods={"GET","POST"})
      * Permet d'ajouter une nouvelle Allée à l'entrepot en fonction du nombre de lice et d'alvéoles
+     * @param Request $request
+     * @return Response
      */
-
     public function new(Request $request): Response
     {
         $form = $this->createFormBuilder()

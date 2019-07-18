@@ -30,32 +30,18 @@ class OrdersController extends AbstractController
      * @param Request $request
      * @return Response
      */
-
     public function index(OrdersRepository $ordersRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $orders = $paginator->paginate($ordersRepository->findAllOrdersQuery(),
             $request->query->getInt('page',1), 10);
 
         $sortable = $paginator->paginate($ordersRepository->findAll());
-        /*
-                $em = $this->getDoctrine()->getManager();
-                $queryBuilder = $em->getRepository(Orders::class)->createQueryBuilder('o');
-                $queryBuilder->addSelect('id');
-
-                $queryBuilder = $em->getRepository(Job::class)->createQueryBuilder('j');
-                $queryBuilder->andWhere('j.createdAt > :date');
-                $queryBuilder->setParameter('date', new DateTime('-30 day'));
-
-                $ordersQuery = $queryBuilder->getQuery()->getResult();
-        */
 
         return $this->render('orders/index.html.twig', [
             'orders' => $orders,
             'sortable' => $sortable
-
         ]);
     }
-
 
     /**
      * @Route("/new", name="orders_new", methods={"GET","POST"})
@@ -131,7 +117,7 @@ class OrdersController extends AbstractController
             ->setOrderNumber($command);
 
             $entityManager->persist($product);
-            //   $entityManager->persist($this->addLabelInLocation($product));
+            $entityManager->persist($this->addLabelInLocation($product));
         }
         $entityManager->flush();
     }
@@ -164,15 +150,10 @@ class OrdersController extends AbstractController
         $entityManager->flush();
     }
 
-
-
-
-
-
-
-
     /**
      * @Route("/{id}", name="orders_show", methods={"GET"})
+     * @param Orders $order
+     * @return Response
      */
     public function show(Orders $order): Response
     {
@@ -183,20 +164,20 @@ class OrdersController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="orders_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Orders $order
+     * @return Response
      */
     public function edit(Request $request, Orders $order): Response
     {
         $commandorm = $this->createForm(OrdersType::class, $order);
         $commandorm->handleRequest($request);
-
         if ($commandorm->isSubmitted() && $commandorm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('orders_index', [
                 'id' => $order->getId(),
             ]);
         }
-
         return $this->render('orders/edit.html.twig', [
             'order' => $order,
             'form' => $commandorm->createView(),
@@ -205,6 +186,9 @@ class OrdersController extends AbstractController
 
     /**
      * @Route("/{id}", name="orders_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Orders $order
+     * @return Response
      */
     public function delete(Request $request, Orders $order): Response
     {
@@ -213,7 +197,6 @@ class OrdersController extends AbstractController
             $entityManager->remove($order);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('orders_index');
     }
 
