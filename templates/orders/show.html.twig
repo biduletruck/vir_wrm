@@ -5,6 +5,21 @@
 {% block body %}
     <h1>Orders</h1>
 
+    <div>
+        <link rel="alternate" media="print" href="{{ path('orders_labels', { 'id': order.id  }) }}">
+        <script type="text/javascript">
+
+            function print(){
+                window.frames[0].print();
+            }
+        </script>
+    </div>
+
+    <h3  class="panel-title">Informations colis
+        <button type="button" class="btn btn-primary btn-xs" name="button"  onClick="print()">
+            <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimer les supports
+        </button>
+    </h3>
     <table class="table">
         <tbody>
             <tr>
@@ -33,6 +48,8 @@
             </tr>
         </tbody>
     </table>
+
+    <iframe height="0px" src="{{ path('orders_labels', { 'id': order.id }) }}" style="visibility: hidden"></iframe>
 
     <a href="{{ path('orders_index') }}">back to list</a>
 

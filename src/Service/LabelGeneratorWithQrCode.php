@@ -4,7 +4,7 @@
 namespace App\Service;
 
 
-use phpDocumentor\Reflection\Types\Integer;
+use App\Entity\Orders;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -72,18 +72,22 @@ class LabelGeneratorWithQrCode extends \TCPDF
         return new Response($this->pdf->Output(), 200, array('Content-Type' => 'application/pdf'));
     }
 
+
     /**
-     * @param int $numberOfLabel
-     * @param array $datas
+     * @param Orders $orders
      * @return Response
      */
-    public function createLabelsWithQrCode(int $numberOfLabel, array $datas): Response
+    public function createLabelsWithQrCode(Orders $orders): Response
     {
-        for ($i = 0; $i < $numberOfLabel; $i ++)
+        for ($i = 1; $i <= $orders->getLabels(); $i ++)
         {
-            $this->setTitle($datas[$i]);
+            $localNumber= $orders->getVirLocalNumber() . "-" . $i . "/";
+            $this->setTitle($orders->getOrderingNumber());
             $this->newPage();
-            $this->pdf->write2DBarcode( $datas[$i], 'QRCODE,H', 10, 100, 190, 190);
+            $this->pdf->Cell(190, 20, $orders->getVirLocalNumber(), 0,1 , 'C');
+            $this->pdf->Cell(190, 20, $orders->getCustomerName(), 0,1 , 'C');
+            $this->pdf->Cell(190, 20, $localNumber . $orders->getLabels(), 0,1 , 'C');
+            $this->pdf->write2DBarcode( $localNumber, 'QRCODE,H', 10, 100, 190, 190);
         }
         return new Response($this->pdf->Output(), 200, array('Content-Type' => 'application/pdf'));
     }

@@ -9,7 +9,10 @@ use App\Entity\ProductListing;
 use App\Entity\Storages;
 use App\Form\OrdersType;
 use App\Repository\OrdersRepository;
+use App\Repository\OrderStatusRepository;
+use App\Service\LabelGeneratorWithQrCode;
 use Doctrine\Common\Persistence\ObjectManager;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,12 +26,33 @@ class OrdersController extends AbstractController
     /**
      * @Route("/", name="orders_index", methods={"GET"})
      * @param OrdersRepository $ordersRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
      * @return Response
      */
-    public function index(OrdersRepository $ordersRepository): Response
+
+    public function index(OrdersRepository $ordersRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $orders = $paginator->paginate($ordersRepository->findAllOrdersQuery(),
+            $request->query->getInt('page',1), 10);
+
+        $sortable = $paginator->paginate($ordersRepository->findAll());
+        /*
+                $em = $this->getDoctrine()->getManager();
+                $queryBuilder = $em->getRepository(Orders::class)->createQueryBuilder('o');
+                $queryBuilder->addSelect('id');
+
+                $queryBuilder = $em->getRepository(Job::class)->createQueryBuilder('j');
+                $queryBuilder->andWhere('j.createdAt > :date');
+                $queryBuilder->setParameter('date', new DateTime('-30 day'));
+
+                $ordersQuery = $queryBuilder->getQuery()->getResult();
+        */
+
         return $this->render('orders/index.html.twig', [
-            'orders' => $ordersRepository->findAll(),
+            'orders' => $orders,
+            'sortable' => $sortable
+
         ]);
     }
 
@@ -36,33 +60,33 @@ class OrdersController extends AbstractController
     /**
      * @Route("/new", name="orders_new", methods={"GET","POST"})
      * @param Request $request
+     * @param OrderStatusRepository $orderStatusRepository
      * @return Response
      * @throws \Exception
      */
-    public function new(Request $request): Response
+    public function new(Request $request, OrderStatusRepository $orderStatusRepository): Response
     {
-
-        $delivryDate = $request->request->get('orders_new');
-
         $order = new Orders();
         $date = new \DateTime("NOW");
         $virLocalNumber = "GEN-" . $date->getTimestamp();
-
+        $delivryDate = $request->request->get('orders_new');
 
         $form = $this->createForm(OrdersType::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+          //  $status = $orderStatusRepository->find(1);
 
             $entityManager = $this->getDoctrine()->getManager();
             $command = new Orders();
-            $command->setOrderingNumber($order->getOrderingNumber());
-            $command->setVirLocalNumber($virLocalNumber);
-            $command->setCustomerName($order->getCustomerName());
-            $command->setDateEntry($date);
-            $command->setDelivryDate(new \DateTime($delivryDate['DelivryDate']));
-            $command->setUser($this->getUser());
-            $command->setLabels($order->getLabels());
+            $command->setOrderingNumber($order->getOrderingNumber())
+            ->setVirLocalNumber($virLocalNumber)
+            ->setCustomerName($order->getCustomerName())
+            ->setDateEntry($date)
+            ->setDelivryDate(new \DateTime($delivryDate['DelivryDate']))
+            ->setUser($this->getUser())
+            ->setLabels($order->getLabels())
+            ->setOrderStatus($orderStatusRepository->find(1));
 
             $entityManager->persist($command);
             $entityManager->flush();
@@ -81,6 +105,18 @@ class OrdersController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/labels", name="orders_labels", methods={"GET","POST"})
+     * @param OrdersRepository $ordersRepository
+     * @param Orders $orders
+     */
+    public function showPrintLabels(Orders $orders, OrdersRepository $ordersRepository)
+    {
+        $order = $ordersRepository->find($orders);
+        $pdf = new LabelGeneratorWithQrCode();
+        $pdf->createLabelsWithQrCode($order);
+    }
+
+    /**
      * @param Orders $order
      * @param Orders $command
      * @param ObjectManager $entityManager
@@ -90,9 +126,9 @@ class OrdersController extends AbstractController
         foreach ($order->getProductListings() as $productListing)
         {
             $product = new ProductListing();
-            $product->setProductNumber($productListing->getProductNumber());
-            $product->setFamilyProduct($productListing->getFamilyProduct());
-            $product->setOrderNumber($command);
+            $product->setProductNumber($productListing->getProductNumber())
+            ->setFamilyProduct($productListing->getFamilyProduct())
+            ->setOrderNumber($command);
 
             $entityManager->persist($product);
             //   $entityManager->persist($this->addLabelInLocation($product));
@@ -121,8 +157,8 @@ class OrdersController extends AbstractController
         for ($i = 1; $i <= $order->getLabels(); $i ++)
         {
             $label = new Labels();
-            $label->setVirLocalNumber($order);
-            $label->setLocalLabel($order->getVirLocalNumber() . "-" . $i . "/" . $order->getLabels());
+            $label->setVirLocalNumber($order)
+            ->setLocalLabel($order->getVirLocalNumber() . "-" . $i . "/");
             $entityManager->persist($label);
         }
         $entityManager->flush();

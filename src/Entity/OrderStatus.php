@@ -33,7 +33,6 @@ class OrderStatus
     public function __construct()
     {
         $this->OrderStatus = new ArrayCollection();
-        $this->id = 1;
     }
 
     public function getId(): ?int

@@ -5,30 +5,32 @@
 {% block body %}
     <h1>Orders index</h1>
 
-    <table class="table">
+<div class="row">
+    <table class="table table-striped">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>OrderingNumber</th>
-                <th>VirLocalNumber</th>
-                <th>CustomerName</th>
-                <th>DateEntry</th>
-                <th>DelivryDate</th>
-                <th>actions</th>
-            </tr>
+        <tr class="text-center">
+            <th>{{ knp_pagination_sortable(sortable, 'Numéro de commande', 'ordering_number') }}</th>
+            <th>{{ knp_pagination_sortable(sortable, 'Numéro Vir', 'virLocalNumber') }}</th>
+            <th>{{ knp_pagination_sortable(sortable, 'Nom destinataire', 'customerName') }}</th>
+            <th>{{ knp_pagination_sortable(sortable, 'Date d\'entrée', 'dateEntry') }}</th>
+            <th>{{ knp_pagination_sortable(sortable, 'Date de livraison', 'delivryDate') }}</th>
+            <th>Nombre de support</th>
+            <th>{{ knp_pagination_sortable(sortable, 'Statut commande', 'orderStatus') }}</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for order in orders %}
-            <tr>
-                <td>{{ order.id }}</td>
-                <td>{{ order.OrderingNumber }}</td>
+            <tr class="text-center">
+                <td><a class="btn btn-block btn-sm btn-dark" href="{{ path('orders_show', {'id': order.id}) }}">{{ order.OrderingNumber }}</a></td>
                 <td>{{ order.VirLocalNumber }}</td>
                 <td>{{ order.CustomerName }}</td>
-                <td>{{ order.DateEntry ? order.DateEntry|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ order.DelivryDate ? order.DelivryDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="d-none d-sm-block">{{ order.DateEntry ? order.DateEntry|date('d/m/Y H:i') : '' }}</td>
+                <td>{{ order.DelivryDate ? order.DelivryDate|date('d/m/Y') : '' }}</td>
+                <td>{{ order.labels }}</td>
+                <td>{{ order.orderStatus }}</td>
                 <td>
-                    <a href="{{ path('orders_show', {'id': order.id}) }}">show</a>
-                    <a href="{{ path('orders_edit', {'id': order.id}) }}">edit</a>
+                    <a class="btn btn-sm btn-info" href="{{ path('orders_edit', {'id': order.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -38,6 +40,11 @@
         {% endfor %}
         </tbody>
     </table>
+</div>
+
+    <div class="pagination align-content-center">
+        {{ knp_pagination_render(orders) }}
+    </div>
 
     <a href="{{ path('orders_new') }}">Create new</a>
 {% endblock %}

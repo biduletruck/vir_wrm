@@ -50,7 +50,7 @@ class Orders
     private $User;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductListing", mappedBy="OrderNumber")
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductListing", mappedBy="OrderNumber",orphanRemoval=true)
      */
     private $productListings;
 
@@ -65,7 +65,7 @@ class Orders
     private $Labels;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Labels", mappedBy="virLocalNumber")
+     * @ORM\OneToMany(targetEntity="App\Entity\Labels", mappedBy="virLocalNumber", orphanRemoval=true)
      */
     private $labels;
 
