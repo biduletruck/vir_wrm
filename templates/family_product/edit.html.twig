@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit FamilyProduct{% endblock %}
+
+{% block body %}
+    <h1>Edit FamilyProduct</h1>
+
+    {{ include('family_product/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('family_product_index') }}">back to list</a>
+
+    {{ include('family_product/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New FamilyProduct{% endblock %}
+
+{% block body %}
+    <h1>Create new FamilyProduct</h1>
+
+    {{ include('family_product/_form.html.twig') }}
+
+    <a href="{{ path('family_product_index') }}">back to list</a>
+{% endblock %}

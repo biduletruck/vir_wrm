@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Labels{% endblock %}
+
+{% block body %}
+    <h1>Create new Labels</h1>
+
+    {{ include('labels/_form.html.twig') }}
+
+    <a href="{{ path('labels_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FamilyProduct index{% endblock %}
+
+{% block body %}
+    <h1>FamilyProduct index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for family_product in family_products %}
+            <tr>
+                <td>{{ family_product.id }}</td>
+                <td>{{ family_product.Name }}</td>
+                <td>
+                    <a href="{{ path('family_product_show', {'id': family_product.id}) }}">show</a>
+                    <a href="{{ path('family_product_edit', {'id': family_product.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('family_product_new') }}">Create new</a>
+{% endblock %}
