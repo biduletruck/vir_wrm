@@ -4,7 +4,7 @@
 
 {%  block body %}
 
-<div class="container">
+<div class="row">
 
     {%  if error %}
         <div class="alert alert-danger">
@@ -12,21 +12,29 @@
         </div>
 
     {% endif %}
-
-
-    <form action="{{ path('login') }}" method="post">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}">
-        </div>
-
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="_password" class="form-control">
-        </div>
-
-        <button type="submit" class="btn btn-primary"> se connecter</button>
-    </form>
 </div>
 
+
+<div class="container login-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 login-form-1">
+            <h3>VIR - Gestion de parc</h3>
+            <div class="col-12 text-center">
+                <img src="/build/logo_max.png" alt="" class="img-fluid">
+            </div>
+            <form action="{{ path('login') }}" method="post">
+                <div class="form-group">
+                    <input type="text" id="username" placeholder="Votre Nom d'utilisateur" name="_username" class="form-control form-control-lg" value="{{ last_username }}">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Votre Mot de passe" name="_password" class="form-control form-control-lg">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btnSubmit btn btn-block btn-lg btn-primary">se connecter</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

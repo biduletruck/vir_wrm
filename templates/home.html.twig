@@ -1,17 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{%  block title %}welcome{% endblock %}
+
 
 
 
 {% block body %}
-<div class="container">
     <div class="jumbotron">
         <H1>Welcome to my home page</H1>
-
-
     </div>
-</div>
-
-
+    <div class="row">
+        {% for result in stat %}
+             <h1>Taux d'occupation de l'entrepôt   {{  ((result.total - result.libre) / result.total * 100) | round(2) }}%</h1>
+        {% endfor %}
+    </div>
 {%  endblock %}

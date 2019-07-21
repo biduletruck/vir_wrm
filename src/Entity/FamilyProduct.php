@@ -23,10 +23,6 @@ class FamilyProduct
      */
     private $Name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductListing", mappedBy="FamilyProduct")
-     */
-    private $Orders;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProductListing", mappedBy="FamilyProduct")

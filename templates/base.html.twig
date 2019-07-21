@@ -3,10 +3,12 @@
     <head>
         <meta charset="UTF-8">
         <title>
+            VIR |
             {% block title %}
-                {% if title is defined %}{{title}}{% else %}Title{% endif %} | VIRWrm
+                 {% if title is defined %} {{title}}{% else %}Gestion de parc{% endif %}
             {% endblock %}
         </title>
+        <link rel="shortcut icon" href="/build/favicon.ico">
         {% block stylesheets %}{% endblock %}
         {{ encore_entry_link_tags('app') }}
 

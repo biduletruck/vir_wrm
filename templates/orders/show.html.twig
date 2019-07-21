@@ -3,59 +3,99 @@
 {% block title %}Orders{% endblock %}
 
 {% block body %}
-    <h1>Orders</h1>
+<link rel="alternate" media="print" href="{{ path('orders_labels', { 'id': order.id  }) }}">
+<script type="text/javascript">
 
-    <div>
-        <link rel="alternate" media="print" href="{{ path('orders_labels', { 'id': order.id  }) }}">
-        <script type="text/javascript">
+    function print(){
+        window.frames[0].print();
+    }
+</script>
+<div class="jumbotron">
+    <h1>Détail de la commande</h1>
+    <button type="button" class="btn btn-outline-success btn-lg" name="button"  onClick="print()">
+        <span class="fa fa-print" aria-hidden="true"></span> {% if order.labels == 1%} Imprimer le support {% else %}Imprimer les {{ order.labels }} supports {% endif %}
+    </button>
+</div>
 
-            function print(){
-                window.frames[0].print();
-            }
-        </script>
-    </div>
-
-    <h3  class="panel-title">Informations colis
-        <button type="button" class="btn btn-primary btn-xs" name="button"  onClick="print()">
-            <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimer les supports
-        </button>
-    </h3>
-    <table class="table">
+<div class="row">
+    <div class="col-12">
+    <table class="table text-center">
+        <thead class="table-dark ">
+            <tr>
+                <th>Numéro de commande</th>
+                <th>Numéro Local</th>
+                <th>Nom du destinataire</th>
+                <th>Date d'entrée</th>
+                <th>Date de livraison</th>
+            </tr>
+        </thead>
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ order.id }}</td>
-            </tr>
-            <tr>
-                <th>OrderingNumber</th>
                 <td>{{ order.OrderingNumber }}</td>
-            </tr>
-            <tr>
-                <th>VirLocalNumber</th>
                 <td>{{ order.VirLocalNumber }}</td>
-            </tr>
-            <tr>
-                <th>CustomerName</th>
                 <td>{{ order.CustomerName }}</td>
-            </tr>
-            <tr>
-                <th>DateEntry</th>
-                <td>{{ order.DateEntry ? order.DateEntry|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DelivryDate</th>
-                <td>{{ order.DelivryDate ? order.DelivryDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ order.DateEntry ? order.DateEntry|date('d/m/Y à H:i:s') : '' }}</td>
+                <td>{{ order.DelivryDate ? order.DelivryDate|date('d/m/Y') : '' }}</td>
             </tr>
         </tbody>
     </table>
+        <div class="my-md-4"></div>
+
+        <table class="table text-center">
+            <thead class="table-dark ">
+               <tr>
+                  <th>Produit</th>
+                  <th>Type de produit</th>
+               </tr>
+            </thead>
+            <tbody>
+            {%  for product in products %}
+                <tr>
+                    <td>{{ product.productNumber }}</td>
+                    <td>{{ product.familyProduct.name }}</td>
+                </tr>
+            {%  endfor %}
+            </tbody>
+        </table>
+        <div class="my-md-4"></div>
+
+        <table class="table text-center">
+        <thead class="table-dark ">
+            <tr>
+                <th>Supports</th>
+                <th>Localisation</th>
+                <th>Mise en place</th>
+                <th>Cariste</th>
+            </tr>
+            </>
+            <tbody>
+            {%  for label in labels %}
+                <tr>
+                    <td>{{ label.localLabel }}/{{ order.labels }}</td>
+                    <td>{%  if label.location.location is defined and label.location.location is not null %}{{ label.location.location }}{% else %} En attente{% endif %}</td>
+                    <td>{% if label.locationDate is not null %}{{ label.locationDate | date('d/m/Y à H:i:s') }}{% else %} En attente{% endif %}</td>
+                    <td>{%  if label.login is not null %}{{  label.login }}{% endif %}</td>
+                </tr>
+            {%  endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <a class="btn btn-dark" href="{{ path('orders_index') }}"><span class="fa fa-arrow-left" aria-hidden="true"></span> Retour</a>
+        <a class="btn btn-info" href="{{ path('orders_edit', {'id': order.id}) }}"><span class="fa fa-edit" aria-hidden="true"></span> Mettre à jour</a>
+    </div>
+    <div class="my-md-4"></div>
+    <div class="col-12">
+        {{ include('orders/_delete_form.html.twig') }}
+    </div>
+</div>
+
+
+
+
 
     <iframe height="0px" src="{{ path('orders_labels', { 'id': order.id }) }}" style="visibility: hidden"></iframe>
-
-    <a href="{{ path('orders_index') }}">back to list</a>
-
-    <a href="{{ path('orders_edit', {'id': order.id}) }}">edit</a>
-
-
-
-    {{ include('orders/_delete_form.html.twig') }}
 {% endblock %}

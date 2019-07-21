@@ -98,4 +98,9 @@ class Locations
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->Location;
+    }
 }

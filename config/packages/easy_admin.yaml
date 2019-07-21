@@ -1,4 +1,10 @@
 easy_admin:
+    site_name: 'VIR - Gestion du parc'
+    design:
+        menu:
+            - { label: 'Les utilisateurs', entity: 'Users'}
+            - { label: 'Famille de produit', entity: 'Type_colis'}
+            - { label: "Retour à l'appli", route: 'index' }
     entities:
         # List the entity class name you want to manage
 
@@ -12,3 +18,10 @@ easy_admin:
                     - { property: 'Username', type: 'text' }
                     - { property: 'password', type: 'password' }
                     - { property: 'Account', type: 'checkbox' }
+
+        Type_colis:
+            class: App\Entity\FamilyProduct
+            form:
+                fields:
+                    - { property: 'name', type: 'text' }
+

@@ -19,6 +19,9 @@ class StoragesRepository extends ServiceEntityRepository
         parent::__construct($registry, Storages::class);
     }
 
+
+
+
     // /**
     //  * @return Storages[] Returns an array of Storages objects
     //  */

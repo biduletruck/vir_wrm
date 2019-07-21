@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\OrderStatus;
+use App\Repository\LocationsRepository;
 use App\Repository\OrderStatusRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,9 +17,13 @@ class HomeController extends AbstractController
      * @Route(path="/", name="index")
      * @return Response
      */
-    public function index(): Response
+    public function index(LocationsRepository $locationsRepository): Response
     {
-        return $this->render('home.html.twig');
+        $stat = $locationsRepository->occupancyRateWarehouse();
+        return $this->render('home.html.twig',[
+        'stat' => $stat,
+        ]);
+
     }
 
 

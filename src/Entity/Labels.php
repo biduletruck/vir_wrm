@@ -32,6 +32,26 @@ class Labels
      */
     private $Location;
 
+    private $newLocation;
+
+    /**
+     * @return mixed
+     */
+    public function getNewLocation()
+    {
+        return $this->newLocation;
+    }
+
+    /**
+     * @param mixed $newLocation
+     * @return Labels
+     */
+    public function setNewLocation($newLocation)
+    {
+        $this->newLocation = $newLocation;
+        return $this;
+    }
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="labels")
      */
@@ -105,5 +125,10 @@ class Labels
         $this->LocationDate = $LocationDate;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->virLocalNumber;
     }
 }

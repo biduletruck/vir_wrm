@@ -8,8 +8,10 @@ use App\Entity\Orders;
 use App\Entity\ProductListing;
 use App\Entity\Storages;
 use App\Form\OrdersType;
+use App\Repository\LabelsRepository;
 use App\Repository\OrdersRepository;
 use App\Repository\OrderStatusRepository;
+use App\Repository\ProductListingRepository;
 use App\Service\LabelGeneratorWithQrCode;
 use Doctrine\Common\Persistence\ObjectManager;
 use Knp\Component\Pager\PaginatorInterface;
@@ -72,8 +74,7 @@ class OrdersController extends AbstractController
             ->setDelivryDate(new \DateTime($delivryDate['DelivryDate']))
             ->setUser($this->getUser())
             ->setLabels($order->getLabels())
-            ->setOrderStatus($orderStatusRepository->find(1));
-
+            ->setOrderStatus($orderStatusRepository->findOneBy(array('Name' => "En attente")));
             $entityManager->persist($command);
             $entityManager->flush();
 
@@ -144,7 +145,7 @@ class OrdersController extends AbstractController
         {
             $label = new Labels();
             $label->setVirLocalNumber($order)
-            ->setLocalLabel($order->getVirLocalNumber() . "-" . $i . "/");
+            ->setLocalLabel($order->getVirLocalNumber() . "-" . $i );
             $entityManager->persist($label);
         }
         $entityManager->flush();
@@ -155,10 +156,12 @@ class OrdersController extends AbstractController
      * @param Orders $order
      * @return Response
      */
-    public function show(Orders $order): Response
+    public function show(Orders $order, ProductListingRepository $listingRepository, LabelsRepository $labelsRepository): Response
     {
         return $this->render('orders/show.html.twig', [
             'order' => $order,
+            'products' => $listingRepository->findBy(['OrderNumber' => $order]),
+            'labels' => $labelsRepository->findBy(['virLocalNumber' => $order]),
         ]);
     }
 

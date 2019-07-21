@@ -19,6 +19,15 @@ class LocationsRepository extends ServiceEntityRepository
         parent::__construct($registry, Locations::class);
     }
 
+    public function occupancyRateWarehouse()
+    {
+        return $this->createQueryBuilder('l')
+            ->select('count(l.id) as total, sum(l.FreePlace) as libre')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Locations[] Returns an array of Locations objects
     //  */
