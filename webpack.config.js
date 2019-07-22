@@ -5,7 +5,15 @@ Encore
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
     .copyFiles({
-        from: './assets/images'
+        from: './assets/images',
+        to: 'images/[path][name].[ext]'
+
+    })
+    .copyFiles({
+
+        from: './assets/js',
+        to: 'js/[path][name].[ext]',
+
     })
 
     .setPublicPath('/build')
@@ -22,6 +30,12 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    .addEntry('shim',  './assets/js/shim.js')
+    .addEntry('highcharts',  './assets/js/highcharts/highcharts.js')
+    .addEntry('highcharts3d',  './assets/js/highcharts/highcharts-3d.js')
+
+
+
 
 
     //.addEntry('page2', './assets/js/page2.js')

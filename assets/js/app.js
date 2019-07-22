@@ -34,5 +34,8 @@ require('bootstrap-datepicker/js/locales/bootstrap-datepicker.fr');
 const Quagga = require('quagga');
 global.Quagga = global.Quagga = Quagga;
 
+const highcharts = require('highcharts/highcharts');
+global.highcharts = highcharts;
+
 require('@fortawesome/fontawesome-free/css/all.min.css');
 require('@fortawesome/fontawesome-free/js/all.js');

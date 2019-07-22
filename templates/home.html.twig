@@ -6,11 +6,40 @@
 
 {% block body %}
     <div class="jumbotron">
-        <H1>Welcome to my home page</H1>
+        <H1>VIR Transport : Gestion du parc</H1>
     </div>
     <div class="row">
-        {% for result in stat %}
-             <h1>Taux d'occupation de l'entrepôt   {{  ((result.total - result.libre) / result.total * 100) | round(2) }}%</h1>
-        {% endfor %}
+        <div class="col-6">
+            <div class="card">
+                <h5 class="card-header text-center">Taux d'occupation de l'entrepôt</h5>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {% for result in stat %}
+                            Entrepôt occupé à : {{  ((result.total - result.libre) / result.total * 100) | round(2) }}%</h1>
+                        {% endfor %}
+                    </h5>
+                    <div id="graph" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+                    <a href="{{ path('orders_index') }}" class="btn btn-primary"><span class="fa fa-list" aria-hidden="true"></span> Voir le listing</a>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+
+
+
 {%  endblock %}
+
+{%  block javascripts %}
+    {{ parent() }}
+    <script src="./build/js/highcharts/highcharts.js"></script>
+    <script src="./build/js/highcharts/highcharts-3d.js"></script>
+    <script type="text/javascript">
+        {{ chart(chart) }}
+
+    </script>
+
+
+
+{% endblock %}

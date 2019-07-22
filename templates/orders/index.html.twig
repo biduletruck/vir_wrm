@@ -6,7 +6,7 @@
 
 <div class="jumbotron">
     <h1 class="">Etat du parc </h1>
-    <a class="btn btn-lg btn-outline-success" href="{{ path('orders_new') }}">Ajouter une nouvelle entrée</a>
+    <a class="btn btn-lg btn-outline-success" href="{{ path('orders_new') }}"><span class="fa fa-plus-circle" aria-hidden="true"></span> Ajouter une nouvelle entrée</a>
 </div>
 
 <div class="row">
@@ -21,25 +21,26 @@
                 <th>{{ knp_pagination_sortable(sortable, 'Date de livraison', 'delivryDate') }}</th>
                 <th>Nombre de support</th>
                 <th>{{ knp_pagination_sortable(sortable, 'Statut commande', 'orderStatus') }}</th>
-                <th>actions</th>
+                {% if is_granted("ROLE_ADMIN") %}
+                <th>Editer</th>
+                <th>Supprimer</th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
             {% for order in orders %}
                 <tr class="text-center">
-                    <td><a class="btn btn-block btn-sm btn-dark" href="{{ path('orders_show', {'id': order.id}) }}">{{ order.OrderingNumber }}</a></td>
+                    <td><a  class="btn btn-block btn-dark" href="{{ path('orders_show', {'id': order.id}) }}"><span class="fa fa-search" aria-hidden="true"></span> {{ order.OrderingNumber }}</a></td>
                     <td>{{ order.VirLocalNumber }}</td>
                     <td>{{ order.CustomerName }}</td>
                     <td class="d-none d-sm-block">{{ order.DateEntry ? order.DateEntry|date('d/m/Y H:i') : '' }}</td>
                     <td>{{ order.DelivryDate ? order.DelivryDate|date('d/m/Y') : '' }}</td>
                     <td>{{ order.labels }}</td>
                     <td>{{ order.orderStatus }}</td>
-                    <td>
-                        <p> <a class="btn btn-info" href="{{ path('orders_edit', {'id': order.id}) }}"><span class="fa fa-edit" aria-hidden="true"></span> Editer</a></p>
-                        <p>{{ include('orders/_delete_form.html.twig') }}</p>
-
-
-                    </td>
+                    {% if is_granted("ROLE_ADMIN") %}
+                    <td><a class="btn btn-info" href="{{ path('orders_edit', {'id': order.id}) }}"><span class="fa fa-edit" aria-hidden="true"></span> Editer</a></td>
+                    <td>{{ include('orders/_delete_form.html.twig') }}</td>
+                    {% endif %}
                 </tr>
             {% else %}
                 <tr>
