@@ -23,6 +23,18 @@
                 </div>
             </div>
         </div>
+        <div class="col-6">
+            <div class="card">
+                <h5 class="card-header text-center">Taux d'occupation des allées</h5>
+                <div class="card-body">
+                    <h5 class="card-title">
+
+                    </h5>
+                    <div id="way" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+                    <a href="{{ path('orders_index') }}" class="btn btn-primary"><span class="fa fa-list" aria-hidden="true"></span> Voir le listing</a>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -37,6 +49,7 @@
     <script src="./build/js/highcharts/highcharts-3d.js"></script>
     <script type="text/javascript">
         {{ chart(chart) }}
+        {{ chart(driveways) }}
 
     </script>
 

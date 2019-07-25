@@ -31,9 +31,11 @@ $(document).ready(function() {
 
 require('bootstrap-datepicker');
 require('bootstrap-datepicker/js/locales/bootstrap-datepicker.fr');
+
+/*
 const Quagga = require('quagga');
 global.Quagga = global.Quagga = Quagga;
-
+ */
 const highcharts = require('highcharts/highcharts');
 global.highcharts = highcharts;
 

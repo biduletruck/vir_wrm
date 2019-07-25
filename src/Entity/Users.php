@@ -268,7 +268,7 @@ class Users implements UserInterface, \Serializable
 
     public function __toString()
     {
-        return $this->Username;
+        return $this->getUsername();
     }
 
     /**

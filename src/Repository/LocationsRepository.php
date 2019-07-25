@@ -28,6 +28,16 @@ class LocationsRepository extends ServiceEntityRepository
             ;
     }
 
+public function occupancyByDriveWay()
+    {
+        return $this->createQueryBuilder('l')
+            ->select('l.driveway, count(l.id) as total, sum(l.FreePlace) as libre')
+            ->groupBy('l.driveway')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Locations[] Returns an array of Locations objects
     //  */

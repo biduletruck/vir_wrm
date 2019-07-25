@@ -8,7 +8,7 @@ security:
 
     encoders:
         App\Entity\Users:
-            algorithm: auto
+            algorithm: sodium
             cost: 12
 
     firewalls:

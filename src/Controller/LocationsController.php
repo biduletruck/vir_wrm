@@ -58,6 +58,7 @@ class LocationsController extends AbstractController
                     $location = new Locations();
                     $location->setLocation($data['allee'] . "-" . $i . "-" . $k);
                     $location->setFreePlace(true);
+                    $location->setDriveway($data['allee']);
                     $entityManager->persist($location);
                 };
             };

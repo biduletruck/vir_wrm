@@ -34,6 +34,11 @@ class Locations
      */
     private $storages;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $driveway;
+
     public function __construct()
     {
         $this->storages = new ArrayCollection();
@@ -102,5 +107,17 @@ class Locations
     public function __toString()
     {
         return $this->Location;
+    }
+
+    public function getDriveway(): ?string
+    {
+        return $this->driveway;
+    }
+
+    public function setDriveway(string $driveway): self
+    {
+        $this->driveway = $driveway;
+
+        return $this;
     }
 }

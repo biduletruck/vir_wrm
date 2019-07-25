@@ -10,14 +10,19 @@ easy_admin:
 
         Users:
             class: App\Entity\Users
+            password_encoding: { algorithm: 'bcrypt', cost: 12 }
+
             form:
                 fields:
                     - { property: 'LastName', type: 'text' }
                     - { property: 'FirstName', type: 'text' }
                     - { property: 'Email', type: 'email' }
-                    - { property: 'Username', type: 'text' }
+                    - { property: 'username', type: 'text'}
+                   # - { property: 'password', type: 'repeated', type_options: { type: 'Symfony\Component\Form\Extension\Core\Type\PasswordType', first_options: {label: 'Mot de passe'}, second_options: {label: 'Confirmation Mot de passe'}, invalid_message: 'Les mots de passe ne correspondent pas.'}}
                     - { property: 'password', type: 'password' }
+                   # - { property: 'password', type: 'password' }
                     - { property: 'Account', type: 'checkbox' }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
 
         Type_colis:
             class: App\Entity\FamilyProduct
