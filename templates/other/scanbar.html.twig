@@ -1,0 +1,35 @@
+<div class="modal fade" id="_scanBar" tabindex="-1" role="dialog" aria-labelledby="oMessagerieLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="oMessagerieLabel">Lire un code barre</h5>
+                <button type="button" class="close closemodal"  aria-label="Fermer">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <a class="btn btn-primary" id="startButton">Scan</a>
+                    <a class="btn btn-danger" id="resetButton">Reset</a>
+                </div>
+
+                <div>
+                    <video id="video" width="100%"  style="border: 1px solid gray"></video>
+                </div>
+
+                <div id="sourceSelectPanel" style="display:none">
+                    <label for="sourceSelect">Changer la source vidéo:</label>
+                    <select id="sourceSelect" style="max-width:400px">
+                    </select>
+                </div>
+
+                <label>Resultat:</label>
+                <pre><code id="result"></code></pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary closemodal" >Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+

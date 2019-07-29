@@ -53,12 +53,16 @@ class LocationsController extends AbstractController
 
             for ($i = 0; $i <= $data['lice']; $i++)
             {
+
+                $lice = $i < 10 ? "0" . $i : $i;
+
                 for ($k = 0; $k <= $data['alveole']; $k++)
                 {
+                    $alveole = $k < 10 ? "**000" . $k : "**00" .$k;
                     $location = new Locations();
-                    $location->setLocation($data['allee'] . "-" . $i . "-" . $k);
+                    $location->setLocation(strtoupper("ERA" . $data['allee']) . $alveole  . $lice);
                     $location->setFreePlace(true);
-                    $location->setDriveway($data['allee']);
+                    $location->setDriveway(strtoupper($data['allee']));
                     $entityManager->persist($location);
                 };
             };

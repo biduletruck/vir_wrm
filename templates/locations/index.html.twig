@@ -8,7 +8,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Allée</th>
                 <th>Location</th>
                 <th>FreePlace</th>
                 <th>actions</th>
@@ -17,8 +17,8 @@
         <tbody>
         {% for location in locations %}
             <tr>
-                <td>{{ location.id }}</td>
-                <td>{{ location.Location }}</td>
+                <td>{{ location.driveway }}</td>
+                <td>{{ location.Location | rack() }}</td>
                 <td>{{ location.FreePlace ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('locations_show', {'id': location.id}) }}">show</a>

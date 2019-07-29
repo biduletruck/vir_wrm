@@ -33,9 +33,7 @@ Encore
     .addEntry('shim',  './assets/js/shim.js')
     .addEntry('highcharts',  './assets/js/highcharts/highcharts.js')
     .addEntry('highcharts3d',  './assets/js/highcharts/highcharts-3d.js')
-
-
-
+    .addEntry('zxing',  './assets/js/ZXing.js')
 
 
     //.addEntry('page2', './assets/js/page2.js')
