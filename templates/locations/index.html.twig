@@ -18,7 +18,7 @@
         {% for location in locations %}
             <tr>
                 <td>{{ location.driveway }}</td>
-                <td>{{ location.Location | rack() }}</td>
+                <td>{{ location.Location  }}</td>
                 <td>{{ location.FreePlace ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('locations_show', {'id': location.id}) }}">show</a>
