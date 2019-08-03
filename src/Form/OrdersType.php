@@ -2,8 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Agencies;
+use App\Entity\Companies;
 use App\Entity\Orders;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -23,6 +27,10 @@ class OrdersType extends AbstractType
                 'attr'      => array('class' => 'form-control scanner_input')
 
             ])
+            ->add('Company', EntityType::class, array(
+                'required' => false,
+                'class'   => Companies::class,
+            ))
             ->remove('VirLocalNumber')
             ->add('CustomerName', TextType::class, [
                 'required'  => true,

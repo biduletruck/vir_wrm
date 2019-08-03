@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 
+use App\Entity\Agencies;
+use App\Entity\Companies;
 use App\Entity\Labels;
 use App\Entity\Orders;
 use App\Entity\ProductListing;
@@ -19,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function Matrix\diagonal;
 
 /**
  * @Route("/orders")
@@ -56,10 +59,12 @@ class OrdersController extends AbstractController
     {
         $order = new Orders();
         $date = new \DateTime("NOW");
+
         $virLocalNumber = "GEN-" . $date->getTimestamp();
         $delivryDate = $request->request->get('orders_new');
 
         $form = $this->createForm(OrdersType::class, $order);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -74,6 +79,7 @@ class OrdersController extends AbstractController
             ->setDelivryDate(new \DateTime($delivryDate['DelivryDate']))
             ->setUser($this->getUser())
             ->setLabels($order->getLabels())
+
             ->setOrderStatus($orderStatusRepository->findOneBy(array('Name' => "En attente")));
             $entityManager->persist($command);
             $entityManager->flush();

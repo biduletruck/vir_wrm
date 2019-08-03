@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Agencies index{% endblock %}
+
+{% block body %}
+    <h1>Agencies index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Enable</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for agency in agencies %}
+            <tr>
+                <td>{{ agency.id }}</td>
+                <td>{{ agency.Name }}</td>
+                <td>{{ agency.Enable ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('agencies_show', {'id': agency.id}) }}">show</a>
+                    <a href="{{ path('agencies_edit', {'id': agency.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('agencies_new') }}">Create new</a>
+{% endblock %}

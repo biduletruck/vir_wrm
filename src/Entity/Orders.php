@@ -74,6 +74,10 @@ class Orders
      */
     private $Statuts = 1;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Companies", mappedBy="orders")
+     */
+    private $Company;
 
 
     public function __construct()
@@ -81,6 +85,7 @@ class Orders
         $this->DateEntry = new \DateTime();
         $this->productListings = new ArrayCollection();
         $this->labels = new ArrayCollection();
+        $this->Company = new ArrayCollection();
 
     }
 
@@ -264,6 +269,7 @@ class Orders
 
         return $this;
     }
+
 
 
 }

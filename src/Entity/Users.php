@@ -74,11 +74,21 @@ class Users implements UserInterface, \Serializable
      */
     private $labels;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Agencies", inversedBy="users")
+     */
+    private $Agency;
+
+
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
         $this->storages = new ArrayCollection();
         $this->labels = new ArrayCollection();
+        $this->Agency = new ArrayCollection();
+
+
     }
 
     /**
@@ -363,4 +373,32 @@ class Users implements UserInterface, \Serializable
 
         return $this;
     }
+
+    /**
+     * @return Collection|Agencies[]
+     */
+    public function getAgency(): Collection
+    {
+        return $this->Agency;
+    }
+
+    public function addAgency(Agencies $agency): self
+    {
+        if (!$this->Agency->contains($agency)) {
+            $this->Agency[] = $agency;
+        }
+
+        return $this;
+    }
+
+    public function removeAgency(Agencies $agency): self
+    {
+        if ($this->Agency->contains($agency)) {
+            $this->Agency->removeElement($agency);
+        }
+
+        return $this;
+    }
+
+
 }

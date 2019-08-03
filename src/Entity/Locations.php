@@ -39,9 +39,15 @@ class Locations
      */
     private $driveway;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Agencies", mappedBy="Locations")
+     */
+    private $agencies;
+
     public function __construct()
     {
         $this->storages = new ArrayCollection();
+        $this->agencies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -117,6 +123,37 @@ class Locations
     public function setDriveway(string $driveway): self
     {
         $this->driveway = $driveway;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Agencies[]
+     */
+    public function getAgencies(): Collection
+    {
+        return $this->agencies;
+    }
+
+    public function addAgency(Agencies $agency): self
+    {
+        if (!$this->agencies->contains($agency)) {
+            $this->agencies[] = $agency;
+            $agency->setLocations($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgency(Agencies $agency): self
+    {
+        if ($this->agencies->contains($agency)) {
+            $this->agencies->removeElement($agency);
+            // set the owning side to null (unless already changed)
+            if ($agency->getLocations() === $this) {
+                $agency->setLocations(null);
+            }
+        }
 
         return $this;
     }
