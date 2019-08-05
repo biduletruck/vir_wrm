@@ -36,7 +36,7 @@
                     <td class="d-none d-sm-block">{{ order.DateEntry ? order.DateEntry|date('d/m/Y H:i') : '' }}</td>
                     <td>{{ order.DelivryDate ? order.DelivryDate|date('d/m/Y') : '' }}</td>
                     <td>{{ order.labels }}</td>
-                    <td>{{ order.orderStatus }}</td>
+           {#          <td>{{ order.orderStatus }}</td> #}
                     {% if is_granted("ROLE_ADMIN") %}
                     <td><a class="btn btn-info" href="{{ path('orders_edit', {'id': order.id}) }}"><span class="fa fa-edit" aria-hidden="true"></span> Editer</a></td>
                     <td>{{ include('orders/_delete_form.html.twig') }}</td>

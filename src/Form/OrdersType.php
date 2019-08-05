@@ -30,6 +30,7 @@ class OrdersType extends AbstractType
             ->add('Company', EntityType::class, array(
                 'required' => false,
                 'class'   => Companies::class,
+                'attr'      => array('class' => 'form-control')
             ))
             ->remove('VirLocalNumber')
             ->add('CustomerName', TextType::class, [

@@ -54,10 +54,6 @@ class Orders
      */
     private $productListings;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\OrderStatus", inversedBy="OrderStatus")
-     */
-    private $OrderStatus;
 
     /**
      * @ORM\Column(type="integer")
@@ -75,9 +71,10 @@ class Orders
     private $Statuts = 1;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Companies", mappedBy="orders")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Companies", inversedBy="orders")
      */
     private $Company;
+
 
 
     public function __construct()
@@ -85,7 +82,7 @@ class Orders
         $this->DateEntry = new \DateTime();
         $this->productListings = new ArrayCollection();
         $this->labels = new ArrayCollection();
-        $this->Company = new ArrayCollection();
+
 
     }
 
@@ -206,17 +203,6 @@ class Orders
         return $this;
     }
 
-    public function getOrderStatus(): ?OrderStatus
-    {
-        return $this->OrderStatus;
-    }
-
-    public function setOrderStatus(?OrderStatus $OrderStatus): self
-    {
-        $this->OrderStatus = $OrderStatus;
-
-        return $this;
-    }
 
     public function getLabels(): ?int
     {
@@ -266,6 +252,18 @@ class Orders
     public function setStatuts(bool $Statuts): self
     {
         $this->Statuts = $Statuts;
+
+        return $this;
+    }
+
+    public function getCompany(): ?Companies
+    {
+        return $this->Company;
+    }
+
+    public function setCompany(?Companies $Company): self
+    {
+        $this->Company = $Company;
 
         return $this;
     }

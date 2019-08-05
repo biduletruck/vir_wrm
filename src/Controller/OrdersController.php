@@ -80,7 +80,8 @@ class OrdersController extends AbstractController
             ->setUser($this->getUser())
             ->setLabels($order->getLabels())
 
-            ->setOrderStatus($orderStatusRepository->findOneBy(array('Name' => "En attente")));
+            //->setOrderStatus($orderStatusRepository->findOneBy(array('Name' => "En attente")))
+            ;
             $entityManager->persist($command);
             $entityManager->flush();
 
@@ -160,6 +161,8 @@ class OrdersController extends AbstractController
     /**
      * @Route("/{id}", name="orders_show", methods={"GET"})
      * @param Orders $order
+     * @param ProductListingRepository $listingRepository
+     * @param LabelsRepository $labelsRepository
      * @return Response
      */
     public function show(Orders $order, ProductListingRepository $listingRepository, LabelsRepository $labelsRepository): Response

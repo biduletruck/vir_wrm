@@ -1,5 +1,5 @@
-<div class="modal fade" id="_scanBar" tabindex="-1" role="dialog" aria-labelledby="oMessagerieLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade " id="_scanBar" tabindex="-1" role="dialog" aria-labelledby="oMessagerieLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="oMessagerieLabel">Lire un code barre</h5>
@@ -8,20 +8,21 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div id="sourceSelectPanel" style="display:none">
+                    <label for="sourceSelect">Sélectionner la source vidéo:</label>
+                    <select id="sourceSelect" style="max-width:400px">
+                    </select>
+                </div>
                 <div>
-                    <a class="btn btn-primary" id="startButton">Scan</a>
-                    <a class="btn btn-danger" id="resetButton">Reset</a>
+                    <a class="btn btn-primary" id="startButton">Scanner</a>
+                    <a class="btn btn-danger" id="resetButton">Annuler</a>
                 </div>
 
                 <div>
                     <video id="video" width="100%"  style="border: 1px solid gray"></video>
                 </div>
 
-                <div id="sourceSelectPanel" style="display:none">
-                    <label for="sourceSelect">Changer la source vidéo:</label>
-                    <select id="sourceSelect" style="max-width:400px">
-                    </select>
-                </div>
+
 
                 <label>Resultat:</label>
                 <pre><code id="result"></code></pre>
