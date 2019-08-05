@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Agencies;
 use App\Entity\Locations;
 use App\Form\LocationsType;
 use App\Repository\LocationsRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -42,6 +45,11 @@ class LocationsController extends AbstractController
             ->add('allee', TextType::class)
             ->add('lice', NumberType::class)
             ->add('alveole', NumberType::class)
+            ->add('agency', EntityType::class, array(
+                'required' => false,
+                'class'   => Agencies::class,
+                'attr'      => array('class' => 'form-control')
+            ))
             ->add('send', SubmitType::class,['label' => 'ajouter'])
             ->getForm();
 
@@ -51,19 +59,26 @@ class LocationsController extends AbstractController
             $data= $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
 
+
             for ($i = 0; $i <= $data['lice']; $i++)
             {
-
                 $lice = $i < 10 ? "0" . $i : $i;
-
                 for ($k = 0; $k <= $data['alveole']; $k++)
                 {
                     $alveole = $k < 10 ? "**000" . $k : "**00" .$k;
-                    $location = new Locations();
-                    $location->setLocation(strtoupper("ERA" . $data['allee']) . $alveole  . $lice);
-                    $location->setFreePlace(true);
-                    $location->setDriveway(strtoupper($data['allee']));
-                    $entityManager->persist($location);
+                    $nameLocation = strtoupper("ERA" . $data['allee']) . $alveole  . $lice;
+                    $name = $nameLocation . "-" . $data['agency'];
+                    $entity = $this->getDoctrine()->getRepository(Locations::class)->findOneBy(['Name' => $name]);
+                    if ($entity == null)
+                    {
+                        $location = new Locations();
+                        $location->setLocation($nameLocation);
+                        $location->setFreePlace(true);
+                        $location->setDriveway(strtoupper($data['allee']));
+                        $location->setAgency($data['agency']);
+                        $location->setName($name);
+                        $entityManager->merge($location);
+                    }
                 };
             };
 

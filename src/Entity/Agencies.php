@@ -33,9 +33,15 @@ class Agencies
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Locations", mappedBy="Agency")
+     */
+    private $locations;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->locations = new ArrayCollection();
     }
 
 
@@ -97,6 +103,37 @@ class Agencies
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
             $user->removeAgency($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Locations[]
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Locations $location): self
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations[] = $location;
+            $location->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Locations $location): self
+    {
+        if ($this->locations->contains($location)) {
+            $this->locations->removeElement($location);
+            // set the owning side to null (unless already changed)
+            if ($location->getAgency() === $this) {
+                $location->setAgency(null);
+            }
         }
 
         return $this;

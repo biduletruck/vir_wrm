@@ -40,14 +40,21 @@ class Locations
     private $driveway;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Agencies", mappedBy="Locations")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Agencies", inversedBy="locations")
      */
-    private $agencies;
+    private $Agency;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=false, unique=true)
+     */
+    private $Name;
+
+
 
     public function __construct()
     {
         $this->storages = new ArrayCollection();
-        $this->agencies = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -127,34 +134,28 @@ class Locations
         return $this;
     }
 
-    /**
-     * @return Collection|Agencies[]
-     */
-    public function getAgencies(): Collection
+    public function getAgency(): ?Agencies
     {
-        return $this->agencies;
+        return $this->Agency;
     }
 
-    public function addAgency(Agencies $agency): self
+    public function setAgency(?Agencies $Agency): self
     {
-        if (!$this->agencies->contains($agency)) {
-            $this->agencies[] = $agency;
-            $agency->setLocations($this);
-        }
+        $this->Agency = $Agency;
 
         return $this;
     }
 
-    public function removeAgency(Agencies $agency): self
+    public function getName(): ?string
     {
-        if ($this->agencies->contains($agency)) {
-            $this->agencies->removeElement($agency);
-            // set the owning side to null (unless already changed)
-            if ($agency->getLocations() === $this) {
-                $agency->setLocations(null);
-            }
-        }
+        return $this->Name;
+    }
+
+    public function setName(string $Name): self
+    {
+        $this->Name = $Name;
 
         return $this;
     }
+
 }

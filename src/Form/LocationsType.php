@@ -14,6 +14,7 @@ class LocationsType extends AbstractType
         $builder
             ->add('Location')
             ->add('FreePlace')
+
         ;
     }
 
