@@ -32,6 +32,6 @@ final class Version20190805124330 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE locations CHANGE name name VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_17E64ABA5E237E06 ON locations (name)');
+       // $this->addSql('CREATE UNIQUE INDEX UNIQ_17E64ABA5E237E06 ON locations (name)');
     }
 }
