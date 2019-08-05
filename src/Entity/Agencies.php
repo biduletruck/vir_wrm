@@ -28,20 +28,27 @@ class Agencies
      */
     private $Enable;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Users", mappedBy="Agency")
-     */
-    private $users;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Locations", mappedBy="Agency")
      */
     private $locations;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Orders", mappedBy="Agency")
+     */
+    private $orders;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Users", mappedBy="Agency")
+     */
+    private $users;
+
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->locations = new ArrayCollection();
+        $this->orders = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
 
@@ -80,33 +87,6 @@ class Agencies
         return $this->Name;
     }
 
-    /**
-     * @return Collection|Users[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(Users $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->addAgency($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(Users $user): self
-    {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            $user->removeAgency($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Locations[]
@@ -133,6 +113,68 @@ class Agencies
             // set the owning side to null (unless already changed)
             if ($location->getAgency() === $this) {
                 $location->setAgency(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Orders[]
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Orders $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Orders $order): self
+    {
+        if ($this->orders->contains($order)) {
+            $this->orders->removeElement($order);
+            // set the owning side to null (unless already changed)
+            if ($order->getAgency() === $this) {
+                $order->setAgency(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Users[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(Users $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(Users $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getAgency() === $this) {
+                $user->setAgency(null);
             }
         }
 

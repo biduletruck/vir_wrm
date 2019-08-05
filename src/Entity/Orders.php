@@ -75,6 +75,11 @@ class Orders
      */
     private $Company;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Agencies", inversedBy="orders")
+     */
+    private $Agency;
+
 
 
     public function __construct()
@@ -264,6 +269,18 @@ class Orders
     public function setCompany(?Companies $Company): self
     {
         $this->Company = $Company;
+
+        return $this;
+    }
+
+    public function getAgency(): ?Agencies
+    {
+        return $this->Agency;
+    }
+
+    public function setAgency(?Agencies $Agency): self
+    {
+        $this->Agency = $Agency;
 
         return $this;
     }

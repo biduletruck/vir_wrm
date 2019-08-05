@@ -54,6 +54,7 @@ class OrdersType extends AbstractType
             ))
             ->remove('User')
             ->remove('OrderStatus')
+            ->remove('Agency')
             ->add('productListings', CollectionType::class, array(
                 'entry_type'   => ProductListingType::class,
                 'allow_add'    => true,

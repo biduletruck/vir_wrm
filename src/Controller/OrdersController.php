@@ -17,6 +17,7 @@ use App\Repository\ProductListingRepository;
 use App\Service\LabelGeneratorWithQrCode;
 use Doctrine\Common\Persistence\ObjectManager;
 use Knp\Component\Pager\PaginatorInterface;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +38,7 @@ class OrdersController extends AbstractController
      */
     public function index(OrdersRepository $ordersRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $orders = $paginator->paginate($ordersRepository->findAllOrdersQuery(),
+        $orders = $paginator->paginate($ordersRepository->findAllOrdersQuery($this->getUser()->getAgency()),
             $request->query->getInt('page',1), 10);
 
         $sortable = $paginator->paginate($ordersRepository->findAll());
@@ -68,9 +69,8 @@ class OrdersController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-          //  $status = $orderStatusRepository->find(1);
-
             $entityManager = $this->getDoctrine()->getManager();
+
             $command = new Orders();
             $command->setOrderingNumber($order->getOrderingNumber())
             ->setVirLocalNumber($virLocalNumber)
@@ -79,16 +79,15 @@ class OrdersController extends AbstractController
             ->setDelivryDate(new \DateTime($delivryDate['DelivryDate']))
             ->setUser($this->getUser())
             ->setLabels($order->getLabels())
-
+            ->setAgency($this->getUser()->getAgency())
             //->setOrderStatus($orderStatusRepository->findOneBy(array('Name' => "En attente")))
             ;
+
             $entityManager->persist($command);
             $entityManager->flush();
 
             $this->addProductToListing($order, $command, $entityManager);
-
             $this->addLabelBeforeLocation($command);
-
             return $this->redirectToRoute('orders_index');
         }
 

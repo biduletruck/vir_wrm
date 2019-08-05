@@ -20,9 +20,15 @@ class OrdersRepository extends ServiceEntityRepository
     }
 
 
-    public function findAllOrdersQuery()
+    public function findAllOrdersQuery($agency)
     {
-        return $this->findAll();
+       // return $this->findAll();
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.Agency = :val')
+            ->setParameter('val', $agency)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
      /**
