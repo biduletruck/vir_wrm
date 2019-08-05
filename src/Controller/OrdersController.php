@@ -4,7 +4,6 @@ namespace App\Controller;
 
 
 use App\Entity\Agencies;
-use App\Entity\Companies;
 use App\Entity\Labels;
 use App\Entity\Orders;
 use App\Entity\ProductListing;
@@ -17,12 +16,11 @@ use App\Repository\ProductListingRepository;
 use App\Service\LabelGeneratorWithQrCode;
 use Doctrine\Common\Persistence\ObjectManager;
 use Knp\Component\Pager\PaginatorInterface;
-use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use function Matrix\diagonal;
 
 /**
  * @Route("/orders")
@@ -39,7 +37,7 @@ class OrdersController extends AbstractController
     public function index(OrdersRepository $ordersRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $orders = $paginator->paginate($ordersRepository->findAllOrdersQuery($this->getUser()->getAgency()),
-            $request->query->getInt('page',1), 10);
+        $request->query->getInt('page',1), 10);
 
         $sortable = $paginator->paginate($ordersRepository->findAll());
 
@@ -50,7 +48,7 @@ class OrdersController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="orders_new", methods={"GET","POST"})
+     * @Route("/new", name="orders_new", methods={"GET", "POST"})
      * @param Request $request
      * @param OrderStatusRepository $orderStatusRepository
      * @return Response
@@ -98,15 +96,22 @@ class OrdersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/labels", name="orders_labels", methods={"GET","POST"})
-     * @param OrdersRepository $ordersRepository
+     * @Route("/{id}/labels", name="orders_labels", methods={"GET", "POST"})
      * @param Orders $orders
+     * @param OrdersRepository $ordersRepository
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function showPrintLabels(Orders $orders, OrdersRepository $ordersRepository)
+    public function showPrintLabels(Orders $orders, OrdersRepository $ordersRepository, int $id)
     {
-        $order = $ordersRepository->find($orders);
-        $pdf = new LabelGeneratorWithQrCode();
-        $pdf->createLabelsWithQrCode($order);
+        if ($this->accessOrderById($id) !== $this->getUser()->getAgency()) {
+            $this->addFlash('danger', 'Vous n\'êtes pas autorisé à voir cette commande');
+            return $this->redirectToRoute('orders_index');
+        } else {
+            $order = $ordersRepository->find($orders);
+            $pdf = new LabelGeneratorWithQrCode();
+            $pdf->createLabelsWithQrCode($order);
+        }
     }
 
     /**
@@ -161,54 +166,87 @@ class OrdersController extends AbstractController
      * @Route("/{id}", name="orders_show", methods={"GET"})
      * @param Orders $order
      * @param ProductListingRepository $listingRepository
+     * @param int $id
      * @param LabelsRepository $labelsRepository
      * @return Response
      */
-    public function show(Orders $order, ProductListingRepository $listingRepository, LabelsRepository $labelsRepository): Response
+    public function show(Orders $order, ProductListingRepository $listingRepository, int $id, LabelsRepository $labelsRepository): Response
     {
-        return $this->render('orders/show.html.twig', [
-            'order' => $order,
-            'products' => $listingRepository->findBy(['OrderNumber' => $order]),
-            'labels' => $labelsRepository->findBy(['virLocalNumber' => $order]),
-        ]);
+        if ( $this->accessOrderById($id) !== $this->getUser()->getAgency())
+        {
+            $this->addFlash('danger', 'Vous n\'êtes pas autorisé à voir cette commande');
+            return $this->redirectToRoute('orders_index');
+        }else{
+            return $this->render('orders/show.html.twig', [
+                'order' => $order,
+                'products' => $listingRepository->findBy(['OrderNumber' => $order]),
+                'labels' => $labelsRepository->findBy(['virLocalNumber' => $order]),
+            ]);
+        }
     }
 
     /**
-     * @Route("/{id}/edit", name="orders_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="orders_edit", methods={"GET", "POST"})
      * @param Request $request
      * @param Orders $order
+     * @param int $id
      * @return Response
      */
-    public function edit(Request $request, Orders $order): Response
+    public function edit(Request $request, Orders $order, int $id): Response
     {
-        $commandorm = $this->createForm(OrdersType::class, $order);
-        $commandorm->handleRequest($request);
-        if ($commandorm->isSubmitted() && $commandorm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('orders_index', [
-                'id' => $order->getId(),
+        if ( $this->accessOrderById($id) !== $this->getUser()->getAgency())
+        {
+            $this->addFlash('danger', 'Vous n\'êtes pas autorisé à voir cette commande');
+            return $this->redirectToRoute('orders_index');
+        }else {
+            $commandorm = $this->createForm(OrdersType::class, $order);
+            $commandorm->handleRequest($request);
+            if ($commandorm->isSubmitted() && $commandorm->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('orders_index', [
+                    'id' => $order->getId(),
+                ]);
+            }
+            return $this->render('orders/edit.html.twig', [
+                'order' => $order,
+                'form' => $commandorm->createView(),
             ]);
         }
-        return $this->render('orders/edit.html.twig', [
-            'order' => $order,
-            'form' => $commandorm->createView(),
-        ]);
     }
 
     /**
      * @Route("/{id}", name="orders_delete", methods={"DELETE"})
      * @param Request $request
      * @param Orders $order
+     * @param int $id
      * @return Response
      */
-    public function delete(Request $request, Orders $order): Response
+    public function delete(Request $request, Orders $order, int $id): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$order->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($order);
-            $entityManager->flush();
+        if ( $this->accessOrderById($id) !== $this->getUser()->getAgency())
+        {
+            $this->addFlash('danger', 'Vous n\'êtes pas autorisé à voir cette commande');
+            return $this->redirectToRoute('orders_index');
+        }else {
+            if ($this->isCsrfTokenValid('delete' . $order->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($order);
+                $entityManager->flush();
+            }
+            return $this->redirectToRoute('orders_index');
         }
-        return $this->redirectToRoute('orders_index');
+    }
+
+    /**
+     * @param int $id
+     * @return Agencies|null
+     */
+    private function accessOrderById(int $id)
+    {
+        $repo = $this->getDoctrine()->getRepository(Orders::class);
+        $testOrder = $repo->find($id);
+        $orderAcces = $testOrder->getAgency();
+        return $orderAcces;
     }
 
 

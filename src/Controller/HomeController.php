@@ -19,8 +19,8 @@ class HomeController extends AbstractController
      */
     public function index(LocationsRepository $locationsRepository): Response
     {
-        $stat = $locationsRepository->occupancyRateWarehouse();
-        $ways = $locationsRepository->occupancyByDriveWay();
+        $stat = $locationsRepository->occupancyRateWarehouse($this->getUser()->getAgency());
+        $ways = $locationsRepository->occupancyByDriveWay($this->getUser()->getAgency());
 
         $serie = [];
         foreach ($ways as $way)

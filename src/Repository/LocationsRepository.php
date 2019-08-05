@@ -19,20 +19,34 @@ class LocationsRepository extends ServiceEntityRepository
         parent::__construct($registry, Locations::class);
     }
 
-    public function occupancyRateWarehouse()
+    public function occupancyRateWarehouse($agency)
     {
         return $this->createQueryBuilder('l')
             ->select('count(l.id) as total, sum(l.FreePlace) as libre')
+            ->andWhere('l.Agency = :val')
+            ->setParameter('val', $agency)
             ->getQuery()
             ->getResult()
             ;
     }
 
-public function occupancyByDriveWay()
+public function occupancyByDriveWay($agency)
     {
         return $this->createQueryBuilder('l')
             ->select('l.driveway, count(l.id) as total, sum(l.FreePlace) as libre')
+            ->andWhere('l.Agency = :val')
+            ->setParameter('val', $agency)
             ->groupBy('l.driveway')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findAllByAgency($agency)
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.Agency = :val')
+            ->setParameter('val', $agency)
             ->getQuery()
             ->getResult()
             ;

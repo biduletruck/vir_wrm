@@ -11,6 +11,7 @@
                 <th>Allée</th>
                 <th>Location</th>
                 <th>FreePlace</th>
+                <th>Agence</th>
                 <th>actions</th>
             </tr>
         </thead>r
@@ -20,6 +21,7 @@
                 <td>{{ location.driveway }}</td>
                 <td>{{ location.Location  }}</td>
                 <td>{{ location.FreePlace ? 'Yes' : 'No' }}</td>
+                <td>{{ location.agency }}</td>
                 <td>
                     <a href="{{ path('locations_show', {'id': location.id}) }}">show</a>
                     <a href="{{ path('locations_edit', {'id': location.id}) }}">edit</a>
