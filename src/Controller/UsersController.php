@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Users;
-use App\Form\UsersType;
+use App\Form\Users\EditUsersType;
+use App\Form\Users\ResetPasswordUsersType;
+use App\Form\Users\UsersType;
 use App\Repository\UsersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,12 +74,35 @@ class UsersController extends AbstractController
      */
     public function edit(Request $request, Users $user): Response
     {
-        $form = $this->createForm(UsersType::class, $user);
+        $form = $this->createForm(EditUsersType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            return $this->redirectToRoute('users_index');
+        }
+
+        return $this->render('users/edit.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/reset", name="users_reset_password", methods={"GET","POST"})
+     */
+    public function resetPassword(Request $request, Users $user, UserPasswordEncoderInterface $encoder): Response
+    {
+        $form = $this->createForm(ResetPasswordUsersType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $encoded = $encoder->encodePassword($user, $form->getData()->getPassword());
+            $user->setPassword($encoded);
+
+            $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('users_index');
         }
 
