@@ -31,8 +31,9 @@
                 <td>{{ user.Roles ? user.Roles|json_encode : '' }}</td>
                 <td>{{ user.Account ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('users_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('users_edit', {'id': user.id}) }}">edit</a>
+                    <a href="{{ path('users_show', {'id': user.id}) }}">Show</a>
+                    <a href="{{ path('users_edit', {'id': user.id}) }}">Edit</a>
+                    <a href="{{ path('users_reset_password', {'id': user.id}) }}">Reset</a>
                 </td>
             </tr>
         {% else %}
