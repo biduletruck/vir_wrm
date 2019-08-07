@@ -21,6 +21,7 @@ class HomeController extends AbstractController
     {
         $stat = $locationsRepository->occupancyRateWarehouse($this->getUser()->getAgency());
         $ways = $locationsRepository->occupancyByDriveWay($this->getUser()->getAgency());
+        $User = $this->getUser();
 
         $serie = [];
         foreach ($ways as $way)
@@ -84,6 +85,7 @@ class HomeController extends AbstractController
         'stat'  => $stat,
         'chart'    => $ob,
         'driveways' => $driveways,
+        'user'  => $User,
         ]);
 
     }

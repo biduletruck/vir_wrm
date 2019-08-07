@@ -6,7 +6,8 @@
 
 {% block body %}
     <div class="jumbotron">
-        <H1>VIR Transport : Gestion du parc</H1>
+        <H1>VIR Transport : Gestion du parc de {{ user.Agency.Name }}</H1>
+        <h6>Connecté en tant que {{ user.lastname }}</h6>
     </div>
     <div class="row">
         <div class="col-6">

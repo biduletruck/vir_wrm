@@ -72,7 +72,7 @@
             {%  for label in labels %}
                 <tr>
                     <td>{{ label.localLabel }}/{{ order.labels }}</td>
-                    <td>{%  if label.location.location is defined and label.location.location is not null %}{{ label.location.location }}{% else %} En attente{% endif %}</td>
+                    <td>{%  if label.location.location is defined and label.location.location is not null %}{{ label.location.location | rack }}{% else %} En attente{% endif %}</td>
                     <td>{% if label.locationDate is not null %}{{ label.locationDate | date('d/m/Y à H:i:s') }}{% else %} En attente{% endif %}</td>
                     <td>{%  if label.login is not null %}{{  label.login }}{% endif %}</td>
                 </tr>

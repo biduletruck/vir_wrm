@@ -3,7 +3,9 @@
 {% block title %}New Labels{% endblock %}
 
 {% block body %}
-    <h1>Create new Labels</h1>
+    <div class="jumbotron">
+        <h1 class="">Mise en rayonnage </h1>
+    </div>
 
     {{ form_start(form) }}
 
@@ -44,7 +46,7 @@
    </div>
 
 
-    <button class="btn btn-primary">{{ button_label|default('Update') }}</button>
+    <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
 {{ form_end(form) }}
 
 {{ include('other/scanbar.html.twig') }}
