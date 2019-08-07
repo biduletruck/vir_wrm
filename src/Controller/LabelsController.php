@@ -62,11 +62,39 @@ class LabelsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $data = $form->getData();
-            dump($data);
 
+            //Récupération de la commande
+            $order = $entityManager->getRepository(Labels::class)->findOneBy(['localLabel' => $form->get('localLabel')->getData()]);
+            //Récupération de l'emplacement en base
+            $location = $entityManager->getRepository(Locations::class)->findOneBy(['Name' => $form->get('newLocation')->getData() ."-" . $this->getUser()->getAgency()->getName()]);
+        /*
+
+        */
+            $label = $entityManager->getRepository(Labels::class)->find($order);
+            dump($label);
+
+            if (!$label->getLocation() == null)
+            {
+
+                $oldLocation = $this->getDoctrine()->getRepository(Locations::class)->find($label->getLocation());
+                $oldLocation->setFreePlace(1);
+              /*  $entityManager->persist($oldLocation);
+                $entityManager->flush(); */
+
+              dump($oldLocation);
+            }
+            $label->setLogin($this->getUser());
+            $label->setVirLocalNumber($order->getVirLocalNumber());
+            $label->setLocationDate(new \DateTime());
+            $label->setLocation($location);
+            $label->getLocation()->setFreePlace(0);
+
+/*
+            dump($form->getData());
+            dump($label);
             die();
-            $entityManager->persist($label);
+*/
+         //   $entityManager->merge($label);
             $entityManager->flush();
 
             return $this->redirectToRoute('labels_index');

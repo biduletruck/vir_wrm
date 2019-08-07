@@ -49,11 +49,17 @@ class Locations
      */
     private $Name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Labels", mappedBy="Location")
+     */
+    private $labels;
+
 
 
     public function __construct()
     {
         $this->storages = new ArrayCollection();
+        $this->labels = new ArrayCollection();
 
     }
 
@@ -154,6 +160,37 @@ class Locations
     public function setName(string $Name): self
     {
         $this->Name = $Name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Labels[]
+     */
+    public function getLabels(): Collection
+    {
+        return $this->labels;
+    }
+
+    public function addLabel(Labels $label): self
+    {
+        if (!$this->labels->contains($label)) {
+            $this->labels[] = $label;
+            $label->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLabel(Labels $label): self
+    {
+        if ($this->labels->contains($label)) {
+            $this->labels->removeElement($label);
+            // set the owning side to null (unless already changed)
+            if ($label->getLocation() === $this) {
+                $label->setLocation(null);
+            }
+        }
 
         return $this;
     }

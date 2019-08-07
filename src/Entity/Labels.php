@@ -27,10 +27,6 @@ class Labels
      */
     private $localLabel;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Locations", cascade={"persist", "remove"})
-     */
-    private $Location;
 
     private $newLocation;
 
@@ -62,6 +58,11 @@ class Labels
      */
     private $LocationDate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Locations", inversedBy="labels")
+     */
+    private $Location;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,17 +92,6 @@ class Labels
         return $this;
     }
 
-    public function getLocation(): ?Locations
-    {
-        return $this->Location;
-    }
-
-    public function setLocation(?Locations $Location): self
-    {
-        $this->Location = $Location;
-
-        return $this;
-    }
 
     public function getLogin(): ?Users
     {
@@ -130,5 +120,17 @@ class Labels
     public function __toString()
     {
         return $this->virLocalNumber;
+    }
+
+    public function getLocation(): ?Locations
+    {
+        return $this->Location;
+    }
+
+    public function setLocation(?Locations $Location): self
+    {
+        $this->Location = $Location;
+
+        return $this;
     }
 }
