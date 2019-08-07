@@ -4,11 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Agencies;
 use App\Entity\Locations;
-use App\Form\LocationsType;
+use App\Form\Locations\LocationsType;
 use App\Repository\LocationsRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -41,6 +40,7 @@ class LocationsController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        /*
         $form = $this->createFormBuilder()
             ->add('allee', TextType::class)
             ->add('lice', NumberType::class)
@@ -52,35 +52,13 @@ class LocationsController extends AbstractController
             ))
             ->add('send', SubmitType::class,['label' => 'ajouter'])
             ->getForm();
-
+*/
+        $location = new Locations();
+        $form = $this->createForm(LocationsType::class, $location);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data= $form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
-
-
-            for ($i = 0; $i <= $data['lice']; $i++)
-            {
-                $lice = $i < 10 ? "0" . $i : $i;
-                for ($k = 0; $k <= $data['alveole']; $k++)
-                {
-                    $alveole = $k < 10 ? "**000" . $k : "**00" .$k;
-                    $nameLocation = strtoupper("ERA" . $data['allee']) . $alveole  . $lice;
-                    $name = $nameLocation . "-" . $data['agency'];
-                    $entity = $this->getDoctrine()->getRepository(Locations::class)->findOneBy(['Name' => $name]);
-                    if ($entity == null)
-                    {
-                        $location = new Locations();
-                        $location->setLocation($nameLocation);
-                        $location->setFreePlace(true);
-                        $location->setDriveway(strtoupper($data['allee']));
-                        $location->setAgency($data['agency']);
-                        $location->setName($name);
-                        $entityManager->merge($location);
-                    }
-                };
-            };
+            $entityManager = $this->AddNewDriveWay($form);
 
             $entityManager->flush();
             return $this->redirectToRoute('locations_index');
@@ -157,5 +135,36 @@ class LocationsController extends AbstractController
         }
 
         return $this->redirectToRoute('locations_index');
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormInterface $form
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
+    private function AddNewDriveWay(\Symfony\Component\Form\FormInterface $form): \Doctrine\Common\Persistence\ObjectManager
+    {
+        $data = $form->getData();
+        $entityManager = $this->getDoctrine()->getManager();
+
+
+        for ($i = 0; $i <= $data['lice']; $i++) {
+            $lice = $i < 10 ? "0" . $i : $i;
+            for ($k = 0; $k <= $data['alveole']; $k++) {
+                $alveole = $k < 10 ? "**000" . $k : "**00" . $k;
+                $nameLocation = strtoupper("ERA" . $data['allee']) . $alveole . $lice;
+                $name = $nameLocation . "-" . $data['agency'];
+                $entity = $this->getDoctrine()->getRepository(Locations::class)->findOneBy(['Name' => $name]);
+                if ($entity == null) {
+                    $location = new Locations();
+                    $location->setLocation($nameLocation);
+                    $location->setFreePlace(true);
+                    $location->setDriveway(strtoupper($data['allee']));
+                    $location->setAgency($data['agency']);
+                    $location->setName($name);
+                    $entityManager->persist($location);
+                }
+            };
+        };
+        return $entityManager;
     }
 }

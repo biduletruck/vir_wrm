@@ -4,7 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Labels;
 use App\Entity\Locations;
-use App\Form\LabelsType;
+use App\Form\Labels\AddLabelInLocationType;
+use App\Form\Labels\LabelsType;
 use App\Repository\LabelsRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,6 +39,33 @@ class LabelsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($label);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('labels_index');
+        }
+
+        return $this->render('labels/new.html.twig', [
+            'label' => $label,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/add", name="labels_add", methods={"GET","POST"})
+     */
+    public function AddLabelLocation(Request $request): Response
+    {
+        $label = new Labels();
+        $form = $this->createForm(AddLabelInLocationType::class, $label);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $data = $form->getData();
+            dump($data);
+
+            die();
             $entityManager->persist($label);
             $entityManager->flush();
 

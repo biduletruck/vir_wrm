@@ -52,7 +52,7 @@ class LabelGeneratorWithQrCode extends \TCPDF
 
     public function header()
     {
-        $this->pdf->Image( './build/logo.png',10 ,10 ,'', 20);
+        $this->pdf->Image( './build/images/logo.png',10 ,10 ,'', 20);
         $this->pdf->SetFont('helvetica', 'B', 20);
         $this->pdf->cell(190, 20, $this->getTitle(),0, 1 ,"C");
     }

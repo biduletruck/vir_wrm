@@ -61,7 +61,7 @@ class OrdersController extends AbstractController
         $order = new Orders();
         $date = new \DateTime("NOW");
 
-        $virLocalNumber = "GEN-" . $date->getTimestamp();
+        $virLocalNumber = $this->generateLocalNumber($date);
         $delivryDate = $request->request->get('orders_new');
 
         $form = $this->createForm(OrdersType::class, $order);
@@ -249,6 +249,16 @@ class OrdersController extends AbstractController
         $testOrder = $repo->find($id);
         $orderAcces = $testOrder->getAgency();
         return $orderAcces;
+    }
+
+    /**
+     * @param \DateTime $date
+     * @return string
+     */
+    public function generateLocalNumber(\DateTime $date): string
+    {
+        $virLocalNumber = mb_strtoupper(substr($this->getUser()->getAgency(), 0, 3)) . "-" . $date->getTimestamp();
+        return $virLocalNumber;
     }
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Labels;
 
 use App\Entity\Labels;
 use App\Entity\Locations;

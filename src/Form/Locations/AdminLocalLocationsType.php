@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Locations;
 
 use App\Entity\Locations;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LocationsType extends AbstractType
+class AdminLocalLocationsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('Location')
             ->add('FreePlace')
+            ->add('')
 
         ;
     }
