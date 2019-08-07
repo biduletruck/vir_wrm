@@ -89,18 +89,13 @@ class LabelsController extends AbstractController
             $label->setLocation($location);
             $label->getLocation()->setFreePlace(0);
 
-/*
-            dump($form->getData());
-            dump($label);
-            die();
-*/
-         //   $entityManager->merge($label);
+            $entityManager->persist($label);
             $entityManager->flush();
 
             return $this->redirectToRoute('labels_index');
         }
 
-        return $this->render('labels/new.html.twig', [
+        return $this->render('labels/add.html.twig', [
             'label' => $label,
             'form' => $form->createView(),
         ]);

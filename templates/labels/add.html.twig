@@ -5,7 +5,128 @@
 {% block body %}
     <h1>Create new Labels</h1>
 
-    {{ include('labels/_form.html.twig') }}
+    {{ form_start(form) }}
 
-    <a href="{{ path('labels_index') }}">back to list</a>
+    <div>
+           <div class="form-group">
+               <div>
+          {{ form_label(form.localLabel) }}
+      </div>
+      <div class="input-group">
+          <div>
+              {{ form_errors(form.localLabel) }}
+              {{ form_widget(form.localLabel) }}
+          </div>
+          <span class="input-group-btn">
+              <button class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#_scanBar" id="LocalLabel">
+                  <i class="fa fa-barcode"></i>
+              </button>
+          </span>
+      </div>
+   </div>
+
+   <div class="form-group">
+          <div>
+              {{ form_label(form.newLocation) }}
+          </div>
+          <div class="input-group">
+              <div>
+                  {{ form_errors(form.newLocation) }}
+                  {{ form_widget(form.newLocation) }}
+              </div>
+              <span class="input-group-btn">
+                  <button class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#_scanBar" id="NewLocation">
+                      <i class="fa fa-barcode"></i>
+                  </button>
+              </span>
+          </div>
+      </div>
+   </div>
+
+
+    <button class="btn btn-primary">{{ button_label|default('Update') }}</button>
+{{ form_end(form) }}
+
+{{ include('other/scanbar.html.twig') }}
+
+<a href="{{ path('labels_index') }}">back to list</a>
+{% endblock %}
+
+
+{% block javascripts %}
+<script type="text/javascript">
+
+    let cell = null;
+
+
+    $('#NewLocation').click(function(event){
+        cell = 'add_label_in_location_newLocation';
+    });
+
+    $('#LocalLabel').click(function(event){
+        cell = 'add_label_in_location_localLabel';
+    });
+
+
+
+
+    //JS du scanbar
+   window.addEventListener('load', function () {
+       let selectedDeviceId;
+       console.log(cell);
+       const codeReader = new ZXing.BrowserMultiFormatReader()
+       codeReader.getVideoInputDevices()
+           .then((videoInputDevices) => {
+               const sourceSelect = document.getElementById('sourceSelect')
+               selectedDeviceId = videoInputDevices[0].deviceId
+               if (videoInputDevices.length >= 1) {
+                   videoInputDevices.forEach((element) => {
+                       const sourceOption = document.createElement('option')
+                       sourceOption.text = element.label
+                       sourceOption.value = element.deviceId
+                       sourceSelect.appendChild(sourceOption)
+                   })
+                   sourceSelect.onchange = () => {
+                       selectedDeviceId = sourceSelect.value;
+                   };
+                   const sourceSelectPanel = document.getElementById('sourceSelectPanel')
+                   sourceSelectPanel.style.display = 'block'
+               }
+
+               document.getElementById('startButton').addEventListener('click', () => {
+                   document.getElementById(cell).value = '';
+                   codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+                       if (result) {
+                           document.getElementById(cell).value = result.text
+                           codeReader.reset()
+                           $('#_scanBar').modal('hide');
+                       }
+                       if (err && !(err instanceof ZXing.NotFoundException)) {
+                           document.getElementById('result').textContent = err
+                       }
+                   })
+               })
+
+               document.getElementById('resetButton').addEventListener('click', () => {
+                   codeReader.reset()
+                   document.getElementById(cell).value = '';
+               })
+           })
+           .catch((err) => {
+               console.error(err)
+           })
+       $('.closemodal').click(function () {
+           codeReader.reset()
+           $('.modal').modal('hide')
+
+       })
+
+       $(function () {
+           $('.modal').on('hide.bs.modal', function (e) {
+               codeReader.reset()
+           })
+       })
+   })
+</script>
+
 {% endblock %}

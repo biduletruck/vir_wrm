@@ -13,6 +13,7 @@
                 {%  if app.user %}
                     <li {% if app.request.attributes.get('_route') == 'orders_index' %}class="nav-item active"{% endif %}><a class="nav-link" href="{{ path('orders_index') }}">Etat du parc</a></li>
                     <li {% if app.request.attributes.get('_route') == 'orders_new' %}class="nav-item active"{% endif %}><a class="nav-link" href="{{ path('orders_new') }}">Nouvelle Entrée</a></li>
+                    <li {% if app.request.attributes.get('_route') == 'labels_add' %}class="nav-item active"{% endif %}><a class="nav-link" href="{{ path('labels_add') }}">Stockage</a></li>
                 {% endif %}
             </ul>
             {% if is_granted("ROLE_ADMIN") %}
