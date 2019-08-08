@@ -80,6 +80,11 @@ class Orders
      */
     private $Agency;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\OrderBack", inversedBy="orders")
+     */
+    private $OrderBack;
+
 
 
     public function __construct()
@@ -281,6 +286,18 @@ class Orders
     public function setAgency(?Agencies $Agency): self
     {
         $this->Agency = $Agency;
+
+        return $this;
+    }
+
+    public function getOrderBack(): ?OrderBack
+    {
+        return $this->OrderBack;
+    }
+
+    public function setOrderBack(?OrderBack $OrderBack): self
+    {
+        $this->OrderBack = $OrderBack;
 
         return $this;
     }

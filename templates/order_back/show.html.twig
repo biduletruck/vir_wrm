@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OrderBack{% endblock %}
+
+{% block body %}
+    <h1>OrderBack</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ order_back.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ order_back.Name }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ order_back.Status ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('order_back_index') }}">back to list</a>
+
+    <a href="{{ path('order_back_edit', {'id': order_back.id}) }}">edit</a>
+
+    {{ include('order_back/_delete_form.html.twig') }}
+{% endblock %}
