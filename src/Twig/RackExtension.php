@@ -27,7 +27,7 @@ class RackExtension extends AbstractExtension
             $etage = substr($emplacement,-2);
 
           //  $position = $rack . "-" . $alveole . "-" . $etage;
-            $position = "Allée : " . $rack . " / Lice : " . $etage . " / Alvéole : " . $alveole;
+            $position = "Allée : " . $rack . " / Alvéole : " . $alveole . " / Lice : " . $etage;
         }
 
         return $position;

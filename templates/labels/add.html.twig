@@ -9,41 +9,46 @@
 
     {{ form_start(form) }}
 
-    <div>
-           <div class="form-group">
-               <div>
-          {{ form_label(form.localLabel) }}
-      </div>
-      <div class="input-group">
-          <div>
-              {{ form_errors(form.localLabel) }}
-              {{ form_widget(form.localLabel) }}
-          </div>
-          <span class="input-group-btn">
-              <button class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#_scanBar" id="LocalLabel">
-                  <i class="fa fa-barcode"></i>
-              </button>
-          </span>
-      </div>
-   </div>
+    <div class="form-group">
+        <div>
+            {{ form_label(form.localLabel) }}
+        </div>
+        <div class="input-group">
+            <div>
+            {{ form_errors(form.localLabel) }}
+            {{ form_widget(form.localLabel) }}
+            </div>
+            <span class="input-group-btn">
+                <button class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#_scanBar" id="LocalLabel"><i class="fa fa-barcode"></i></button>
+            </span>
+        </div>
+    </div>
 
-   <div class="form-group">
-          <div>
-              {{ form_label(form.newLocation) }}
-          </div>
-          <div class="input-group">
-              <div>
-                  {{ form_errors(form.newLocation) }}
-                  {{ form_widget(form.newLocation) }}
-              </div>
-              <span class="input-group-btn">
-                  <button class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#_scanBar" id="NewLocation">
-                      <i class="fa fa-barcode"></i>
-                  </button>
-              </span>
-          </div>
-      </div>
-   </div>
+    <div class="form-group">
+        <div>
+            {{ form_label(form.newLocation) }}
+        </div>
+        <div class="input-group">
+            <div>
+                {{ form_errors(form.newLocation) }}
+                {{ form_widget(form.newLocation) }}
+            </div>
+            <span class="input-group-btn">
+                <button class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#_scanBar" id="NewLocation"><i class="fa fa-barcode"></i></button>
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            {{ form_label(form.lice) }}
+        </div>
+        <div class="input-group">
+            <div>
+                {{ form_errors(form.lice) }}
+                {{ form_widget(form.lice) }}
+            </div>
+        </div>
+    </div>
 
 
     <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>

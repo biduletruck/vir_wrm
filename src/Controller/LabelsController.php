@@ -63,13 +63,22 @@ class LabelsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
-            //Récupération de la commande
-            $order = $entityManager->getRepository(Labels::class)->findOneBy(['localLabel' => $form->get('localLabel')->getData()]);
-            //Récupération de l'emplacement en base
-            $location = $entityManager->getRepository(Locations::class)->findOneBy(['Name' => $form->get('newLocation')->getData() ."-" . $this->getUser()->getAgency()->getName()]);
-        /*
+            /** @var Labels $data */
+            $data = $form->getData();
+            $lice = $data->getLice() < 10 ? "0" . $data->getLice() : $data->getLice();
+            $newLocation = $data->getNewLocation() . $lice;
 
-        */
+
+            //Récupération de la commande
+            $order = $entityManager->getRepository(Labels::class)->findOneBy(['localLabel' => $data->getLocalLabel()]);
+            //Récupération de l'emplacement en base
+            $location = $entityManager->getRepository(Locations::class)->findOneBy(['Name' => $newLocation ."-" . $this->getUser()->getAgency()->getName()]);
+     dump($lice);
+     dump($newLocation);
+     dump($order);
+     dump($location);
+
+     //die();
             $label = $entityManager->getRepository(Labels::class)->find($order);
             dump($label);
 

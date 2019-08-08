@@ -4,6 +4,7 @@ namespace App\Form\Labels;
 
 use App\Entity\Labels;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,6 +17,7 @@ class AddLabelInLocationType extends AbstractType
         $builder
             ->add('localLabel', TextType::class, [
                 'required'  => true,
+                'label' => 'Numéro de support',
                 'attr' => [
                     'class' => 'form-control scanner_input']
             ])
@@ -24,6 +26,13 @@ class AddLabelInLocationType extends AbstractType
             ->remove('location')
             ->add('newLocation', TextType::class, [
                 'required'  => true,
+                'label' => 'Emplacement',
+                'attr' => [
+                    'class' => 'form-control scanner_input']
+            ])
+            ->add('lice', IntegerType::class, [
+                'required'  => true,
+                'label' => 'Hauteur (Lice)',
                 'attr' => [
                     'class' => 'form-control scanner_input']
             ])

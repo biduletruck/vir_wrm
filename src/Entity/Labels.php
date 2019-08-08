@@ -30,23 +30,7 @@ class Labels
 
     private $newLocation;
 
-    /**
-     * @return mixed
-     */
-    public function getNewLocation()
-    {
-        return $this->newLocation;
-    }
-
-    /**
-     * @param mixed $newLocation
-     * @return Labels
-     */
-    public function setNewLocation($newLocation)
-    {
-        $this->newLocation = $newLocation;
-        return $this;
-    }
+    private $lice;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="labels")
@@ -131,6 +115,42 @@ class Labels
     {
         $this->Location = $Location;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLice()
+    {
+        return $this->lice;
+    }
+
+    /**
+     * @param mixed $lice
+     * @return Labels
+     */
+    public function setLice($lice)
+    {
+        $this->lice = $lice;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNewLocation()
+    {
+        return $this->newLocation;
+    }
+
+    /**
+     * @param mixed $newLocation
+     * @return Labels
+     */
+    public function setNewLocation($newLocation)
+    {
+        $this->newLocation = $newLocation;
         return $this;
     }
 }

@@ -18,6 +18,7 @@ class LabelsType extends AbstractType
         $builder
             ->add('localLabel')
             ->remove('LocationDate')
+            ->remove('lice')
             ->remove('virLocalNumber')
             ->remove('location', EntityType::class, array(
                 'required' => false,
