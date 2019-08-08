@@ -81,9 +81,6 @@ class LocationsController extends AbstractController
                     }
                 };
             };
-
-            dump($location);
-            die();
             $entityManager->flush();
             return $this->redirectToRoute('locations_index');
         }
