@@ -58,7 +58,29 @@ class LocationsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->AddNewDriveWay($form);
+            $data = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+
+            for ($i = 0; $i <= $data->getLice(); $i++) {
+                $lice = $i < 10 ? "0" . $i : $i;
+                for ($k = 0; $k <= $data->getAlveole(); $k++) {
+                    $alveole = $k < 10 ? "**000" . $k : "**00" . $k;
+                    $nameLocation = strtoupper("ERA" . $data->getAllee()) . $alveole . $lice;
+                    $name = $nameLocation . "-" . $data->getAgency()->getName();
+
+                    $entity = $this->getDoctrine()->getRepository(Locations::class)->findOneBy(['Name' => $name]);
+
+                    if ($entity == null) {
+                        $location = new Locations();
+                        $location->setLocation($nameLocation);
+                        $location->setFreePlace(true);
+                        $location->setDriveway(strtoupper($data->getAllee()));
+                        $location->setAgency($data->getAgency());
+                        $location->setName($name);
+                        $entityManager->persist($location);
+                    }
+                };
+            };
 
             $entityManager->flush();
             return $this->redirectToRoute('locations_index');

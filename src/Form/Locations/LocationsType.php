@@ -18,17 +18,17 @@ class LocationsType extends AbstractType
     {
         $builder
             ->add('allee', TextType::class, [
-                'mapped' => false,
+
                 'label' => 'Nom de l\'allée',
                 'attr'      => ['class' => 'form-control']
             ])
             ->add('lice', NumberType::class, [
-                'mapped' => false,
+
                 'label' => 'Nombre de lices (hauteur)',
                 'attr'      => ['class' => 'form-control']
             ])
             ->add('alveole', NumberType::class, [
-                'mapped' => false,
+
                 'label' => 'Nombre d\'emplacements (alvéoles)',
                 'attr'      => ['class' => 'form-control']
             ])

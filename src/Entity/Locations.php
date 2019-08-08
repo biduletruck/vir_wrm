@@ -54,7 +54,11 @@ class Locations
      */
     private $labels;
 
+    private $Allee;
 
+    private $Lice;
+
+    private $Alveole;
 
     public function __construct()
     {
@@ -194,5 +198,59 @@ class Locations
 
         return $this;
     }
+    /**
+     * @return mixed
+     */
+    public function getAllee()
+    {
+        return $this->Allee;
+    }
+
+    /**
+     * @param mixed $Allee
+     * @return Locations
+     */
+    public function setAllee($Allee)
+    {
+        $this->Allee = $Allee;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLice()
+    {
+        return $this->Lice;
+    }
+
+    /**
+     * @param mixed $Lice
+     * @return Locations
+     */
+    public function setLice($Lice)
+    {
+        $this->Lice = $Lice;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAlveole()
+    {
+        return $this->Alveole;
+    }
+
+    /**
+     * @param mixed $Alveole
+     * @return Locations
+     */
+    public function setAlveole($Alveole)
+    {
+        $this->Alveole = $Alveole;
+        return $this;
+    }
+
 
 }
