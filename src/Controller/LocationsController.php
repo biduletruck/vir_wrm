@@ -75,13 +75,15 @@ class LocationsController extends AbstractController
                         $location->setLocation($nameLocation);
                         $location->setFreePlace(true);
                         $location->setDriveway(strtoupper($data->getAllee()));
-                        $location->setAgency($data->getAgency());
+                        $location->setAgency($this->getUser()->getAgency());
                         $location->setName($name);
                         $entityManager->persist($location);
                     }
                 };
             };
 
+            dump($location);
+            die();
             $entityManager->flush();
             return $this->redirectToRoute('locations_index');
         }
