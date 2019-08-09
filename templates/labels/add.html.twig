@@ -9,6 +9,12 @@
 
     {{ form_start(form) }}
 
+<div class="card">
+    <div class="card-header">
+        Placer un support
+    </div>
+    <div class="card-body">
+
     <div class="form-group">
         <div>
             {{ form_label(form.localLabel) }}
@@ -50,13 +56,14 @@
         </div>
     </div>
 
-
-    <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
-{{ form_end(form) }}
+    </div>
+    </div>
+    <a class="btn btn-dark" href="{{ path('labels_index') }}"><span class="fa fa-arrow-left" aria-hidden="true"></span> Retour</a>
+    <button class="btn btn-success">{{ button_label|default('Valider') }}</button>
+    {{ form_end(form) }}
 
 {{ include('other/scanbar.html.twig') }}
 
-<a href="{{ path('labels_index') }}">back to list</a>
 {% endblock %}
 
 
