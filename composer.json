@@ -33,7 +33,8 @@
         "symfony/webpack-encore-bundle": "^1.6",
         "symfony/yaml": "4.3.*",
         "tecnickcom/tcpdf": "^6.2",
-        "twig/extensions": "^1.5"
+        "twig/extensions": "^1.5",
+      "ext-json": "*"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.2",

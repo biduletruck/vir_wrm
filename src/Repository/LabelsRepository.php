@@ -19,6 +19,19 @@ class LabelsRepository extends ServiceEntityRepository
         parent::__construct($registry, Labels::class);
     }
 
+    public function findOneLabelInBase($label, $agency)
+    {
+        return $this->createQueryBuilder('l')
+            ->join('l.virLocalNumber', 'o')
+            ->addSelect('l')
+            ->addSelect('o')
+            ->andWhere('l.localLabel = :localLabel')
+            ->setParameter('localLabel', $label)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Labels[] Returns an array of Labels objects
     //  */

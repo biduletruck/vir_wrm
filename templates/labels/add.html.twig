@@ -5,9 +5,10 @@
 {% block body %}
     <div class="jumbotron">
         <h1 class="">Mise en rayonnage </h1>
+        ROU-1565283090-1
     </div>
 
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'id': 'MyForm'}}) }}
 
 <div class="card">
     <div class="card-header">
@@ -15,11 +16,11 @@
     </div>
     <div class="card-body">
 
-    <div class="form-group">
+    <div class="form-group" >
         <div>
             {{ form_label(form.localLabel) }}
         </div>
-        <div class="input-group">
+        <div class="input-group" id="localLabel">
             <div>
             {{ form_errors(form.localLabel) }}
             {{ form_widget(form.localLabel) }}
@@ -30,7 +31,7 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" >
         <div>
             {{ form_label(form.newLocation) }}
         </div>
@@ -59,7 +60,7 @@
     </div>
     </div>
     <a class="btn btn-dark" href="{{ path('labels_index') }}"><span class="fa fa-arrow-left" aria-hidden="true"></span> Retour</a>
-    <button class="btn btn-success">{{ button_label|default('Valider') }}</button>
+    <button class="btn btn-success" id="Btn_Location">{{ button_label|default('Valider') }}</button>
     {{ form_end(form) }}
 
 {{ include('other/scanbar.html.twig') }}
@@ -70,8 +71,64 @@
 {% block javascripts %}
 <script type="text/javascript">
 
-    let cell = null;
+    const InputLocalLabel = document.getElementById("add_label_in_location_localLabel")
+    const InputLocation = document.getElementById("add_label_in_location_newLocation")
+    const InputLice = document.getElementById("add_label_in_location_lice")
+    const BtnScan  = document.getElementById("NewLocation")
+    const BtnLocation  = document.getElementById("Btn_Location")
 
+    const MyInput = [InputLocation, InputLice, BtnScan]
+
+    //Désactivation des inputs et du bouton de validation
+    IsNotActiveInput(MyInput, true)
+    IsNotActiveInput([BtnLocation], true)
+
+    document.getElementById("MyForm").addEventListener('input', async function (e)
+    {
+        const formData = new FormData(this)
+        await getFetch(formData);
+    })
+
+    async function FindLabelIfExist() {
+        const formData = new FormData(document.getElementById("MyForm"))
+        await getFetch(formData);
+    }
+
+    async function getFetch(formData) {
+        let response = await fetch("{{ path('find_label_in_base') }}", {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: formData
+        })
+
+        let responseData = await response.json().then((function (responseData) {
+            IsValidClass(responseData, InputLocalLabel, MyInput)
+        }))
+    }
+
+    function IsValidClass(value, MyClass, MyInput = [])
+    {
+        if(value === true )
+        {
+            MyClass.classList.remove('is-invalid')
+            MyClass.classList.add('is-valid')
+        }else{
+            MyClass.classList.remove('is-valid')
+            MyClass.classList.add('is-invalid')
+        }
+        IsNotActiveInput(MyInput,!value)
+    }
+
+    function IsNotActiveInput(Values =[], disable)
+    {
+        Values.forEach(function(element) {
+            disable === false ? element.removeAttribute("disabled") : element.setAttribute("disabled", "")
+        });
+    }
+
+    var cell = null;
 
     $('#NewLocation').click(function(event){
         cell = 'add_label_in_location_newLocation';
@@ -80,9 +137,6 @@
     $('#LocalLabel').click(function(event){
         cell = 'add_label_in_location_localLabel';
     });
-
-
-
 
     //JS du scanbar
    window.addEventListener('load', function () {
@@ -112,6 +166,9 @@
                    codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
                        if (result) {
                            document.getElementById(cell).value = result.text
+                           if(cell === 'add_label_in_location_localLabel'){
+                               FindLabelIfExist()
+                           }
                            codeReader.reset()
                            $('#_scanBar').modal('hide');
                        }
@@ -124,6 +181,8 @@
                document.getElementById('resetButton').addEventListener('click', () => {
                    codeReader.reset()
                    document.getElementById(cell).value = '';
+                   document.getElementById(cell).classList.remove('is-invalid')
+                   document.getElementById(cell).classList.remove('is-valid')
                })
            })
            .catch((err) => {

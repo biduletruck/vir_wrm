@@ -8,10 +8,13 @@ use App\Form\Labels\AddLabelInLocationType;
 use App\Form\Labels\LabelsType;
 use App\Repository\LabelsRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @Route("/labels")
@@ -168,4 +171,32 @@ class LabelsController extends AbstractController
 
         return $this->redirectToRoute('labels_index');
     }
+
+    /**
+     * Find label in base
+     *
+     * @Route("/FindLabel", name="find_label_in_base")
+     */
+    public function findLabelInBase(Request $request)
+    {
+        if ($request->isMethod('POST') && $request->isXmlHttpRequest())
+        {
+            $content = $request->request;
+            $tab = $content->get('add_label_in_location');
+            $em = $this->getDoctrine()->getManager();
+            /* @var $Label Labels  */
+            $emplacement = $em->getRepository(Labels::class)->findOneBy(['localLabel' => $tab['localLabel']]);
+            $response = new JsonResponse();
+            if ( !empty($emplacement) && ($emplacement->getVirLocalNumber()->getAgency() === $this->getUser()->getAgency()) )
+            {
+                $response->setData(true);
+            }else{
+                $response->setData(false);
+            }
+            return $response;
+        }
+        return false;
+
+    }
+
 }

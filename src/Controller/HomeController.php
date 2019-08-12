@@ -17,6 +17,8 @@ class HomeController extends AbstractController
      * @param LocationsRepository $locationsRepository
      * @return Response
      */
+
+
     public function index(LocationsRepository $locationsRepository): Response
     {
         $stat = $locationsRepository->occupancyRateWarehouse($this->getUser()->getAgency());
