@@ -109,7 +109,7 @@ label{
 
 */
 
-@media (max-width: 1500px) {
+@media (max-width: 3000px) {
     button{
         width: 100px;
         display: inline-block;
