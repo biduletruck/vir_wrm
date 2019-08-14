@@ -22,12 +22,12 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <div class="col-1">
+                    <div class="col-2">
                         <a href="{{ path('orders_index') }}" class="btn btn-primary"><span class="fa fa-list" aria-hidden="true"></span></a>
                     </div>
-                    <div class="col-11 align-baseline">
+                    <div class="col-10 align-baseline">
                         {% for result in stat %}
-                            Taux d'occupation de l'entrepôt : {{  ((result.total - result.libre) / result.total * 100) | round(2) }}%</h1>
+                            Tx d'occupation Total : {{  ((result.total - result.libre) / result.total * 100) | round(2) }}%</h1>
                         {% endfor %}
                     </div>
                 </div>

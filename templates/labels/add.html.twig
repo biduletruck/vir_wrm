@@ -125,9 +125,12 @@
         {
             Input.classList.remove('is-invalid')
             Input.classList.add('is-valid')
+            IsNotActiveInput([BtnLocation], false)
         }else{
             Input.classList.remove('is-valid')
             Input.classList.add('is-invalid')
+            IsNotActiveInput([BtnLocation], true)
+
         }
         IsNotActiveInput(DeactiveInput,!Response)
     }

@@ -30,7 +30,6 @@ class ProductListingType extends AbstractType
                 'expanded' => true,
                 'label' => false,
                 'multiple' => false,
-                'placeholder'     => 'Type',
                 'attr'      => array('class' => 'toggle form-check')
             ])
         ;
