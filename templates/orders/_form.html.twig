@@ -1,111 +1,109 @@
-<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
-    <div class="card">
-        <div class="card-header">
-            <a class="btn btn-dark btn-sm" href="{{ path('orders_index') }}"><span class="fa fa-arrow-left" aria-hidden="true"></span></a> Informations sur la commande
-        </div>
-        <div class="card-body center-form">
-            {{ form_start(form, {'attr': {'class': 'form', 'role' : 'form'}}) }}
-            <div class=" align-items-center">
-                <div class="col-auto">
-                    <div class="form-group">
-                        <div>
-                            <div>
-                                {{ form_label(form.OrderingNumber) }}
-                            </div>
-                            <div class="input-group">
+{{ form_start(form, {'attr': {'class': 'formInline', 'role' : 'form'}}) }}
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
+            <div class="card">
+                <div class="card-header">
+                    <a class="btn btn-dark btn-sm" href="{{ path('orders_index') }}"><span class="fa fa-arrow-left" aria-hidden="true"></span></a> Informations sur la commande
+                </div>
+
+                <div class="card-body center-form">
+
+                    <div class=" align-items-center">
+                        <div class="col-auto">
+                            <div class="form-group">
                                 <div>
-                                    {{ form_errors(form.OrderingNumber) }}
-                                    {{ form_widget(form.OrderingNumber) }}
+                                    <div>
+                                        {{ form_label(form.OrderingNumber) }}
+                                    </div>
+                                    <div class="input-group">
+                                        <div>
+                                            {{ form_errors(form.OrderingNumber) }}
+                                            {{ form_widget(form.OrderingNumber) }}
+                                        </div>
+                                        <span class="input-group-btn">
+                                        <button class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#_scanBar">
+                                            <i class="fa fa-barcode"></i>
+                                        </button>
+                                    </span>
+                                    </div>
                                 </div>
-                                <span class="input-group-btn">
-                            <button class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#_scanBar">
-                                <i class="fa fa-barcode"></i>
-                            </button>
-                        </span>
+                            </div>
+                        </div>
+
+                        <div class="col-auto">
+                            <div class="form-group">
+                                <div>
+                                    {{ form_label(form.Company) }}
+                                </div>
+                                <div>
+                                    {{ form_errors(form.Company) }}
+                                    {{ form_widget(form.Company) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-auto">
+                            <div class="form-group">
+                                <div>
+                                    {{ form_label(form.CustomerName) }}
+                                </div>
+                                <div>
+                                    {{ form_errors(form.CustomerName) }}
+                                    {{ form_widget(form.CustomerName) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-auto">
+                            <div class="form-group">
+                                <div>
+                                    {{ form_label(form.DelivryDate) }}
+                                </div>
+                                <div>
+                                    {{ form_errors(form.DelivryDate) }}
+                                    {{ form_widget(form.DelivryDate) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-auto">
+                            <div class="form-group">
+                                <div>
+                                    {{ form_label(form.Labels) }}
+                                </div>
+                                <div>
+                                    {{ form_errors(form.Labels) }}
+                                    {{ form_widget(form.Labels) }}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-auto">
-                    <div class="form-group">
-                        <div>
-                            {{ form_label(form.Company) }}
-                        </div>
-                        <div>
-                            {{ form_errors(form.Company) }}
-                            {{ form_widget(form.Company) }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-auto">
-                    <div class="form-group">
-                        <div>
-                            {{ form_label(form.CustomerName) }}
-                        </div>
-                        <div>
-                            {{ form_errors(form.CustomerName) }}
-                            {{ form_widget(form.CustomerName) }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-auto">
-                    <div class="form-group">
-                        <div>
-                            {{ form_label(form.DelivryDate) }}
-                        </div>
-                        <div>
-                            {{ form_errors(form.DelivryDate) }}
-                            {{ form_widget(form.DelivryDate) }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-auto">
-                    <div class="form-group">
-                        <div>
-                            {{ form_label(form.Labels) }}
-                        </div>
-                        <div>
-                            {{ form_errors(form.Labels) }}
-                            {{ form_widget(form.Labels) }}
-                        </div>
-                    </div>
-                </div>
-        </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8">
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-6">
-                    Produits de la commande
-                </div>
-                <div class="col-6 text-right">
-                        <a href="#" id="add_ticket" class="btn btn-info btn-success ">Ajouter une entrée</a>
                 </div>
             </div>
         </div>
 
-        <div class="card-body">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            Produits de la commande
+                        </div>
+                        <div class="col-6 text-right">
+                            <a href="#" id="add_ticket" class="btn btn-info btn-success ">Ajouter une entrée</a>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="form-inline">
+                <div class="card-body center-form">
                     {{ form_errors(form.productListings) }}
                     {{ form_widget(form.productListings) }}
                 </div>
 
-        </div>
-
-        <div class="card-footer text-center">
-            {{ form_widget(form.save) }}
+                <div class="card-footer text-center">
+                    {{ form_widget(form.save) }}
+                </div>
+            </div>
         </div>
     </div>
-    {{ form_end(form) }}
-</div>
-
+{{ form_end(form) }}

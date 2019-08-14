@@ -8,7 +8,7 @@
                 <h1> Ajouter une nouvelle commande</h1>
             </div>
 
-            <div class="row">
+            <div class="">
                 {{ include('orders/_form.html.twig') }}
             </div>
 
@@ -44,7 +44,7 @@
                 let template = $container.attr('data-prototype')
                     .replace(/__name__label__/g, '' + (index+1) )
                     .replace(/__name__/g,        index)
-                    .replace(/<div >/g, "<div class=''>")
+                    .replace(/<div >/g, "<div class='custom'>")
                 ;
                 let $prototype = $(template);
                 addDeleteLink($prototype);
@@ -52,7 +52,7 @@
                 index++;
             }
             function addDeleteLink($prototype) {
-                let $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+                let $deleteLink = $('<a href="#" class="btn btn-danger btn_delete"><span class="fa fa-trash-alt" aria-hidden="true"></span></a>');
                 $prototype.append($deleteLink);
                 $deleteLink.click(function(e) {
                     $prototype.remove();

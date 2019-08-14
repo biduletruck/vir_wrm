@@ -69,12 +69,16 @@ body {
     align-items:baseline;
     justify-content:space-evenly;
 }
-/*
+
 .btn_delete{
     margin-left: 30px;
 }
 
+formInline{
+    display: block;
+}
 
+/*
 
 input[type=radio]{
     display: none;

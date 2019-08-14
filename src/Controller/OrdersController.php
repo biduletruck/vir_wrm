@@ -83,6 +83,7 @@ class OrdersController extends AbstractController
             //->setOrderStatus($orderStatusRepository->findOneBy(array('Name' => "En attente")))
             ;
 
+
             $entityManager->persist($command);
             $entityManager->flush();
 
@@ -125,6 +126,7 @@ class OrdersController extends AbstractController
     {
         foreach ($order->getProductListings() as $productListing)
         {
+
             $product = new ProductListing();
             $product->setProductNumber($productListing->getProductNumber())
             ->setFamilyProduct($productListing->getFamilyProduct())

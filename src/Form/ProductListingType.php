@@ -16,7 +16,7 @@ class ProductListingType extends AbstractType
     {
         $builder
             ->add('ProductNumber', TextType::class, [
-                'required'  => true,
+
                 'label' => false,
                 'attr'      => array(
                     'class' => 'form-control',
@@ -30,6 +30,7 @@ class ProductListingType extends AbstractType
                 'expanded' => true,
                 'label' => false,
                 'multiple' => false,
+                'placeholder'     => 'Type',
                 'attr'      => array('class' => 'toggle form-check')
             ])
         ;
