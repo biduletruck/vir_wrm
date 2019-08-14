@@ -48,13 +48,13 @@ body {
     text-decoration: none;
 }
 
-/*
+
 .center-form{
     display: flex;
     justify-content:space-evenly;
     align-items:baseline;
 }
-*/
+
 .custom{
 
     display: flex;
@@ -109,17 +109,4 @@ label{
 
 */
 
-@media screen and (max-width: 3000px) {
-    button{
-        width: 100px;
-        display: inline-block;
-        height: 100px;
-    }
-    input[type=text], input[type=number]  {
-        width: 80%;
-        display: inline-block;
-        height: 100px;
-    }
-
-}
 
