@@ -30,7 +30,7 @@ class HomeController extends AbstractController
         {
              array_push( $serie, [ 'name' => 'Allée : ' . $way['driveway'], 'y' => round(((( ($way['total'] - $way['libre']) / $way['total']) *100 )),2)]);
         }
-
+        /** @var Highchart $driveways */
         $driveways = new Highchart();
         $driveways->chart->renderTo('way');  // The #id of the div where to render the chart
         $driveways->chart->type('column');
@@ -51,9 +51,7 @@ class HomeController extends AbstractController
             ]
         );
 
-        /**
-         * @var Highchart
-         */
+        /** @var Highchart $ob */
         $ob = new Highchart();
         $ob->chart->renderTo('graph');  // The #id of the div where to render the chart
         $ob->chart->type('pie');

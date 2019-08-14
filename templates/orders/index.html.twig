@@ -10,20 +10,20 @@
 </div>
 
 <div class="row">
-    <div class="col">
-        <table class="table table-striped">
+    <div class="col-12">
+        <table class="table table-striped ">
             <thead>
             <tr class="text-center">
                 <th>{{ knp_pagination_sortable(sortable, 'Numéro de commande', 'ordering_number') }}</th>
                 <th>{{ knp_pagination_sortable(sortable, 'Numéro Vir', 'virLocalNumber') }}</th>
                 <th>{{ knp_pagination_sortable(sortable, 'Nom destinataire', 'customerName') }}</th>
-                <th>{{ knp_pagination_sortable(sortable, 'Date d\'entrée', 'dateEntry') }}</th>
-                <th>{{ knp_pagination_sortable(sortable, 'Date de livraison', 'delivryDate') }}</th>
-                <th>Nombre de support</th>
-                <th>{{ knp_pagination_sortable(sortable, 'Statut commande', 'orderStatus') }}</th>
+                <th  class="d-none d-lg-table-cell">{{ knp_pagination_sortable(sortable, 'Date d\'entrée', 'dateEntry') }}</th>
+                <th  class="d-none d-md-table-cell">{{ knp_pagination_sortable(sortable, 'Date de livraison', 'delivryDate') }}</th>
+                <th  class="d-none d-sm-table-cell">Nombre de support</th>
+            {#    <th>{{ knp_pagination_sortable(sortable, 'Statut commande', 'orderStatus') }}</th> #}
                 {% if is_granted("ROLE_ADMIN") %}
-                <th>Editer</th>
-                <th>Supprimer</th>
+                <th  class="d-none d-md-table-cell">Editer</th>
+                <th  class="d-none d-md-table-cell">Supprimer</th>
                 {% endif %}
             </tr>
             </thead>
@@ -33,13 +33,13 @@
                     <td><a  class="btn btn-block btn-dark" href="{{ path('orders_show', {'id': order.id}) }}"><span class="fa fa-search" aria-hidden="true"></span> {{ order.OrderingNumber }}</a></td>
                     <td>{{ order.VirLocalNumber }}</td>
                     <td>{{ order.CustomerName }}</td>
-                    <td class="d-none d-sm-block">{{ order.DateEntry ? order.DateEntry|date('d/m/Y H:i') : '' }}</td>
-                    <td>{{ order.DelivryDate ? order.DelivryDate|date('d/m/Y') : '' }}</td>
-                    <td>{{ order.labels }}</td>
+                    <td  class="d-none d-lg-table-cell">{{ order.DateEntry ? order.DateEntry|date('d/m/Y H:i') : '' }}</td>
+                    <td  class="d-none d-md-table-cell">{{ order.DelivryDate ? order.DelivryDate|date('d/m/Y') : '' }}</td>
+                    <td  class="d-none d-sm-table-cell">{{ order.labels }}</td>
            {#          <td>{{ order.orderStatus }}</td> #}
                     {% if is_granted("ROLE_ADMIN") %}
-                    <td><a class="btn btn-info" href="{{ path('orders_edit', {'id': order.id}) }}"><span class="fa fa-edit" aria-hidden="true"></span> Editer</a></td>
-                    <td>{{ include('orders/_delete_form.html.twig') }}</td>
+                    <td  class="d-none d-md-table-cell"><a class="btn btn-info" href="{{ path('orders_edit', {'id': order.id}) }}"><span class="fa fa-edit" aria-hidden="true"></span></a></td>
+                    <td  class="d-none d-md-table-cell">{{ include('orders/_delete_form.html.twig') }}</td>
                     {% endif %}
                 </tr>
             {% else %}
@@ -51,11 +51,12 @@
         </table>
     </div>
 </div>
-<div class="row">
 
-</div>
-    <div class="pagination align-content-center">
-        {{ knp_pagination_render(orders) }}
+<div class="row">
+    <div class="col-12">
+        <div class="pagination align-content-center">
+            {{ knp_pagination_render(orders) }}
+        </div>
     </div>
 </div>
 

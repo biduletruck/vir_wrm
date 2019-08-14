@@ -1,33 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Ajouter une entrée{% endblock %}
-{% block stylesheets %}
-<style>
-    #interactive.viewport {position: relative; width: 100%; height: auto; overflow: hidden; text-align: center;}
-    #interactive.viewport > canvas, #interactive.viewport > video {max-width: 100%;width: 100%;}
-    canvas.drawing, canvas.drawingBuffer {position: absolute; left: 0; top: 0;}
-</style>
-{% endblock %}
+
 {% block body %}
 
-
             <div class="jumbotron">
-                <h1>Ajouter une nouvelle commande</h1>
+                <h1> Ajouter une nouvelle commande</h1>
             </div>
 
-
-            <div class="col-12">
+            <div class="row">
                 {{ include('orders/_form.html.twig') }}
             </div>
 
             {{ include('other/scanbar.html.twig') }}
 
-
-
-
-
-
-    <a href="{{ path('orders_index') }}">back to list</a>
 
 {% endblock %}
 
@@ -56,9 +42,9 @@
             }
             function addTicket($container) {
                 let template = $container.attr('data-prototype')
-                    .replace(/__name__label__/g, 'Entrée n°' + (index+1) )
+                    .replace(/__name__label__/g, '' + (index+1) )
                     .replace(/__name__/g,        index)
-                    .replace(/<div >/g, "<div class='custom'>")
+                    .replace(/<div >/g, "<div class=''>")
                 ;
                 let $prototype = $(template);
                 addDeleteLink($prototype);
@@ -66,7 +52,7 @@
                 index++;
             }
             function addDeleteLink($prototype) {
-                let $deleteLink = $('<div class="text-center btn_delete"><a href="#" class="btn btn-sm btn-danger">Supprimer</a></div>');
+                let $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
                 $prototype.append($deleteLink);
                 $deleteLink.click(function(e) {
                     $prototype.remove();

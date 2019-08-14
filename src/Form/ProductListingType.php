@@ -17,17 +17,21 @@ class ProductListingType extends AbstractType
         $builder
             ->add('ProductNumber', TextType::class, [
                 'required'  => true,
-                'label'     => 'Numéro de parcelle ou de produit',
-                'attr'      => array('class' => 'form-control')
+                'label' => false,
+                'attr'      => array(
+                    'class' => 'form-control',
+                    'placeholder'     => 'Numero de colis'
+                )
 
             ])
             ->remove('OrderNumber')
             ->add('FamilyProduct', EntityType::class, [
                 'class' => FamilyProduct::class,
                 'expanded' => true,
+                'label' => false,
                 'multiple' => false,
-                'label'     => 'Type d\'ajout',
-                'attr'      => array('class' => 'text-center custom_radio')
+                'placeholder'     => 'Type',
+                'attr'      => array('class' => 'toggle form-check')
             ])
         ;
     }

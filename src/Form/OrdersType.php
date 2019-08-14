@@ -58,7 +58,8 @@ class OrdersType extends AbstractType
             ->add('productListings', CollectionType::class, array(
                 'entry_type'   => ProductListingType::class,
                 'allow_add'    => true,
-                'allow_delete' => true
+                'allow_delete' => true,
+                'attr'      => array('class' => '')
             ))
             ->add('save',      SubmitType::class, [
                 'label' => 'Enregister les entrées',

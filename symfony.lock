@@ -145,6 +145,9 @@
     "nikic/php-parser": {
         "version": "v4.2.2"
     },
+    "ninsuo/symfony-collection": {
+        "version": "2.1.30"
+    },
     "ob/highcharts-bundle": {
         "version": "1.6"
     },

@@ -6,9 +6,11 @@
  */
 
 // any CSS you require will output into a single css file (app.css in this case)
-require('../css/app.css');
-require('../css/global.scss');
 
+require('../css/global.scss');
+require('../css/radio.scss');
+require('../css/Style.css');
+require('../css/app.css');
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // require jQuery normally
 const $ = require('jquery');
