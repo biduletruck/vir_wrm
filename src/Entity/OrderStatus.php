@@ -18,21 +18,25 @@ class OrderStatus
      */
     private $id;
 
-
-
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $Name;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $enable;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Orders", mappedBy="OrderStatus")
      */
-    private $OrderStatus;
+    private $orderStatus;
 
     public function __construct()
     {
         $this->OrderStatus = new ArrayCollection();
+        $this->orderStatus = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,18 +63,35 @@ class OrderStatus
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->Name;
+    }
+
+    public function getEnable(): ?bool
+    {
+        return $this->enable;
+    }
+
+    public function setEnable(bool $enable): self
+    {
+        $this->enable = $enable;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Orders[]
      */
     public function getOrderStatus(): Collection
     {
-        return $this->OrderStatus;
+        return $this->orderStatus;
     }
 
     public function addOrderStatus(Orders $orderStatus): self
     {
-        if (!$this->OrderStatus->contains($orderStatus)) {
-            $this->OrderStatus[] = $orderStatus;
+        if (!$this->orderStatus->contains($orderStatus)) {
+            $this->orderStatus[] = $orderStatus;
             $orderStatus->setOrderStatus($this);
         }
 
@@ -79,8 +100,8 @@ class OrderStatus
 
     public function removeOrderStatus(Orders $orderStatus): self
     {
-        if ($this->OrderStatus->contains($orderStatus)) {
-            $this->OrderStatus->removeElement($orderStatus);
+        if ($this->orderStatus->contains($orderStatus)) {
+            $this->orderStatus->removeElement($orderStatus);
             // set the owning side to null (unless already changed)
             if ($orderStatus->getOrderStatus() === $this) {
                 $orderStatus->setOrderStatus(null);
@@ -88,10 +109,5 @@ class OrderStatus
         }
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->Name;
     }
 }

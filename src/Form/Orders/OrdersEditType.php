@@ -4,7 +4,9 @@ namespace App\Form\Orders;
 
 use App\Entity\Agencies;
 use App\Entity\Companies;
+use App\Entity\OrderBack;
 use App\Entity\Orders;
+use App\Entity\OrderStatus;
 use App\Form\ProductListingType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -55,7 +57,20 @@ class OrdersEditType extends AbstractType
 
             ))
             ->remove('User')
-            ->remove('OrderStatus')
+            ->add('OrderBack', EntityType::class, [
+                'required' => true,
+                'label' => 'Type de commande',
+                'class' => OrderBack::class,
+                'placeholder' => 'Type de commande',
+                'attr' => [ 'class' => 'form-control']
+            ])
+            ->add('OrderStatus', EntityType::class, [
+                'required' => true,
+                'label' => 'Statut de la commande',
+                'class' => OrderStatus::class,
+                'placeholder' => 'Statut de la commande',
+                'attr' => [ 'class' => 'form-control']
+            ])
             ->remove('Agency')
             ->remove('productListings', CollectionType::class, array(
                 'entry_type'   => ProductListingType::class,

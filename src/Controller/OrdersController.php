@@ -84,7 +84,8 @@ class OrdersController extends AbstractController
             ->setUser($this->getUser())
             ->setLabels($order->getLabels())
             ->setAgency($this->getUser()->getAgency())
-            //->setOrderStatus($orderStatusRepository->findOneBy(array('Name' => "En attente")))
+
+            ->setOrderStatus($orderStatusRepository->find(1))
             ;
 
 

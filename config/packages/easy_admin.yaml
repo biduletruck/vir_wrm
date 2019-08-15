@@ -8,6 +8,7 @@ easy_admin:
             - { label: 'Type de retours', entity: 'Type_retours'}
             - { label: "Donneur d'ordres", entity: 'Companies'}
             - { label: 'Agences', entity: 'Agencies'}
+            - { label: 'Satut des commandes', entity: 'Order_statut'}
             - { label: "Retour à l'appli", route: 'index' }
     entities:
         # List the entity class name you want to manage
@@ -57,3 +58,10 @@ easy_admin:
                 fields:
                     - { property: 'name', type: 'text' }
                     - { property: 'Status', type: 'checkbox' }
+
+        Order_statut:
+            class: App\Entity\OrderStatus
+            form:
+                fields:
+                    - { property: 'name', type: 'text' }
+                    - { property: 'enable', type: 'checkbox' }

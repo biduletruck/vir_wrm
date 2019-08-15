@@ -65,10 +65,7 @@ class Orders
      */
     private $labels;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $Statuts = 1;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Companies", inversedBy="orders")
@@ -85,6 +82,11 @@ class Orders
      */
     private $OrderBack;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\OrderStatus", inversedBy="orderStatus")
+     */
+    private $OrderStatus;
+
 
 
     public function __construct()
@@ -92,6 +94,7 @@ class Orders
         $this->DateEntry = new \DateTime();
         $this->productListings = new ArrayCollection();
         $this->labels = new ArrayCollection();
+
 
 
     }
@@ -254,18 +257,6 @@ class Orders
         return $this->VirLocalNumber;
     }
 
-    public function getStatuts(): ?bool
-    {
-        return $this->Statuts;
-    }
-
-    public function setStatuts(bool $Statuts): self
-    {
-        $this->Statuts = $Statuts;
-
-        return $this;
-    }
-
     public function getCompany(): ?Companies
     {
         return $this->Company;
@@ -298,6 +289,18 @@ class Orders
     public function setOrderBack(?OrderBack $OrderBack): self
     {
         $this->OrderBack = $OrderBack;
+
+        return $this;
+    }
+
+    public function getOrderStatus(): ?OrderStatus
+    {
+        return $this->OrderStatus;
+    }
+
+    public function setOrderStatus(?OrderStatus $OrderStatus): self
+    {
+        $this->OrderStatus = $OrderStatus;
 
         return $this;
     }
