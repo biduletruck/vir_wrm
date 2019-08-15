@@ -8,7 +8,13 @@
     <h1 class="">Etat du parc </h1>
     <a class="btn btn-lg btn-outline-success" href="{{ path('orders_new') }}"><span class="fa fa-plus-circle" aria-hidden="true"></span> Ajouter une nouvelle entrée</a>
 </div>
-
+    <div class="row">
+        <div class="col-12">
+            <div class="pagination align-content-center">
+                {{ knp_pagination_render(orders) }}
+            </div>
+        </div>
+    </div>
 <div class="row">
     <div class="col-12">
         <table class="table table-striped ">
@@ -22,7 +28,7 @@
                 <th  class="d-none d-sm-table-cell">Nombre de support</th>
             {#    <th>{{ knp_pagination_sortable(sortable, 'Statut commande', 'orderStatus') }}</th> #}
                 {% if is_granted("ROLE_ADMIN") %}
-                <th  class="d-none d-md-table-cell">Editer</th>
+                    {#  <th  class="d-none d-md-table-cell">Editer</th>#}
                 <th  class="d-none d-md-table-cell">Supprimer</th>
                 {% endif %}
             </tr>
@@ -38,26 +44,26 @@
                     <td  class="d-none d-sm-table-cell">{{ order.labels }}</td>
            {#          <td>{{ order.orderStatus }}</td> #}
                     {% if is_granted("ROLE_ADMIN") %}
-                    <td  class="d-none d-md-table-cell"><a class="btn btn-info" href="{{ path('orders_edit', {'id': order.id}) }}"><span class="fa fa-edit" aria-hidden="true"></span></a></td>
-                    <td  class="d-none d-md-table-cell">{{ include('orders/_delete_form.html.twig') }}</td>
-                    {% endif %}
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="8">Aucun enregistrement trouvé</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+{#    <td  class="d-none d-md-table-cell"><a class="btn btn-info" href="{{ path('orders_edit', {'id': order.id}) }}"><span class="fa fa-edit" aria-hidden="true"></span></a></td>#}
+  <td  class="d-none d-md-table-cell">{{ include('orders/_delete_form.html.twig') }}</td>
+  {% endif %}
+</tr>
+{% else %}
+<tr>
+  <td colspan="8">Aucun enregistrement trouvé</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
 </div>
 
 <div class="row">
-    <div class="col-12">
-        <div class="pagination align-content-center">
-            {{ knp_pagination_render(orders) }}
-        </div>
-    </div>
+<div class="col-12">
+<div class="pagination align-content-center">
+{{ knp_pagination_render(orders) }}
+</div>
+</div>
 </div>
 
 {% endblock %}

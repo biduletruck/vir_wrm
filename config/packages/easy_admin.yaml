@@ -2,16 +2,17 @@ easy_admin:
     site_name: 'VIR - Gestion du parc'
     design:
         menu:
-            - { label: 'Les utilisateurs', entity: 'Users'}
-            - { label: 'Commandes', entity: 'Orders'}
+            # - { label: 'Les utilisateurs', entity: 'Users'}
+            #  - { label: 'Commandes', entity: 'Orders'}
             - { label: 'Famille de produit', entity: 'Type_colis'}
+            - { label: 'Type de retours', entity: 'Type_retours'}
             - { label: "Donneur d'ordres", entity: 'Companies'}
             - { label: 'Agences', entity: 'Agencies'}
             - { label: "Retour à l'appli", route: 'index' }
     entities:
         # List the entity class name you want to manage
-        Orders:
-            class: App\Entity\Orders
+     #   Orders:
+     #       class: App\Entity\Orders
 
         Companies:
             class: App\Entity\Companies
@@ -27,22 +28,22 @@ easy_admin:
                     - { property: 'name', type: 'text' }
                     - { property: 'enable', type: 'checkbox' }
 
-        Users:
-            class: App\Entity\Users
-            password_encoding: { algorithm: 'bcrypt', cost: 12 }
-
-            form:
-                fields:
-                    - { property: 'LastName', type: 'text' }
-                    - { property: 'FirstName', type: 'text' }
-                    - { property: 'FirstName', type: 'text' }
-                    #- { property: 'Agency', type: 'choice'}
-                    - { property: 'Agency', type: 'entity', type_options: { class: 'App\Entity\Agencies' } }
-                    - { property: 'username', type: 'text'}
-                   # - { property: 'password', type: 'repeated', type_options: { type: 'Symfony\Component\Form\Extension\Core\Type\PasswordType', first_options: {label: 'Mot de passe'}, second_options: {label: 'Confirmation Mot de passe'}, invalid_message: 'Les mots de passe ne correspondent pas.'}}
-                    #- { property: 'password', type: 'password' }
-                    - { property: 'Account', type: 'checkbox' }
-                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+     #   Users:
+     #       class: App\Entity\Users
+     #       password_encoding: { algorithm: 'bcrypt', cost: 12 }
+#
+     #       form:
+     #           fields:
+     #               - { property: 'LastName', type: 'text' }
+     #               - { property: 'FirstName', type: 'text' }
+     #               - { property: 'FirstName', type: 'text' }
+     #               #- { property: 'Agency', type: 'choice'}
+     #               - { property: 'Agency', type: 'entity', type_options: { class: 'App\Entity\Agencies' } }
+     #               - { property: 'username', type: 'text'}
+     #              # - { property: 'password', type: 'repeated', type_options: { type: 'Symfony\Component\Form\Extension\Core\Type\PasswordType', first_options: {label: 'Mot de passe'}, second_options: {label: 'Confirmation Mot de passe'}, invalid_message: 'Les mots de passe ne correspondent pas.'}}
+     #               #- { property: 'password', type: 'password' }
+     #               - { property: 'Account', type: 'checkbox' }
+     #               - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
 
         Type_colis:
             class: App\Entity\FamilyProduct
@@ -50,3 +51,9 @@ easy_admin:
                 fields:
                     - { property: 'name', type: 'text' }
 
+        Type_retours:
+            class: App\Entity\OrderBack
+            form:
+                fields:
+                    - { property: 'name', type: 'text' }
+                    - { property: 'Status', type: 'checkbox' }

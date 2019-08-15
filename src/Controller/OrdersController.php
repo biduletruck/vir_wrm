@@ -8,13 +8,15 @@ use App\Entity\Labels;
 use App\Entity\Orders;
 use App\Entity\ProductListing;
 use App\Entity\Storages;
-use App\Form\OrdersType;
+use App\Form\Orders\OrdersEditType;
+use App\Form\Orders\OrdersType;
 use App\Repository\LabelsRepository;
 use App\Repository\OrdersRepository;
 use App\Repository\OrderStatusRepository;
 use App\Repository\ProductListingRepository;
 use App\Service\LabelGeneratorWithQrCode;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -76,6 +78,8 @@ class OrdersController extends AbstractController
             ->setVirLocalNumber($virLocalNumber)
             ->setCustomerName($order->getCustomerName())
             ->setDateEntry($date)
+            ->setCompany($order->getCompany())
+            ->setOrderBack($order->getOrderBack())
             ->setDelivryDate(new \DateTime($delivryDate['DelivryDate']))
             ->setUser($this->getUser())
             ->setLabels($order->getLabels())
@@ -203,10 +207,9 @@ class OrdersController extends AbstractController
             $this->addFlash('danger', 'Vous n\'êtes pas autorisé à voir cette commande');
             return $this->redirectToRoute('orders_index');
         }else {
-            $commandorm = $this->createForm(OrdersType::class, $order);
+            $commandorm = $this->createForm(OrdersEditType::class, $order);
             $commandorm->handleRequest($request);
             if ($commandorm->isSubmitted() && $commandorm->isValid()) {
-                $this->getDoctrine()->getManager()->flush();
                 return $this->redirectToRoute('orders_index', [
                     'id' => $order->getId(),
                 ]);

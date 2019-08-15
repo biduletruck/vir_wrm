@@ -41,17 +41,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-auto">
-                            <div class="form-group">
-                                <div>
-                                    {{ form_label(form.OrderBack) }}
-                                </div>
-                                <div>
-                                    {{ form_errors(form.OrderBack) }}
-                                    {{ form_widget(form.OrderBack) }}
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="col-auto">
                             <div class="form-group">
@@ -105,15 +94,15 @@
                         </div>
                     </div>
                 </div>
+                {#
+                                <div class="card-body center-form">
+                                    {{ form_errors(form.productListings) }}
+                                    {{ form_widget(form.productListings) }}
+                                </div>
 
-                <div class="card-body center-form">
-                    {{ form_errors(form.productListings) }}
-                    {{ form_widget(form.productListings) }}
-                </div>
-
-                <div class="card-footer text-center">
-                    {{ form_widget(form.save) }}
-                </div>
+                                <div class="card-footer text-center">
+                                   {{ form_widget(form.save) }}
+                </div> #}
             </div>
         </div>
     </div>

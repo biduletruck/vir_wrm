@@ -1,13 +1,139 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Orders{% endblock %}
+{% block title %}Modifier une commande{% endblock %}
 
 {% block body %}
-    <h1>Edit Orders</h1>
 
-    {{ include('orders/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="jumbotron">
+        <h1>Modifier la commande N°: </h1>
+    </div>
+
+    <div class="">
+        {{ include('orders/_formEdit.html.twig', {'button_label': 'Update'}) }}
+    </div>
+
+    {{ include('other/scanbar.html.twig') }}
+
 
     <a href="{{ path('orders_index') }}">back to list</a>
 
     {{ include('orders/_delete_form.html.twig') }}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+
+            let $container = $('div#orders_new_productListings');
+
+            let index = $container.find(':input').length;
+            $('#add_ticket').click(function(e) {
+                addTicket($container);
+                e.preventDefault();
+                return false;
+            });
+
+            if (index == 0) {
+                addTicket($container);
+
+            } else {
+                $container.children('div').each(function() {
+                    addDeleteLink($(this));
+                });
+            }
+            function addTicket($container) {
+                let template = $container.attr('data-prototype')
+                    .replace(/__name__label__/g, '' + (index+1) )
+                    .replace(/__name__/g,        index)
+                    .replace(/<div >/g, "<div class='custom'>")
+                ;
+                let $prototype = $(template);
+                addDeleteLink($prototype);
+                $container.append($prototype);
+                index++;
+            }
+            function addDeleteLink($prototype) {
+                let $deleteLink = $('<a href="#" class="btn btn-danger btn_delete"><span class="fa fa-trash-alt" aria-hidden="true"></span></a>');
+                $prototype.append($deleteLink);
+                $deleteLink.click(function(e) {
+                    $prototype.remove();
+                    e.preventDefault();
+                    return false;
+                });
+            }
+        });
+
+        $('.datepicker').datepicker({
+            todayBtn: "linked",
+            clearBtn: true,
+            language: "fr",
+            calendarWeeks: true,
+            autoclose: true,
+            todayHighlight: true,
+            format: 'yyyy-mm-dd',
+            startDate: new Date()
+        });
+
+        //JS du scanbar
+        window.addEventListener('load', function () {
+            let selectedDeviceId;
+            const codeReader = new ZXing.BrowserMultiFormatReader()
+            codeReader.getVideoInputDevices()
+                .then((videoInputDevices) => {
+                    const sourceSelect = document.getElementById('sourceSelect')
+                    selectedDeviceId = videoInputDevices.lastIndex
+                    // selectedDeviceId = videoInputDevices[0].deviceId
+                    if (videoInputDevices.length >= 1) {
+                        videoInputDevices.forEach((element) => {
+                            const sourceOption = document.createElement('option')
+                            sourceOption.text = element.label
+                            sourceOption.value = element.deviceId
+                            sourceSelect.appendChild(sourceOption)
+                        })
+                        sourceSelect.onchange = () => {
+                            selectedDeviceId = sourceSelect.value;
+                        };
+                        const sourceSelectPanel = document.getElementById('sourceSelectPanel')
+                        sourceSelectPanel.style.display = 'block'
+                    }
+
+                    document.getElementById('startButton').addEventListener('click', () => {
+                        document.getElementById('orders_new_OrderingNumber').value = '';
+                        codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+                            if (result) {
+                                document.getElementById('orders_new_OrderingNumber').value = result.text
+                                codeReader.reset()
+                                $('#_scanBar').modal('hide');
+                            }
+                            if (err && !(err instanceof ZXing.NotFoundException)) {
+                                document.getElementById('result').textContent = err
+                            }
+                        })
+                    })
+
+                    document.getElementById('resetButton').addEventListener('click', () => {
+                        codeReader.reset()
+                        document.getElementById('orders_new_OrderingNumber').value = '';
+                    })
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+            $('.closemodal').click(function() {
+                codeReader.reset()
+                $('.modal').modal('hide')
+
+            })
+
+            $(function(){
+                $('.modal').on('hide.bs.modal', function (e) {
+                    codeReader.reset()
+                })
+            })
+        })
+    </script>
+
 {% endblock %}

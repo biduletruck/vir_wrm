@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Orders;
 
 use App\Entity\Agencies;
 use App\Entity\Companies;
+use App\Entity\OrderBack;
 use App\Entity\Orders;
+use App\Form\ProductListingType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -28,7 +30,8 @@ class OrdersType extends AbstractType
 
             ])
             ->add('Company', EntityType::class, array(
-                'required' => false,
+                'required' => true,
+                'placeholder' => 'Choisir le client',
                 'class'   => Companies::class,
                 'attr'      => array('class' => 'form-control')
             ))
@@ -53,7 +56,12 @@ class OrdersType extends AbstractType
 
             ))
             ->remove('User')
-            ->remove('OrderStatus')
+            ->add('OrderBack', EntityType::class, [
+                'required' => true,
+                'placeholder' => 'Type de commande',
+                'class' => OrderBack::class,
+                'attr' => ['class' => 'form-control']
+            ])
             ->remove('Agency')
             ->add('productListings', CollectionType::class, array(
                 'entry_type'   => ProductListingType::class,

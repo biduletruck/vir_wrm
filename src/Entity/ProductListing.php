@@ -24,19 +24,19 @@ class ProductListing
     private $ProductNumber;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Orders", inversedBy="productListings")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Orders", inversedBy="productListings",cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $OrderNumber;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\FamilyProduct", inversedBy="productListings")
+     * @ORM\ManyToOne(targetEntity="App\Entity\FamilyProduct", inversedBy="productListings",cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $FamilyProduct;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Storages", mappedBy="Product", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Storages", mappedBy="Product", orphanRemoval=true,cascade={"persist"})
      */
     private $storages;
 

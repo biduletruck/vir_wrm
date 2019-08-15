@@ -50,7 +50,7 @@ class Orders
     private $User;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductListing", mappedBy="OrderNumber",orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductListing", mappedBy="OrderNumber",orphanRemoval=true,cascade={"persist"})
      */
     private $productListings;
 

@@ -17,12 +17,12 @@ class Storages
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProductListing", inversedBy="storages")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProductListing", inversedBy="storages",cascade={"persist"})
      */
     private $Product;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Locations", inversedBy="storages")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Locations", inversedBy="storages",cascade={"persist"})
      */
     private $Location;
 
@@ -32,7 +32,7 @@ class Storages
     private $LocationDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="storages")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="storages",cascade={"persist"})
      */
     private $Login;
 
