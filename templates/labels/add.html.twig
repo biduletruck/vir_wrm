@@ -127,20 +127,21 @@
 
     function IsValidClass(Response, Input, DeactiveInput)
     {
-        IsNotActiveInput(DeactiveInput,!Response)
+        console.log(Response['response'])
+        console.log(Response['localLabel'])
 
         if(Response['response'] === true )
         {
             Input.classList.remove('is-invalid')
             Input.classList.add('is-valid')
+
+            Response['localLabel'] === true ? IsNotActiveInput([BtnLocation], false) : IsNotActiveInput([BtnLocation], true)
         }else{
             Input.classList.remove('is-valid')
             Input.classList.add('is-invalid')
-
-
         }
+        IsNotActiveInput(DeactiveInput,!Response['response'])
 
-        Response['localLabel'] === true ? IsNotActiveInput([BtnLocation], false) : IsNotActiveInput([BtnLocation], true)
     }
 
     function IsNotActiveInput(DeactiveInput, disable)
