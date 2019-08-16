@@ -201,9 +201,9 @@ class LabelsController extends AbstractController
                 }else{
                     $location = false;
                 }
-                $response->setData(['response' => true, 'localLabel' => $location]);
+                $response->setData(["response" => true, "localLabel" => $location]);
             }else{
-                $response->setData(['response' => false,'localLabel' => false]);
+                $response->setData(["response" => false,"localLabel" => false]);
             }
             return $response;
         }
