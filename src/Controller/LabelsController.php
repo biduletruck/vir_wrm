@@ -183,7 +183,6 @@ class LabelsController extends AbstractController
         {
             $content = $request->request;
             $tab = $content->get('add_label_in_location');
-            dump($tab);
             $em = $this->getDoctrine()->getManager();
             /* @var $Label Labels  */
             $emplacement = $em->getRepository(Labels::class)->findOneBy(['localLabel' => $tab['localLabel']]);
