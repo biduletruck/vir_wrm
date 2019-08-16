@@ -31,6 +31,7 @@ class OrdersType extends AbstractType
             ])
             ->add('Company', EntityType::class, array(
                 'required' => true,
+                'label' => false,
                 'placeholder' => 'Choisir le client',
                 'class'   => Companies::class,
                 'attr'      => array('class' => 'form-control')
@@ -58,6 +59,7 @@ class OrdersType extends AbstractType
             ->remove('User')
             ->add('OrderBack', EntityType::class, [
                 'required' => true,
+                'label' => false,
                 'placeholder' => 'Type de commande',
                 'class' => OrderBack::class,
                 'attr' => ['class' => 'form-control']
