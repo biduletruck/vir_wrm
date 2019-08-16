@@ -76,24 +76,13 @@ class LabelsController extends AbstractController
             $order = $entityManager->getRepository(Labels::class)->findOneBy(['localLabel' => $data->getLocalLabel()]);
             //Récupération de l'emplacement en base
             $location = $entityManager->getRepository(Locations::class)->findOneBy(['Name' => $newLocation ."-" . $this->getUser()->getAgency()->getName()]);
-     dump($lice);
-     dump($newLocation);
-     dump($order);
-     dump($location);
-
-     //die();
             $label = $entityManager->getRepository(Labels::class)->find($order);
-            dump($label);
-
             if (!$label->getLocation() == null)
             {
-
                 $oldLocation = $this->getDoctrine()->getRepository(Locations::class)->find($label->getLocation());
                 $oldLocation->setFreePlace(1);
-              /*  $entityManager->persist($oldLocation);
-                $entityManager->flush(); */
-
-              dump($oldLocation);
+                $entityManager->persist($oldLocation);
+                $entityManager->flush();
             }
             $label->setLogin($this->getUser());
             $label->setVirLocalNumber($order->getVirLocalNumber());
