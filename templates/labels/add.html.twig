@@ -109,7 +109,8 @@
         let response = await fetch("{{ path('find_label_in_base') }}", {
             method: 'POST',
             headers: {
-                'X-Requested-With': 'XMLHttpRequest'
+                'X-Requested-With': 'XMLHttpRequest',
+                'accept': 'application/json; odata=verbose'
             },
             body: formData
         })
