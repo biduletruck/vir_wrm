@@ -183,15 +183,27 @@ class LabelsController extends AbstractController
         {
             $content = $request->request;
             $tab = $content->get('add_label_in_location');
+            dump($tab);
             $em = $this->getDoctrine()->getManager();
             /* @var $Label Labels  */
             $emplacement = $em->getRepository(Labels::class)->findOneBy(['localLabel' => $tab['localLabel']]);
+
+
             $response = new JsonResponse();
-            if ( !empty($emplacement) && ($emplacement->getVirLocalNumber()->getAgency() === $this->getUser()->getAgency()) )
-            {
-                $response->setData(true);
+
+
+            if ( !empty($emplacement) && ($emplacement->getVirLocalNumber()->getAgency() === $this->getUser()->getAgency()) ) {
+                if(!empty($tab['lice']) && !empty($tab['newLocation']))
+                {
+                    $lice = $tab['lice'] < 10 ? "0" . $tab['lice'] : $tab['lice'];
+                    $isValidLocation = $em->getRepository(Locations::class)->findOneBy(['Name' => $tab['newLocation'] . $lice . "-" . $this->getUser()->getAgency() ]);
+                    $location = $isValidLocation !== null ? true : false;
+                }else{
+                    $location = false;
+                }
+                $response->setData(['response' => true, 'localLabel' => $location]);
             }else{
-                $response->setData(false);
+                $response->setData(['response' => false,'localLabel' => false]);
             }
             return $response;
         }

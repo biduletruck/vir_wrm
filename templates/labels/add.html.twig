@@ -114,25 +114,33 @@
             body: formData
         })
 
-        let responseData = await response.json().then((function (responseData) {
-            IsValidClass(responseData, InputLocalLabel, MyInput)
-        }))
+        let responseData = await response.json().then()
+
+        if (response.ok === false)
+        {
+            console.log("il y a un probleme")
+        }else{
+           IsValidClass(responseData, InputLocalLabel, MyInput)
+        }
+
     }
 
     function IsValidClass(Response, Input, DeactiveInput)
     {
-        if(Response === true )
+        IsNotActiveInput(DeactiveInput,!Response)
+
+        if(Response['response'] === true )
         {
             Input.classList.remove('is-invalid')
             Input.classList.add('is-valid')
-            IsNotActiveInput([BtnLocation], false)
         }else{
             Input.classList.remove('is-valid')
             Input.classList.add('is-invalid')
-            IsNotActiveInput([BtnLocation], true)
+
 
         }
-        IsNotActiveInput(DeactiveInput,!Response)
+
+        Response['localLabel'] === true ? IsNotActiveInput([BtnLocation], false) : IsNotActiveInput([BtnLocation], true)
     }
 
     function IsNotActiveInput(DeactiveInput, disable)

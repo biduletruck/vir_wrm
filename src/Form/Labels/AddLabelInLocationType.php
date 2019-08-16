@@ -37,9 +37,6 @@ class AddLabelInLocationType extends AbstractType
                     'class' => 'form-control scanner_input']
             ])
             ->remove('Login')
-
-
-
         ;
     }
 
