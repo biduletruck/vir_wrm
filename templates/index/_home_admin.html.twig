@@ -3,7 +3,7 @@
 
 
 
-{% block body %}
+
 
     <div class="jumbotron">
         <H1>VIR Transport : Gestion du parc de <strong>{{ user.Agency.Name }}</strong></H1>
@@ -45,14 +45,5 @@
         </div>
     </div>
 
-{%  endblock %}
 
-{%  block javascripts %}
-    {{ parent() }}
-    <script src="./build/js/highcharts/highcharts.js"></script>
-    <script src="./build/js/highcharts/highcharts-3d.js"></script>
-    <script type="text/javascript">
-        {{ chart(chart) }}
-        {{ chart(driveways) }}
-    </script>
-{% endblock %}
+

@@ -3,6 +3,15 @@
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
         {% include 'index/_home_admin.html.twig' %}
+        {%  block javascripts %}
+            {{ parent() }}
+            <script src="./build/js/highcharts/highcharts.js"></script>
+            <script src="./build/js/highcharts/highcharts-3d.js"></script>
+            <script type="text/javascript">
+                {{ chart(chart) }}
+                {{ chart(driveways) }}
+            </script>
+        {% endblock %}
     {% else %}
         {% include 'index/_home_light.html.twig' %}
     {% endif %}
