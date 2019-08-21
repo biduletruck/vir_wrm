@@ -51,6 +51,7 @@ body {
 .btn_nav {
     text-decoration: none;
     list-style: none;
+    height: 5rem;
     margin-bottom: 2rem;
     margin-top: 2rem;
 }

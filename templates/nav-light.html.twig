@@ -3,9 +3,7 @@
 
 
         <a class="navbar-brand" href="{{ path('index') }}"><img src='/build/images/logo.png' height="40px"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+
         <ul class="navbar-nav mr-auto">
             {%  if app.user %}
                 <li {% if app.request.attributes.get('_route') == 'orders_index' %}class="nav-item active"{% endif %}><a class="nav-link" href="{{ path('index') }}">Menu</a></li>
