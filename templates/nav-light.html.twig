@@ -1,0 +1,27 @@
+{% block nav %}
+    <nav class="navbar navbar-light navbar-expand-sm fixed-top" style="background-color: #646678;">
+
+
+        <a class="navbar-brand" href="{{ path('index') }}"><img src='/build/images/logo.png' height="40px"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                {%  if app.user %}
+                    <li {% if app.request.attributes.get('_route') == 'orders_index' %}class="nav-item active"{% endif %}><a class="nav-link" href="{{ path('index') }}">Menu</a></li>
+                {% endif %}
+            </ul>
+
+            <ul class="navbar-nav align-items-md-end">
+                <li class="nav-item">
+                    {%  if app.user %}
+                        <a class="nav-link" href="{{ path('logout') }}">Déconnexion</a>
+                    {%  else %}
+                        <a class="nav-link" href="{{ path('login') }}">Connexion</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}

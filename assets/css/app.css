@@ -48,6 +48,12 @@ body {
     text-decoration: none;
 }
 
+.btn_nav {
+    text-decoration: none;
+    list-style: none;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
 
 .center-form{
     display: flex;

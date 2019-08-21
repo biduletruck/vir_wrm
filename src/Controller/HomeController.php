@@ -11,15 +11,28 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+   /*
+    public function index() :Response
+    {
+        return $this->render('ho')
+    }
+
+    public function index_user(): Response
+    {
+        return $this->render('home.html.twig',[
+            'stat'  => $stat,
+            'chart'    => $ob,
+            'driveways' => $driveways,
+            'user'  => $User,
+        ]);
+    }
+*/
 
     /**
      * @Route(path="/", name="index")
-     * @param LocationsRepository $locationsRepository
      * @return Response
      */
-
-
-    public function index(LocationsRepository $locationsRepository): Response
+    public function index_admin(LocationsRepository $locationsRepository): Response
     {
         $stat = $locationsRepository->occupancyRateWarehouse($this->getUser()->getAgency());
         $ways = $locationsRepository->occupancyByDriveWay($this->getUser()->getAgency());

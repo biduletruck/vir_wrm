@@ -1,69 +1,9 @@
 {% extends 'base.html.twig' %}
 
-
-
-
-
 {% block body %}
-
-
-    <div class="jumbotron">
-        <H1>VIR Transport : Gestion du parc de <strong>{{ user.Agency.Name }}</strong></H1>
-        <h6>Connecté en tant que {{ user.lastname }}</h6>
-    </div>
-
-
-<div class="row h-100">
-    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-        <div class="card">
-            <h5 class="card-header text-center">Taux d'occupation de l'entrepôt</h5>
-            <div class="card-body">
-                <div id="graph" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-            </div>
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col-2">
-                        <a href="{{ path('orders_index') }}" class="btn btn-primary"><span class="fa fa-list" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-10 align-baseline">
-                        {% for result in stat %}
-                            Tx d'occupation Total : {{  ((result.total - result.libre) / result.total * 100) | round(2) }}%</h1>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-        <div class="card">
-            <h5 class="card-header text-center">Taux d'occupation des allées</h5>
-            <div class="card-body">
-                <div id="way" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-            </div>
-            <div class="card-footer">
-                <a href="{{ path('orders_index') }}" class="btn btn-primary"><span class="fa fa-list" aria-hidden="true"></span></a>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-{%  endblock %}
-
-{%  block javascripts %}
-    {{ parent() }}
-    <script src="./build/js/highcharts/highcharts.js"></script>
-    <script src="./build/js/highcharts/highcharts-3d.js"></script>
-    <script type="text/javascript">
-        {{ chart(chart) }}
-        {{ chart(driveways) }}
-
-    </script>
-
-
-
+    {% if is_granted('ROLE_ADMIN') %}
+        {% include 'index/_home_admin.html.twig' %}
+    {% else %}
+        {% include 'index/_home_light.html.twig' %}
+    {% endif %}
 {% endblock %}

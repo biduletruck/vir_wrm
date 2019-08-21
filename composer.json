@@ -8,7 +8,8 @@
         "ext-json": "*",
         "easycorp/easyadmin-bundle": "^2.2",
         "knplabs/knp-paginator-bundle": "^4.0",
-        "ninsuo/symfony-collection": "^2.1",
+
+
         "ob/highcharts-bundle": "^1.6",
         "phpoffice/phpspreadsheet": "^1.8",
         "ramsey/uuid": "^3.8",

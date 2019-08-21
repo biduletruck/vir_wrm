@@ -19,7 +19,11 @@
 
     <body>
     {% block nav %}
-        {% include "nav.html.twig" %}
+        {% if is_granted('ROLE_ADMIN') %}
+            {% include "nav.html.twig" %}
+        {% else %}
+            {% include "nav-light.html.twig" %}
+        {% endif %}
     {% endblock %}
 
     <div class="container-fluid h-100">
