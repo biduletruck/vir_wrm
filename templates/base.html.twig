@@ -20,9 +20,9 @@
     <body>
     {% block nav %}
         {% if is_granted('ROLE_ADMIN') %}
-            {% include "nav.html.twig" %}
+            {% include "nav/nav.html.twig" %}
         {% else %}
-            {% include "nav-light.html.twig" %}
+            {% include "nav/nav-light.html.twig" %}
         {% endif %}
     {% endblock %}
 
