@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Serializer;
+use function Matrix\diagonal;
 
 /**
  * @Route("/labels")
@@ -74,13 +75,24 @@ class LabelsController extends AbstractController
 
             //Récupération de la commande
             $order = $entityManager->getRepository(Labels::class)->findOneBy(['localLabel' => $data->getLocalLabel()]);
+
+
             //Récupération de l'emplacement en base
             $location = $entityManager->getRepository(Locations::class)->findOneBy(['Name' => $newLocation ."-" . $this->getUser()->getAgency()->getName()]);
+
+
             $label = $entityManager->getRepository(Labels::class)->find($order);
             if (!$label->getLocation() == null)
             {
                 $oldLocation = $this->getDoctrine()->getRepository(Locations::class)->find($label->getLocation());
-                $oldLocation->setFreePlace(1);
+                $oldLocation->setCountLabels($oldLocation->getCountLabels()-1);
+                dump($oldLocation);
+               // die();
+               // $label->getLocation()->setCountLabels($location->getCountLabels() - 1);
+                if ( $oldLocation->getCountLabels() < 1)
+                {
+                    $oldLocation->setFreePlace(1);
+                }
                 $entityManager->persist($oldLocation);
                 $entityManager->flush();
             }
@@ -88,6 +100,7 @@ class LabelsController extends AbstractController
             $label->setVirLocalNumber($order->getVirLocalNumber());
             $label->setLocationDate(new \DateTime());
             $label->setLocation($location);
+            $label->getLocation()->setCountLabels($location->getCountLabels() + 1);
             $label->getLocation()->setFreePlace(0);
 
             $entityManager->persist($label);

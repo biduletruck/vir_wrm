@@ -60,6 +60,11 @@ class Locations
 
     private $Alveole;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $countLabels;
+
     public function __construct()
     {
         $this->storages = new ArrayCollection();
@@ -249,6 +254,18 @@ class Locations
     public function setAlveole($Alveole)
     {
         $this->Alveole = $Alveole;
+        return $this;
+    }
+
+    public function getCountLabels(): ?int
+    {
+        return $this->countLabels;
+    }
+
+    public function setCountLabels(int $countLabels): self
+    {
+        $this->countLabels = $countLabels;
+
         return $this;
     }
 
