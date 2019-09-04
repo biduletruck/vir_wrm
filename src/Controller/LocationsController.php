@@ -6,11 +6,13 @@ use App\Entity\Agencies;
 use App\Entity\Locations;
 use App\Form\Locations\LocationsType;
 use App\Repository\LocationsRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,19 +42,6 @@ class LocationsController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        /*
-        $form = $this->createFormBuilder()
-            ->add('allee', TextType::class)
-            ->add('lice', NumberType::class)
-            ->add('alveole', NumberType::class)
-            ->add('agency', EntityType::class, array(
-                'required' => false,
-                'class'   => Agencies::class,
-                'attr'      => array('class' => 'form-control')
-            ))
-            ->add('send', SubmitType::class,['label' => 'ajouter'])
-            ->getForm();
-*/
         $location = new Locations();
         $form = $this->createForm(LocationsType::class, $location);
         $form->handleRequest($request);
@@ -91,27 +80,6 @@ class LocationsController extends AbstractController
 
     }
 
-  /*  public function new(Request $request): Response
-    {
-        $location = new Locations();
-        $form = $this->createForm(LocationsType::class, $location);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($location);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('locations_index');
-        }
-
-        return $this->render('locations/new.html.twig', [
-            'location' => $location,
-            'form' => $form->createView(),
-        ]);
-    }
-  */
-
     /**
      * @Route("/{id}", name="locations_show", methods={"GET"})
      */
@@ -124,6 +92,9 @@ class LocationsController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="locations_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Locations $location
+     * @return Response
      */
     public function edit(Request $request, Locations $location): Response
     {
@@ -146,6 +117,9 @@ class LocationsController extends AbstractController
 
     /**
      * @Route("/{id}", name="locations_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Locations $location
+     * @return Response
      */
     public function delete(Request $request, Locations $location): Response
     {
@@ -159,10 +133,10 @@ class LocationsController extends AbstractController
     }
 
     /**
-     * @param \Symfony\Component\Form\FormInterface $form
-     * @return \Doctrine\Common\Persistence\ObjectManager
+     * @param FormInterface $form
+     * @return ObjectManager
      */
-    private function AddNewDriveWay(\Symfony\Component\Form\FormInterface $form): \Doctrine\Common\Persistence\ObjectManager
+    private function AddNewDriveWay(FormInterface $form): ObjectManager
     {
         $data = $form->getData();
         $entityManager = $this->getDoctrine()->getManager();
