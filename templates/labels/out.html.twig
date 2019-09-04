@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Labels{% endblock %}
+{% block title %}exit Labels{% endblock %}
 
 {% block body %}
     <div class="jumbotron">
-        <h1 class="">Mise en rayonnage </h1>
+        <h1 class="">Sortie de rayonnage </h1>
     </div>
 
     <div class="row justify-content-md-center">
@@ -30,31 +30,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group" >
-                        <div>
-                            {{ form_label(form.newLocation) }}
-                        </div>
-                        <div class="input-group">
-                            <div>
-                                {{ form_errors(form.newLocation) }}
-                                {{ form_widget(form.newLocation) }}
-                            </div>
-                            <span class="input-group-btn">
-                                <button class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#_scanBar" id="NewLocation"><i class="fa fa-barcode"></i></button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div>
-                            {{ form_label(form.lice) }}
-                        </div>
-                        <div class="input-group">
-                            <div>
-                                {{ form_errors(form.lice) }}
-                                {{ form_widget(form.lice) }}
-                            </div>
-                        </div>
-                    </div>
+
                     <button class="btn btn-block btn-success" id="Btn_Location">{{ button_label|default('Valider') }}</button>
                 {{ form_end(form) }}
             </div>
@@ -77,65 +53,60 @@
 
 {% block javascripts %}
 <script type="text/javascript">
+    const InputLocalLabel = document.getElementById("out_label_in_location_localLabel");
 
-    const InputLocalLabel = document.getElementById("add_label_in_location_localLabel")
-    const InputLocation = document.getElementById("add_label_in_location_newLocation")
-    const InputLice = document.getElementById("add_label_in_location_lice")
-    const BtnScan  = document.getElementById("NewLocation")
-    const BtnLocation  = document.getElementById("Btn_Location")
+    const BtnLocation  = document.getElementById("Btn_Location");
 
-    const MyInput = [InputLocation, InputLice, BtnScan]
+  //  const MyInput = [InputLocation, InputLice, BtnScan]
 
     //Désactivation des inputs et du bouton de validation
-    IsNotActiveInput(MyInput, true)
-    IsNotActiveInput([BtnLocation], true)
+  // IsNotActiveInput(MyInput, true)
+    IsNotActiveInput([BtnLocation], true);
 
     document.getElementById("MyForm").addEventListener('input', async function (e)
     {
-        const formData = new FormData(this)
+        const formData = new FormData(this);
         await getFetch(formData);
-    })
+    });
 
     async function FindLabelIfExist() {
-        const formData = new FormData(document.getElementById("MyForm"))
+        const formData = new FormData(document.getElementById("MyForm"));
         await getFetch(formData);
     }
 
     async function getFetch(formData) {
-        let response = await fetch("{{ path('find_label_in_base') }}", {
+        let response = await fetch("{{ path('find_label_in_base_for_out') }}", {
             method: 'POST',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'accept': 'application/json; data=verbose'
             },
             body: formData
-        })
+        });
 
-        let responseData = await response.json().then()
+        let responseData = await response.json().then();
 
         if (response.ok === false)
         {
             console.log("il y a un probleme")
         }else{
-           IsValidClass(responseData, InputLocalLabel, MyInput)
+            IsValidClass(responseData, InputLocalLabel)
         }
 
     }
-
-    function IsValidClass(Response, Input, DeactiveInput)
+    function IsValidClass(Response, Input)
     {
-        if(Response['response'] === true )
+        if(Response['response'] === true && Response['localLabel'])
         {
-            Input.classList.remove('is-invalid')
-            Input.classList.add('is-valid')
+            Input.classList.remove('is-invalid');
+            Input.classList.add('is-valid');
 
             Response['localLabel'] === true ? IsNotActiveInput([BtnLocation], false) : IsNotActiveInput([BtnLocation], true)
         }else{
-            Input.classList.remove('is-valid')
-            Input.classList.add('is-invalid')
+            Input.classList.remove('is-valid');
+            Input.classList.add('is-invalid');
+            Response['localLabel'] === true ? IsNotActiveInput([BtnLocation], false) : IsNotActiveInput([BtnLocation], true)
         }
-        IsNotActiveInput(DeactiveInput,!Response['response'])
-
     }
 
     function IsNotActiveInput(DeactiveInput, disable)
@@ -145,19 +116,18 @@
         });
     }
 
-    var cell = null;
+    let cell = null;
 
-    $('#NewLocation').click(function(event){
-        cell = 'add_label_in_location_newLocation';
+    $('#localLabel').click(function(event){
+        cell = 'out_label_in_location_localLabel';
     });
 
-    $('#LocalLabel').click(function(event){
-        cell = 'add_label_in_location_localLabel';
-    });
+
 
     //JS du scanbar
    window.addEventListener('load', function () {
        let selectedDeviceId;
+
        const codeReader = new ZXing.BrowserMultiFormatReader()
        codeReader.getVideoInputDevices()
            .then((videoInputDevices) => {
@@ -183,7 +153,7 @@
                    codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
                        if (result) {
                            document.getElementById(cell).value = result.text
-                           if(cell === 'add_label_in_location_localLabel'){
+                           if(cell === 'out_label_in_location_localLabel'){
                                FindLabelIfExist()
                            }
                            codeReader.reset()
