@@ -78,7 +78,7 @@ class LabelsController extends AbstractController
             /** @var Labels $data */
             $data = $form->getData();
 
-            $newLocation = $data->getNewLocation() . $this->getStr($data->getLice());
+            $newLocation = $data->getNewLocation() . $this->getStr( $data->getLice());
 
 
             //Récupération de la commande
@@ -110,8 +110,8 @@ class LabelsController extends AbstractController
 
             $entityManager->persist($label);
             $entityManager->flush();
-
-            return $this->redirectToRoute('labels_index');
+            $this->get('session')->getFlashBag()->add('success', 'colis ajouté au stock');
+            return $this->redirectToRoute('labels_add');
         }
 
         return $this->render('labels/add.html.twig', [
@@ -156,8 +156,8 @@ class LabelsController extends AbstractController
             $label->setLocation(null);
             $entityManager->persist($label);
             $entityManager->flush();
-
-            return $this->redirectToRoute('labels_index');
+            $this->get('session')->getFlashBag()->add('success', 'Colis sortie du stock');
+            return $this->redirectToRoute('labels_out_of_stock');
         }
 
         return $this->render('labels/out.html.twig', [
@@ -258,7 +258,7 @@ class LabelsController extends AbstractController
                 if(!empty($tab['lice']) && !empty($tab['newLocation']))
                 {
 
-                    $isValidLocation = $em->getRepository(Locations::class)->findOneBy(['Name' => $tab['newLocation'] . $this->getStr($tab) . "-" . $this->getUser()->getAgency() ]);
+                    $isValidLocation = $em->getRepository(Locations::class)->findOneBy(['Name' => $tab['newLocation'] . $this->getStr($tab['lice']) . "-" . $this->getUser()->getAgency() ]);
                     $location = $isValidLocation !== null ? true : false;
                 }else{
                     $location = false;
@@ -315,7 +315,7 @@ class LabelsController extends AbstractController
      */
     public function getStr($tab): string
     {
-        $lice = $tab['lice'] < 10 ? "0" . $tab['lice'] : $tab['lice'];
+        $lice = $tab < 10 ? "0" . $tab : $tab;
         return $lice;
     }
 

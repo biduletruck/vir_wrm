@@ -94,6 +94,8 @@ class OrdersController extends AbstractController
 
             $this->addProductToListing($order, $command, $entityManager);
             $this->addLabelBeforeLocation($command);
+
+            $this->get('session')->getFlashBag()->add('success', 'Une nouvelle commande a été ajouté');
             return $this->redirectToRoute('orders_index');
         }
 
