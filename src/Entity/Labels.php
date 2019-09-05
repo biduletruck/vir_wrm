@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,6 +48,16 @@ class Labels
      * @ORM\ManyToOne(targetEntity="App\Entity\Locations", inversedBy="labels")
      */
     private $Location;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\LabelStatus", mappedBy="LabelStatus")
+     */
+    private $labelStatuses;
+
+    public function __construct()
+    {
+        $this->labelStatuses = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -151,6 +163,37 @@ class Labels
     public function setNewLocation($newLocation)
     {
         $this->newLocation = $newLocation;
+        return $this;
+    }
+
+    /**
+     * @return Collection|LabelStatus[]
+     */
+    public function getLabelStatuses(): Collection
+    {
+        return $this->labelStatuses;
+    }
+
+    public function addLabelStatus(LabelStatus $labelStatus): self
+    {
+        if (!$this->labelStatuses->contains($labelStatus)) {
+            $this->labelStatuses[] = $labelStatus;
+            $labelStatus->setLabelStatus($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLabelStatus(LabelStatus $labelStatus): self
+    {
+        if ($this->labelStatuses->contains($labelStatus)) {
+            $this->labelStatuses->removeElement($labelStatus);
+            // set the owning side to null (unless already changed)
+            if ($labelStatus->getLabelStatus() === $this) {
+                $labelStatus->setLabelStatus(null);
+            }
+        }
+
         return $this;
     }
 }

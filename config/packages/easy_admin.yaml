@@ -5,6 +5,7 @@ easy_admin:
             # - { label: 'Les utilisateurs', entity: 'Users'}
             #  - { label: 'Commandes', entity: 'Orders'}
             - { label: 'Famille de produit', entity: 'Type_colis'}
+            - { label: 'Statut du colis', entity: 'Status_Label'}
             - { label: 'Type de retours', entity: 'Type_retours'}
             - { label: "Donneur d'ordres", entity: 'Companies'}
             - { label: 'Agences', entity: 'Agencies'}
@@ -51,6 +52,12 @@ easy_admin:
             form:
                 fields:
                     - { property: 'name', type: 'text' }
+        Status_Label:
+                    class: App\Entity\LabelStatus
+                    form:
+                        fields:
+                            - { property: 'name', type: 'text' }
+                            - { property: 'enable', type: 'checkbox' }
 
         Type_retours:
             class: App\Entity\OrderBack

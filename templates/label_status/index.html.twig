@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LabelStatus index{% endblock %}
+
+{% block body %}
+    <h1>LabelStatus index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Enable</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for label_status in label_statuses %}
+            <tr>
+                <td>{{ label_status.id }}</td>
+                <td>{{ label_status.name }}</td>
+                <td>{{ label_status.Enable ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('label_status_show', {'id': label_status.id}) }}">show</a>
+                    <a href="{{ path('label_status_edit', {'id': label_status.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('label_status_new') }}">Create new</a>
+{% endblock %}
