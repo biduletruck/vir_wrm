@@ -50,9 +50,10 @@ class Labels
     private $Location;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LabelStatus", mappedBy="LabelStatus")
+     * @ORM\ManyToOne(targetEntity="App\Entity\LabelStatus", inversedBy="labels")
      */
-    private $labelStatuses;
+    private $labelStatus;
+    
 
     public function __construct()
     {
@@ -166,34 +167,16 @@ class Labels
         return $this;
     }
 
-    /**
-     * @return Collection|LabelStatus[]
-     */
-    public function getLabelStatuses(): Collection
+    public function getLabelStatus(): ?LabelStatus
     {
-        return $this->labelStatuses;
+        return $this->labelStatus;
     }
 
-    public function addLabelStatus(LabelStatus $labelStatus): self
+    public function setLabelStatus(?LabelStatus $labelStatus): self
     {
-        if (!$this->labelStatuses->contains($labelStatus)) {
-            $this->labelStatuses[] = $labelStatus;
-            $labelStatus->setLabelStatus($this);
-        }
+        $this->labelStatus = $labelStatus;
 
         return $this;
     }
 
-    public function removeLabelStatus(LabelStatus $labelStatus): self
-    {
-        if ($this->labelStatuses->contains($labelStatus)) {
-            $this->labelStatuses->removeElement($labelStatus);
-            // set the owning side to null (unless already changed)
-            if ($labelStatus->getLabelStatus() === $this) {
-                $labelStatus->setLabelStatus(null);
-            }
-        }
-
-        return $this;
-    }
 }

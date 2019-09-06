@@ -48,6 +48,7 @@ class LabelsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
             $entityManager->persist($label);
             $entityManager->flush();
 
@@ -107,7 +108,7 @@ class LabelsController extends AbstractController
             $label->setLocation($location);
             $label->getLocation()->setCountLabels($location->getCountLabels() + 1);
             $label->getLocation()->setFreePlace(0);
-
+            $label->setLabelStatus(1);
             $entityManager->persist($label);
             $entityManager->flush();
             $this->get('session')->getFlashBag()->add('success', 'colis ajouté au stock');

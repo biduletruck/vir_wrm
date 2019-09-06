@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\FamilyProduct;
+use App\Entity\LabelStatus;
 use App\Entity\OrderBack;
 use App\Entity\OrderStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -17,12 +18,15 @@ class AppFixtures extends Fixture
 
     private $orderBack = ['Retour complet', 'Retour partiel', 'Livraison tardive', 'Livraison express' ];
 
+    private $labelStatus = ['En attente', 'En stock', 'Déplacé', 'Sortie' ];
+
 
     public function load(ObjectManager $manager)
     {
         $this->addOrderStatus($manager);
         $this->addFamilyProduct($manager);
         $this->addOrderBack($manager);
+        $this->addLabelStatus($manager);
     }
 
     public function addOrderStatus(ObjectManager $manager)
@@ -56,6 +60,18 @@ class AppFixtures extends Fixture
             $back->setName($orderBack);
             $back->setStatus(true);
             $manager->persist($back);
+        }
+        $manager->flush();
+    }
+
+    public function addLabelStatus(ObjectManager $manager)
+    {
+        foreach ($this->labelStatus as $labelStatus)
+        {
+            $label = new LabelStatus();
+            $label->setName($labelStatus);
+            $label->setEnable(true);
+            $manager->persist($label);
         }
         $manager->flush();
     }

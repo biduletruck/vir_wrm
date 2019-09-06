@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,9 +29,14 @@ class LabelStatus
     private $Enable;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Labels", inversedBy="labelStatuses")
+     * @ORM\OneToMany(targetEntity="App\Entity\Labels", mappedBy="labelStatus")
      */
-    private $LabelStatus;
+    private $labels;
+
+    public function __construct()
+    {
+        $this->labels = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -65,15 +72,35 @@ class LabelStatus
         return $this->name;
     }
 
-    public function getLabelStatus(): ?Labels
+    /**
+     * @return Collection|Labels[]
+     */
+    public function getLabels(): Collection
     {
-        return $this->LabelStatus;
+        return $this->labels;
     }
 
-    public function setLabelStatus(?Labels $LabelStatus): self
+    public function addLabel(Labels $label): self
     {
-        $this->LabelStatus = $LabelStatus;
+        if (!$this->labels->contains($label)) {
+            $this->labels[] = $label;
+            $label->setLabelStatus($this);
+        }
 
         return $this;
     }
+
+    public function removeLabel(Labels $label): self
+    {
+        if ($this->labels->contains($label)) {
+            $this->labels->removeElement($label);
+            // set the owning side to null (unless already changed)
+            if ($label->getLabelStatus() === $this) {
+                $label->setLabelStatus(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
