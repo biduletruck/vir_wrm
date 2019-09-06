@@ -84,10 +84,11 @@
                             </tr>
                             </thead>
                             <tbody>
+                            {{ dump(labels) }}
                             {%  for label in labels %}
                                 <tr>
                                     <td>{{ label.localLabel }}/{{ order.labels }}</td>
-                                    <td>{%  if label.location.location is defined and label.location.location is not null %}{{ label.location.location | rack }}{% else %} En attente{% endif %}</td>
+                                    <td>{%  if label.location.location is defined and label.location.location is not null %}{{ label.location.location | rack }}{% else %}{{ label.labelStatus.name }} {% endif %}</td>
                                     <td>{% if label.locationDate is not null %}{{ label.locationDate | date('d/m/Y à H:i:s') }}{% else %} En attente{% endif %}</td>
                                     <td  class="d-none d-sm-table-cell">{%  if label.login is not null %}{{  label.login }}{% endif %}</td>
                                 </tr>

@@ -8,6 +8,7 @@ use App\Form\Labels\AddLabelInLocationType;
 use App\Form\Labels\LabelsType;
 use App\Form\Labels\OutLabelInLocationType;
 use App\Repository\LabelsRepository;
+use App\Repository\LabelStatusRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -67,7 +68,7 @@ class LabelsController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function AddLabelLocation(Request $request): Response
+    public function AddLabelLocation(Request $request, LabelStatusRepository $labelStatusRepository): Response
     {
         $label = new Labels();
         $form = $this->createForm(AddLabelInLocationType::class, $label);
@@ -108,7 +109,7 @@ class LabelsController extends AbstractController
             $label->setLocation($location);
             $label->getLocation()->setCountLabels($location->getCountLabels() + 1);
             $label->getLocation()->setFreePlace(0);
-            $label->setLabelStatus(1);
+            $label->setLabelStatus($labelStatusRepository->find(2));
             $entityManager->persist($label);
             $entityManager->flush();
             $this->get('session')->getFlashBag()->add('success', 'colis ajouté au stock');

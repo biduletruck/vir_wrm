@@ -36,6 +36,7 @@ class LabelStatus
     public function __construct()
     {
         $this->labels = new ArrayCollection();
+
     }
 
     public function getId(): ?int

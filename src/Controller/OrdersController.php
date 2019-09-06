@@ -5,12 +5,14 @@ namespace App\Controller;
 
 use App\Entity\Agencies;
 use App\Entity\Labels;
+use App\Entity\LabelStatus;
 use App\Entity\Orders;
 use App\Entity\ProductListing;
 use App\Entity\Storages;
 use App\Form\Orders\OrdersEditType;
 use App\Form\Orders\OrdersType;
 use App\Repository\LabelsRepository;
+use App\Repository\LabelStatusRepository;
 use App\Repository\OrdersRepository;
 use App\Repository\OrderStatusRepository;
 use App\Repository\ProductListingRepository;
@@ -58,7 +60,7 @@ class OrdersController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function new(Request $request, OrderStatusRepository $orderStatusRepository): Response
+    public function new(Request $request, OrderStatusRepository $orderStatusRepository, LabelStatusRepository $labelStatusRepository): Response
     {
         $order = new Orders();
         $date = new \DateTime("NOW");
@@ -93,7 +95,7 @@ class OrdersController extends AbstractController
             $entityManager->flush();
 
             $this->addProductToListing($order, $command, $entityManager);
-            $this->addLabelBeforeLocation($command);
+            $this->addLabelBeforeLocation($command, $labelStatusRepository);
 
             $this->get('session')->getFlashBag()->add('success', 'Une nouvelle commande a été ajouté');
             return $this->redirectToRoute('orders_index');
@@ -158,15 +160,18 @@ class OrdersController extends AbstractController
 
     /**
      * @param Orders $order
+     * @param LabelStatusRepository $labelStatusRepository
      */
-    private function addLabelBeforeLocation(Orders $order)
+    private function addLabelBeforeLocation(Orders $order, LabelStatusRepository $labelStatusRepository )
     {
+
         $entityManager = $this->getDoctrine()->getManager();
 
         for ($i = 1; $i <= $order->getLabels(); $i ++)
         {
             $label = new Labels();
             $label->setVirLocalNumber($order)
+            ->setLabelStatus($labelStatusRepository->find(1))
             ->setLocalLabel($order->getVirLocalNumber() . "-" . $i );
             $entityManager->persist($label);
         }
