@@ -17,6 +17,8 @@ class FamilyProductController extends AbstractController
 {
     /**
      * @Route("/", name="family_product_index", methods={"GET"})
+     * @param FamilyProductRepository $familyProductRepository
+     * @return Response
      */
     public function index(FamilyProductRepository $familyProductRepository): Response
     {
@@ -27,6 +29,8 @@ class FamilyProductController extends AbstractController
 
     /**
      * @Route("/new", name="family_product_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -50,6 +54,8 @@ class FamilyProductController extends AbstractController
 
     /**
      * @Route("/{id}", name="family_product_show", methods={"GET"})
+     * @param FamilyProduct $familyProduct
+     * @return Response
      */
     public function show(FamilyProduct $familyProduct): Response
     {
@@ -60,6 +66,9 @@ class FamilyProductController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="family_product_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param FamilyProduct $familyProduct
+     * @return Response
      */
     public function edit(Request $request, FamilyProduct $familyProduct): Response
     {
@@ -80,6 +89,9 @@ class FamilyProductController extends AbstractController
 
     /**
      * @Route("/{id}", name="family_product_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param FamilyProduct $familyProduct
+     * @return Response
      */
     public function delete(Request $request, FamilyProduct $familyProduct): Response
     {

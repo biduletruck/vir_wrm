@@ -17,6 +17,8 @@ class AgenciesController extends AbstractController
 {
     /**
      * @Route("/", name="agencies_index", methods={"GET"})
+     * @param AgenciesRepository $agenciesRepository
+     * @return Response
      */
     public function index(AgenciesRepository $agenciesRepository): Response
     {
@@ -27,6 +29,8 @@ class AgenciesController extends AbstractController
 
     /**
      * @Route("/new", name="agencies_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -50,6 +54,8 @@ class AgenciesController extends AbstractController
 
     /**
      * @Route("/{id}", name="agencies_show", methods={"GET"})
+     * @param Agencies $agency
+     * @return Response
      */
     public function show(Agencies $agency): Response
     {
@@ -60,6 +66,9 @@ class AgenciesController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="agencies_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Agencies $agency
+     * @return Response
      */
     public function edit(Request $request, Agencies $agency): Response
     {
@@ -80,6 +89,9 @@ class AgenciesController extends AbstractController
 
     /**
      * @Route("/{id}", name="agencies_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Agencies $agency
+     * @return Response
      */
     public function delete(Request $request, Agencies $agency): Response
     {

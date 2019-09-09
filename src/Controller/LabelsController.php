@@ -65,6 +65,7 @@ class LabelsController extends AbstractController
     /**
      * @Route("/add", name="labels_add", methods={"GET","POST"})
      * @param Request $request
+     * @param LabelStatusRepository $labelStatusRepository
      * @return Response
      * @throws \Exception
      */

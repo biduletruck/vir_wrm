@@ -17,6 +17,8 @@ class OrderBackController extends AbstractController
 {
     /**
      * @Route("/", name="order_back_index", methods={"GET"})
+     * @param OrderBackRepository $orderBackRepository
+     * @return Response
      */
     public function index(OrderBackRepository $orderBackRepository): Response
     {
@@ -27,6 +29,8 @@ class OrderBackController extends AbstractController
 
     /**
      * @Route("/new", name="order_back_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -50,6 +54,8 @@ class OrderBackController extends AbstractController
 
     /**
      * @Route("/{id}", name="order_back_show", methods={"GET"})
+     * @param OrderBack $orderBack
+     * @return Response
      */
     public function show(OrderBack $orderBack): Response
     {
@@ -60,6 +66,9 @@ class OrderBackController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="order_back_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param OrderBack $orderBack
+     * @return Response
      */
     public function edit(Request $request, OrderBack $orderBack): Response
     {
@@ -80,6 +89,9 @@ class OrderBackController extends AbstractController
 
     /**
      * @Route("/{id}", name="order_back_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param OrderBack $orderBack
+     * @return Response
      */
     public function delete(Request $request, OrderBack $orderBack): Response
     {

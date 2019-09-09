@@ -30,6 +30,7 @@ class HomeController extends AbstractController
 
     /**
      * @Route(path="/", name="index")
+     * @param LocationsRepository $locationsRepository
      * @return Response
      */
     public function index_admin(LocationsRepository $locationsRepository): Response

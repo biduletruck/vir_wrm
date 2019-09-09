@@ -17,6 +17,8 @@ class ProductListingController extends AbstractController
 {
     /**
      * @Route("/", name="product_listing_index", methods={"GET"})
+     * @param ProductListingRepository $productListingRepository
+     * @return Response
      */
     public function index(ProductListingRepository $productListingRepository): Response
     {
@@ -27,6 +29,8 @@ class ProductListingController extends AbstractController
 
     /**
      * @Route("/new", name="product_listing_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -50,6 +54,8 @@ class ProductListingController extends AbstractController
 
     /**
      * @Route("/{id}", name="product_listing_show", methods={"GET"})
+     * @param ProductListing $productListing
+     * @return Response
      */
     public function show(ProductListing $productListing): Response
     {
@@ -60,6 +66,9 @@ class ProductListingController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="product_listing_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param ProductListing $productListing
+     * @return Response
      */
     public function edit(Request $request, ProductListing $productListing): Response
     {
@@ -80,6 +89,9 @@ class ProductListingController extends AbstractController
 
     /**
      * @Route("/{id}", name="product_listing_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param ProductListing $productListing
+     * @return Response
      */
     public function delete(Request $request, ProductListing $productListing): Response
     {

@@ -17,6 +17,8 @@ class CompaniesController extends AbstractController
 {
     /**
      * @Route("/", name="companies_index", methods={"GET"})
+     * @param CompaniesRepository $companiesRepository
+     * @return Response
      */
     public function index(CompaniesRepository $companiesRepository): Response
     {
@@ -27,6 +29,8 @@ class CompaniesController extends AbstractController
 
     /**
      * @Route("/new", name="companies_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -50,6 +54,8 @@ class CompaniesController extends AbstractController
 
     /**
      * @Route("/{id}", name="companies_show", methods={"GET"})
+     * @param Companies $company
+     * @return Response
      */
     public function show(Companies $company): Response
     {
@@ -60,6 +66,9 @@ class CompaniesController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="companies_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Companies $company
+     * @return Response
      */
     public function edit(Request $request, Companies $company): Response
     {
@@ -80,6 +89,9 @@ class CompaniesController extends AbstractController
 
     /**
      * @Route("/{id}", name="companies_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Companies $company
+     * @return Response
      */
     public function delete(Request $request, Companies $company): Response
     {

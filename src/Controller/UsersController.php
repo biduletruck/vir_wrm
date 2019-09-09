@@ -20,6 +20,8 @@ class UsersController extends AbstractController
 {
     /**
      * @Route("/", name="users_index", methods={"GET"})
+     * @param UsersRepository $usersRepository
+     * @return Response
      */
     public function index(UsersRepository $usersRepository): Response
     {
@@ -30,6 +32,9 @@ class UsersController extends AbstractController
 
     /**
      * @Route("/new", name="users_new", methods={"GET","POST"})
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @return Response
      */
     public function new(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
@@ -61,6 +66,8 @@ class UsersController extends AbstractController
 
     /**
      * @Route("/{id}", name="users_show", methods={"GET"})
+     * @param Users $user
+     * @return Response
      */
     public function show(Users $user): Response
     {
@@ -71,6 +78,9 @@ class UsersController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="users_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Users $user
+     * @return Response
      */
     public function edit(Request $request, Users $user): Response
     {
@@ -91,6 +101,10 @@ class UsersController extends AbstractController
 
     /**
      * @Route("/{id}/reset", name="users_reset_password", methods={"GET","POST"})
+     * @param Request $request
+     * @param Users $user
+     * @param UserPasswordEncoderInterface $encoder
+     * @return Response
      */
     public function resetPassword(Request $request, Users $user, UserPasswordEncoderInterface $encoder): Response
     {
@@ -114,6 +128,9 @@ class UsersController extends AbstractController
 
     /**
      * @Route("/{id}", name="users_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Users $user
+     * @return Response
      */
     public function delete(Request $request, Users $user): Response
     {

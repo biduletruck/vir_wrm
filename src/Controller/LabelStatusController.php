@@ -17,6 +17,8 @@ class LabelStatusController extends AbstractController
 {
     /**
      * @Route("/", name="label_status_index", methods={"GET"})
+     * @param LabelStatusRepository $labelStatusRepository
+     * @return Response
      */
     public function index(LabelStatusRepository $labelStatusRepository): Response
     {
@@ -27,6 +29,8 @@ class LabelStatusController extends AbstractController
 
     /**
      * @Route("/new", name="label_status_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -50,6 +54,8 @@ class LabelStatusController extends AbstractController
 
     /**
      * @Route("/{id}", name="label_status_show", methods={"GET"})
+     * @param LabelStatus $labelStatus
+     * @return Response
      */
     public function show(LabelStatus $labelStatus): Response
     {
@@ -60,6 +66,9 @@ class LabelStatusController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="label_status_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param LabelStatus $labelStatus
+     * @return Response
      */
     public function edit(Request $request, LabelStatus $labelStatus): Response
     {
@@ -80,6 +89,9 @@ class LabelStatusController extends AbstractController
 
     /**
      * @Route("/{id}", name="label_status_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param LabelStatus $labelStatus
+     * @return Response
      */
     public function delete(Request $request, LabelStatus $labelStatus): Response
     {

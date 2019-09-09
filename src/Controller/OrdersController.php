@@ -57,6 +57,7 @@ class OrdersController extends AbstractController
      * @Route("/new", name="orders_new", methods={"GET", "POST"})
      * @param Request $request
      * @param OrderStatusRepository $orderStatusRepository
+     * @param LabelStatusRepository $labelStatusRepository
      * @return Response
      * @throws \Exception
      */
