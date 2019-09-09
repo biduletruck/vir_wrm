@@ -93,6 +93,8 @@ class LabelsController extends AbstractController
 
 
             $label = $entityManager->getRepository(Labels::class)->find($order);
+
+
             if (!$label->getLocation() == null)
             {
                 $oldLocation = $this->getDoctrine()->getRepository(Locations::class)->find($label->getLocation());
@@ -101,8 +103,11 @@ class LabelsController extends AbstractController
                 {
                     $oldLocation->setFreePlace(1);
                 }
+                $statusLabel = $labelStatusRepository->find(3);
                 $entityManager->persist($oldLocation);
                 $entityManager->flush();
+            }else{
+               $statusLabel = $labelStatusRepository->find(2);
             }
             $label->setLogin($this->getUser());
             $label->setVirLocalNumber($order->getVirLocalNumber());
@@ -110,7 +115,7 @@ class LabelsController extends AbstractController
             $label->setLocation($location);
             $label->getLocation()->setCountLabels($location->getCountLabels() + 1);
             $label->getLocation()->setFreePlace(0);
-            $label->setLabelStatus($labelStatusRepository->find(2));
+            $label->setLabelStatus($statusLabel);
             $entityManager->persist($label);
             $entityManager->flush();
             $this->get('session')->getFlashBag()->add('success', 'colis ajouté au stock');
@@ -126,10 +131,11 @@ class LabelsController extends AbstractController
     /**
      * @Route("/outofstock", name="labels_out_of_stock", methods={"GET","POST"})
      * @param Request $request
+     * @param LabelStatusRepository $labelStatusRepository
      * @return Response
      * @throws \Exception
      */
-    public function outOfStock(Request $request): Response
+    public function outOfStock(Request $request, LabelStatusRepository $labelStatusRepository): Response
     {
         $label = new Labels();
         $form = $this->createForm(OutLabelInLocationType::class, $label);
@@ -157,6 +163,7 @@ class LabelsController extends AbstractController
             $label->setVirLocalNumber($order->getVirLocalNumber());
             $label->setLocationDate(new \DateTime());
             $label->setLocation(null);
+            $label->setLabelStatus($labelStatusRepository->find(4));
             $entityManager->persist($label);
             $entityManager->flush();
             $this->get('session')->getFlashBag()->add('success', 'Colis sortie du stock');
